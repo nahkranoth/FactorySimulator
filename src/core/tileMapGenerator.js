@@ -2,7 +2,7 @@ import { Perlin2 } from 'tumult'
 import { Simplex2 } from 'tumult'
 import { _ } from 'underscore'
 
-export class TileMap extends Phaser.GameObjects.GameObject {
+export class TileMapGenerator extends Phaser.GameObjects.GameObject {
     constructor(params){
         super(params.scene, params.opt);
         this.map;
@@ -28,20 +28,18 @@ export class TileMap extends Phaser.GameObjects.GameObject {
 
         this.sx = 0;
 
-        _.bind(function(){console.log("this")}, this);
-
         this.perlin = new Perlin2();
         this.simplex = new Simplex2();
         
         this.simplexModifier = 0.1;
-        this.perlinModifier = 0.8;
+        this.perlinModifier = 0.3;
 
         let mapData = this._generateBlankMap();
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: tileSize, tileHeight:tileSize});
         let tileset = this.map.addTilesetImage('tiles');
         this.layer = this.map.createDynamicLayer(0, tileset, 0, 0);
-        //this._generatePerlexMap();
         this._generateWalkerMap();
+        //this._generatePerlexMap();
     }
 
     _getRandom(x, y){
@@ -70,7 +68,6 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         let position = start;
         let positions = [];
         positions.push(position);
-        console.log(steps);
         for (var i = 0; i < steps; i++) {
             positions.push(position);
             position = this._getRandomNextStep(position, positions);

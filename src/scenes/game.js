@@ -1,5 +1,6 @@
 import {Player} from '../objects/player.js';
-import {TileMap} from '../objects/tileMap.js';
+import {TileMapGenerator} from '../core/tileMapGenerator.js';
+import {Map} from '../core/map.js';
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -7,10 +8,8 @@ export class Game extends Phaser.Scene {
     }
 
     create() {
-
-        this.tilemap = new TileMap({scene:this, opt:{}});
-
-
+        this.cameras.main.roundPixels = true
+        this.map = new Map({scene:this,opt:{},camera:this.cameras.main});
 
         // this.player = new Player({
         //     scene:this,
@@ -26,7 +25,9 @@ export class Game extends Phaser.Scene {
     }
 
     update(){
-        this.tilemap.update();
+        //this.cameras.main.scrollX += 0.1;
+        this.map.update();
+        //this.tilemap.update();
         // this.player.update();
     }
 }
