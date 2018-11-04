@@ -1,11 +1,12 @@
 import {MapChunk} from '../core/mapChunk.js';
+import {DebugRect} from '../utils/debug.js'
 import {_} from 'underscore';
 
 export class Map extends Phaser.GameObjects.GameObject {
 
     constructor(params){
         super(params.scene, params.opt);
-        this.camera = params.camera;
+        this.camera = params.scene.cameras.main;
         this.chunks = [];
         this.viewportRect = this.camera.worldView;
 
@@ -14,27 +15,17 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.chunks.push(this.chunk1);
 
-        this._drawDebugViewport();
+        this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
+        this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.chunk1.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
+
         console.log(this._getObservedChunk());
     }
 
-    _drawDebugViewport(){
-        this.size = 200;
-        const red = 0xff0000;
-        this.debugRect = this.scene.add.graphics();
-        this._drawGraphic(this.debugRect, 0,0, this.size, red);
-        this._initDebugViewportPosition(this.camera.width/2, this.camera.height/2);
-    }
-
-    _initDebugViewportPosition(x, y){
-        this.debugRect.setX(x - this.size/2);
-        this.debugRect.setY(y - this.size/2);
-    }
-
     _getObservedChunk(){
-        let p = new Phaser.Geom.Point(this.debugRect.x, this.debugRect.y);
+        //Something goes wrong with centerpositions and stuff - add a point to the debug to really see the measured position
+        let p = new Phaser.Geom.Point(this.activeCameraDebugBounds.getPosition().x, this.activeCameraDebugBounds.getPosition().y);
         let activeChunk = _.filter(this.chunks, (c) => {return Phaser.Geom.Rectangle.ContainsPoint(c.getRectBounds(),p) });
-        if(activeChunk.length > 1){ console.warn("Alert multiple chunks contain camera point. Not possible.")}
+        if(activeChunk.length > 1){ console.error("Alert multiple chunks contain camera point. Not possible.")}
         if(activeChunk.length == 0){
             console.warn("Alert camera not on chunk. Avoid.");
             return false
@@ -42,20 +33,10 @@ export class Map extends Phaser.GameObjects.GameObject {
         return activeChunk[0];
     }
 
-    _setDebugViewportPosition(x, y){
-        this.debugRect.setX(x);
-        this.debugRect.setY(y);
-    }
-
-    _drawGraphic(graphics, posX, posY, size, color){
-        graphics.lineStyle(3, color, 1);
-        graphics.strokeRect(posX, posY, size, size);
-    }
-
     update(){
-        this._setDebugViewportPosition(this.debugRect.x += 0.1, this.debugRect.y);
-    }
-
-    _getActiveChunk(){
+        //update to fictional camera position
+        this.activeCameraDebugBounds.setPosition(this.activeCameraDebugBounds.getPosition().x += 0.3, this.activeCameraDebugBounds.getPosition().y);
+        this.activeChunkDebugBounds.setPosition(this.chunk1.getPosition().x, this.chunk1.getPosition().y);
+        console.log(this._getObservedChunk());
     }
 }

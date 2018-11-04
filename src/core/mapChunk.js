@@ -1,5 +1,6 @@
 import { Perlin2 } from 'tumult'
 import { Simplex2 } from 'tumult'
+import {DebugRect} from '../utils/debug.js'
 import { _ } from 'underscore'
 
 export class MapChunk extends Phaser.GameObjects.GameObject {
@@ -32,8 +33,9 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         let tileset = this.map.addTilesetImage('tiles');
         this.layer = this.map.createDynamicLayer(0, tileset, this.x, this.y);
 
+
         //debug
-        //this._drawDebugTiles();
+        //this._debugFillChunk();
     }
 
     _generateChunk(){
@@ -48,13 +50,8 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         return mapData;
     }
 
-    _drawDebugTiles(){
+    _debugFillChunk(){
         this.map.forEachTile((tile) => {tile.index = 1});
-    }
-
-    _drawDebugBounds(){
-        let graphic = this.scene.add.graphics();
-        this.drawGraphic(graphic, this.layer.x,this.layer.y, this.getBounds().width, 0x0000ff, 0x0000ff, true);
     }
 
     _getTileAt(pos){
@@ -77,14 +74,13 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
 
     getPosition(){
         let bounds = this.getBounds();
-        return new Phaser.Geom.Point(this.layer.x - bounds.width/2, this.layer.y - bounds.height/2)
+        return new Phaser.Geom.Point(this.layer.x + bounds.width/2, this.layer.y + bounds.height/2)
     }
 
     setPosition(x, y){
         let bounds = this.getBounds();
         this.layer.x = x - bounds.width/2;
         this.layer.y = y - bounds.height/2;
-        this._drawDebugBounds();
     }
 
     drawGraphic(graphics, posX, posY, size, color, lineColor, outlinesOnly){

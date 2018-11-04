@@ -8,8 +8,8 @@ export class Game extends Phaser.Scene {
     }
 
     create() {
-        this.cameras.main.roundPixels = true
-        this.map = new Map({scene:this,opt:{},camera:this.cameras.main});
+        this.cameras.main.roundPixels = true;
+        this.map = new Map({scene:this,opt:{}});
 
         // this.player = new Player({
         //     scene:this,
