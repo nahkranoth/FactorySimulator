@@ -1,4 +1,4 @@
-import { Perlin2 } from 'tumult'
+import { Perlin3 } from 'tumult'
 import { Simplex2 } from 'tumult'
 import { _ } from 'underscore'
 
@@ -27,28 +27,32 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         graphics.generateTexture("tiles", 64, size);
 
         this.sx = 0;
+        this.animIndex = 0;
+        this.updateTreshold = 0;
 
-        _.bind(function(){console.log("this")}, this);
-
-        this.perlin = new Perlin2();
+        this.perlin = new Perlin3();
         this.simplex = new Simplex2();
         
         this.simplexModifier = 0.1;
-        this.perlinModifier = 0.8;
+        this.perlinModifier = 0.2;
 
         let mapData = this._generateBlankMap();
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: tileSize, tileHeight:tileSize});
         let tileset = this.map.addTilesetImage('tiles');
         this.layer = this.map.createDynamicLayer(0, tileset, 0, 0);
-        //this._generatePerlexMap();
-        this._generateWalkerMap();
+        this.layer.setCollision(1);
+        //this.layer.setCollisionBetween(0, 9999);
+
+        this._initPerlexMap();
+        this._generatePerlexMap();
+        //this._generateWalkerMap();
     }
 
     _getRandom(x, y){
-        let perlinValue = Math.abs(Math.round(this.perlin.gen(x*this.perlinModifier, y*this.perlinModifier)));
+        let perlinValue = Math.abs(Math.round(this.perlin.gen(x*this.perlinModifier, y*this.perlinModifier, this.animIndex)));
         let simplexValue = Math.abs(Math.round(this.simplex.gen(x*this.simplexModifier, y*this.simplexModifier)));
         //if (perlinValue) return 0;
-        return simplexValue;
+        return perlinValue;
     }
 
     _generateBlankMap(){
@@ -125,9 +129,12 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         return pos;
     }
 
-    _generatePerlexMap(){
+    _initPerlexMap(){
         this.perlin.seed();
         this.simplex.seed();
+    }
+
+    _generatePerlexMap(){
         for(let y=0;y<this.mapHeight; y++){
             for(let x=0;x<this.mapWidth; x++){
                 let tile = this.map.getTileAt(x, y);
@@ -137,6 +144,14 @@ export class TileMap extends Phaser.GameObjects.GameObject {
     }
 
     update(){
+
+        this.updateTreshold ++;
+
+        if(this.updateTreshold % 2 == 0){
+            this.animIndex += 0.01;
+            this._generatePerlexMap();
+        }
+
         // this.sx += 4;
         //
         // if(this.sx == 64){

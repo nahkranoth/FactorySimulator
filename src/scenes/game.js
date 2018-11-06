@@ -1,4 +1,4 @@
-import {Player} from '../objects/player.js';
+import {Player} from '../objects/playerTilePhysics.js';
 import {TileMap} from '../objects/tileMap.js';
 
 export class Game extends Phaser.Scene {
@@ -10,23 +10,30 @@ export class Game extends Phaser.Scene {
 
         this.tilemap = new TileMap({scene:this, opt:{}});
 
-
-
         // this.player = new Player({
-        //     scene:this,
-        //     opt:{},
-        //     position:{x:0, y:0},
-        //     size:{w:64, h:64},
-        //     rotation:1.2,
-        //     pivot:{x:0.5, y:0.5}
+        //     scene:this
         // });
         //
         // this.player.x = 320;
         // this.player.y = 320;
+        //console.log(this.player.sprite, " - ", this.tilemap.layer);
+
+        this.sprite1 = this.physics.add.sprite(120, 420, "tiles");
+
+        this.tilemap.layer.setTileIndexCallback(1, this.hitCoin, this);
+        this.physics.add.collider(this.sprite1, this.tilemap.layer);
+
+        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
+    }
+
+    hitCoin(){
+        console.log("HITS");
     }
 
     update(){
         this.tilemap.update();
-        // this.player.update();
+        //
+
+        //this.player.update();
     }
 }

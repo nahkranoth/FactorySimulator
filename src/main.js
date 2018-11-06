@@ -9,7 +9,15 @@ const gameConfig = {
     type: Phaser.AUTO,
     width: 1024,
     height: 768,
-    scene: [Preloader, Game]
+    scene: [Preloader, Game],
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: {
+                y: 180
+            }
+        }
+    }
 
 };
 
