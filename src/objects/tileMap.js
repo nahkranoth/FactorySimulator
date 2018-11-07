@@ -40,7 +40,8 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: tileSize, tileHeight:tileSize});
         let tileset = this.map.addTilesetImage('tiles');
         this.layer = this.map.createDynamicLayer(0, tileset, 0, 0);
-        this.layer.setCollision(1);
+        this.map.setCollision(1, true, true, 0);
+        this.layer.setCollisionByProperty﻿({ collides: true })﻿
         //this.layer.setCollisionBetween(0, 9999);
 
         this._initPerlexMap();
@@ -138,7 +139,8 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         for(let y=0;y<this.mapHeight; y++){
             for(let x=0;x<this.mapWidth; x++){
                 let tile = this.map.getTileAt(x, y);
-                tile.index = this._getRandom(x, y);
+                let i = this._getRandom(x, y);
+                tile.index = i;
             }
         }
     }

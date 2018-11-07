@@ -10,13 +10,10 @@ const gameConfig = {
     width: 1024,
     height: 768,
     scene: [Preloader, Game],
+    pixelArt: true,
     physics: {
         default: 'arcade',
-        arcade: {
-            gravity: {
-                y: 180
-            }
-        }
+        arcade: { gravity: { y: 300 } }
     }
 
 };
