@@ -2,6 +2,7 @@ import {MapChunk} from '../core/mapChunk.js';
 import {DebugRect} from '../utils/debug.js'
 import { Perlin3 } from 'tumult'
 import {MapChunkNeighbour} from '../core/mapChunkNeighbour'
+import {RandomGenerator} from '../utils/randomGenerator'
 import {_} from 'underscore';
 
 export class Map extends Phaser.GameObjects.GameObject {
@@ -18,16 +19,13 @@ export class Map extends Phaser.GameObjects.GameObject {
         */
 
         this.chunks = [];
+        this.neighbouringChunks = [];
         this.viewportRect = this.camera.worldView;
 
-        this.chunkWidth = 8;
-        this.chunkHeight = 8;
+        this.chunkWidth = 32;
+        this.chunkHeight = 32;
         this.tileSize = 16;
         this.generatedChunkIndex = 0;
-
-        this.perlin = new Perlin3();
-        this.perlin.seed();
-        this.perlinModifier = 0.1;
 
         this._previousActiveChunk;
 
@@ -41,9 +39,7 @@ export class Map extends Phaser.GameObjects.GameObject {
                 yCoord:0,
                 chunkHeight:this.chunkHeight,
                 chunkWidth:this.chunkWidth,
-                tileSize:this.tileSize,
-                perlin:this.perlin,
-                perlinModifier:this.perlinModifier
+                tileSize:this.tileSize
             }});
 
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
@@ -53,13 +49,18 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
         this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
-
         // this.debugGraph = this.scene.add.graphics();
 
     }
 
     _getChunkByCoord(x, y){
         let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
+        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
+        return chunks[0];
+    }
+
+    _getNeighbouringChunkByCoord(x, y){
+        let chunks = _.filter(this.neighbouringChunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
         if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
         return chunks[0];
     }
@@ -73,7 +74,7 @@ export class Map extends Phaser.GameObjects.GameObject {
                     if(x == 0 && y == 0) continue;
                     let offsetXCoord = this.activeChunk.xCoord+x;
                     let offsetYCoord = this.activeChunk.yCoord+y;
-                    let possibleChunk = this._getChunkByCoord(offsetXCoord, offsetYCoord);
+                    let possibleChunk = this._getNeighbouringChunkByCoord(offsetXCoord, offsetYCoord);
                     if(typeof(possibleChunk) == "undefined"){//prevent from building one if allready exists at that world cordinate
                         this.generatedChunkIndex++;
                         let chunk = new MapChunk({
@@ -93,6 +94,7 @@ export class Map extends Phaser.GameObjects.GameObject {
                         let yPos = activeChunkPos.y + (y*this.chunkHeight*this.tileSize);
                         chunk.setPosition(xPos, yPos);
                         this.chunks.push(chunk);
+                        this.neighbouringChunks.push(chunk);
                     }
                     //then just add as neighbour
                     this.activeChunk.addNeighbourChunkReference(new MapChunkNeighbour({mapChunk:possibleChunk, xDir:x, yDir:y}));
@@ -102,13 +104,13 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _activeChunkChanged(){
+        this.neighbouringChunks = [];
         this._generateNeighbouringChunks();
     }
 
     _updateActiveChunk(){
         let currentActiveChunk = this._getActiveChunk();
         if(this._previousActiveChunk != currentActiveChunk) {
-            console.log("Active chunk switch");
             this.activeChunk = currentActiveChunk;
             this._activeChunkChanged();
             this._previousActiveChunk = currentActiveChunk;
@@ -133,6 +135,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         this._updateActiveChunk();
         //update to fictional camera position
         this.activeCameraDebugBounds.setPosition(this.activeCameraDebugBounds.getPosition().x += 2, this.activeCameraDebugBounds.getPosition().y += 2);
-        this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
+        //this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
     }
 }
