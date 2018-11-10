@@ -6,17 +6,19 @@ import { _ } from 'underscore'
 export class MapChunk extends Phaser.GameObjects.GameObject {
     constructor(params){
         super(params.scene, params.opt);
-        this.x = params.x;
-        this.y = params.y;
+        this.xCoord = params.opt.xCoord;
+        this.yCoord = params.opt.yCoord;
+        this.chunkHeight = params.opt.chunkHeight;
+        this.chunkWidth = params.opt.chunkWidth;
+        this.tileSize = params.opt.tileSize;
+
+        this.neighbours = [];
+
         this.map;
         this.init();
     }
 
     init(){
-
-        this.chunkHeight = 12;
-        this.chunkWidth = 12;
-        this.tileSize = 32;
 
         const darkgreen = 0x223322;
         const green = 0x00ff00;
@@ -36,6 +38,11 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
 
         //debug
         //this._debugFillChunk();
+    }
+
+    addNeighbourChunkReference(neighbour){
+        this.neighbours.push(neighbour);
+        if(this.neighbours.length > 8){console.warn("MapChunk has more than 8 neighbours")}
     }
 
     _generateChunk(){
@@ -69,7 +76,7 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
     getRectBounds(){
         let bounds = this.getBounds();
         let pos = this.getPosition();
-        return new Phaser.Geom.Rectangle(pos.x, pos.y, bounds.width, bounds.height);
+        return new Phaser.Geom.Rectangle(pos.x - bounds.width/2, pos.y - bounds.height/2, bounds.width, bounds.height);
     }
 
     getPosition(){
