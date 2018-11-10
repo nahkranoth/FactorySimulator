@@ -1,5 +1,6 @@
 import {MapChunk} from '../core/mapChunk.js';
 import {DebugRect} from '../utils/debug.js'
+import { Perlin3 } from 'tumult'
 import {MapChunkNeighbour} from '../core/mapChunkNeighbour'
 import {_} from 'underscore';
 
@@ -22,12 +23,29 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.chunkWidth = 8;
         this.chunkHeight = 8;
         this.tileSize = 16;
+        this.generatedChunkIndex = 0;
+
+        this.perlin = new Perlin3();
+        this.perlin.seed();
+        this.perlinModifier = 0.1;
 
         this._previousActiveChunk;
 
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
 
-        this.rootChunk = new MapChunk({scene:this.scene, opt:{xCoord:0, yCoord:0, chunkHeight:this.chunkHeight, chunkWidth:this.chunkWidth, tileSize:this.tileSize}});
+        this.rootChunk = new MapChunk({
+            scene:this.scene,
+            opt:{
+                index:this.generatedChunkIndex,
+                xCoord:0,
+                yCoord:0,
+                chunkHeight:this.chunkHeight,
+                chunkWidth:this.chunkWidth,
+                tileSize:this.tileSize,
+                perlin:this.perlin,
+                perlinModifier:this.perlinModifier
+            }});
+
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
         this.activeChunk = this.rootChunk;
 
@@ -57,7 +75,20 @@ export class Map extends Phaser.GameObjects.GameObject {
                     let offsetYCoord = this.activeChunk.yCoord+y;
                     let possibleChunk = this._getChunkByCoord(offsetXCoord, offsetYCoord);
                     if(typeof(possibleChunk) == "undefined"){//prevent from building one if allready exists at that world cordinate
-                        let chunk = new MapChunk({scene:this.scene, opt:{xCoord:offsetXCoord, yCoord:offsetYCoord, chunkHeight:this.chunkHeight, chunkWidth:this.chunkWidth, tileSize:this.tileSize}});
+                        this.generatedChunkIndex++;
+                        let chunk = new MapChunk({
+                            scene:this.scene,
+                            opt:{
+                                index:this.generatedChunkIndex,
+                                xCoord:offsetXCoord,
+                                yCoord:offsetYCoord,
+                                chunkHeight:this.chunkHeight,
+                                chunkWidth:this.chunkWidth,
+                                tileSize:this.tileSize,
+                                perlin:this.perlin,
+                                perlinModifier:this.perlinModifier
+                            }});
+
                         let xPos = activeChunkPos.x + (x*this.chunkWidth*this.tileSize);
                         let yPos = activeChunkPos.y + (y*this.chunkHeight*this.tileSize);
                         chunk.setPosition(xPos, yPos);
