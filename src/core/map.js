@@ -132,7 +132,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     update(){
         this._updateActiveChunk();
         //update to fictional camera position
-        this.activeCameraDebugBounds.setPosition(this.activeCameraDebugBounds.getPosition().x -= 2, this.activeCameraDebugBounds.getPosition().y -= 2);
+        this.activeCameraDebugBounds.setPosition(this.activeCameraDebugBounds.getPosition().x += 2, this.activeCameraDebugBounds.getPosition().y += 2);
         this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
     }
 }

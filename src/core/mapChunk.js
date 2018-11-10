@@ -23,16 +23,14 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
     }
 
     init(){
-
         const darkgreen = 0x223322;
         const green = 0x00ff00;
         const tiles = [ 0, 1 ];
-        const size = 32;
 
         let graphics = this.scene.add.graphics();
-        this.drawGraphic(graphics, 0,0, size, darkgreen);
-        this.drawGraphic(graphics, size,0, size, green);
-        graphics.generateTexture("tiles", 64, size);
+        this.drawGraphic(graphics, 0,0, this.tileSize, darkgreen);
+        this.drawGraphic(graphics, this.tileSize,0, this.tileSize, green);
+        graphics.generateTexture("tiles", 64, this.tileSize);
 
         let mapData = this._generateChunk();
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: this.tileSize, tileHeight:this.tileSize});
@@ -40,9 +38,6 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.layer = this.map.createDynamicLayer(0, tileset, this.x, this.y);
 
         this._generatePerlinMap();
-
-        //debug
-        //this._debugFillChunk();
     }
 
     addNeighbourChunkReference(neighbour){
@@ -50,8 +45,21 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         if(this.neighbours.length > 8){console.warn("MapChunk has more than 8 neighbours")}
     }
 
+    _convertToAxis(x, y){
+        if(x != 0){
+            x = x > 0 ? 1 : -1
+        }
+        if(y != 0){
+            y = y > 0 ? 1 : -1
+        }
+       return x + y + 2;//add  to make it absolute
+    }
+
     _getRandom(x, y){
-        let perlinValue = Math.abs(Math.round(this.perlin.gen(x*this.perlinModifier, y*this.perlinModifier, this.index)));
+        let xOffset = Math.abs(x + (this.chunkWidth * this.xCoord));
+        let yOffset = Math.abs(y + (this.chunkHeight * this.yCoord));
+        let axis = this._convertToAxis(this.xCoord, this.yCoord);
+        let perlinValue = Math.abs(Math.round(this.perlin.gen(xOffset*this.perlinModifier, yOffset*this.perlinModifier, axis)));
         return perlinValue;
     }
 
@@ -59,8 +67,7 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         for(let y=0;y<this.chunkHeight; y++){
             for(let x=0;x<this.chunkWidth; x++){
                 let tile = this.map.getTileAt(x, y);
-                console.log(this._getRandom(x, y));
-                tile.index = this._getRandom(x, y) + 1;
+                tile.index = this._getRandom(x, y);
             }
         }
     }
