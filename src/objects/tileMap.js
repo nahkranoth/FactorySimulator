@@ -5,7 +5,6 @@ import { _ } from 'underscore'
 export class TileMap extends Phaser.GameObjects.GameObject {
     constructor(params){
         super(params.scene, params.opt);
-        this.map;
         this.init();
     }
 
@@ -14,7 +13,7 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         this.mapHeight = 24;
         this.mapWidth = 32;
 
-        const darkgreen = 0x223322;
+        const yellow = 0x555500;
         const green = 0x00ff00;
 
         const tiles = [ 0, 1 ];
@@ -22,7 +21,7 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         const size = 32;
 
         let graphics = this.scene.add.graphics();
-        this.drawGraphic(graphics, 0,0, size, darkgreen);
+        this.drawGraphic(graphics, 0,0, size, yellow);
         this.drawGraphic(graphics, size,0, size, green);
         graphics.generateTexture("tiles", 64, size);
 
@@ -40,13 +39,12 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: tileSize, tileHeight:tileSize});
         let tileset = this.map.addTilesetImage('tiles');
         this.layer = this.map.createDynamicLayer(0, tileset, 0, 0);
-        this.map.setCollision(1, true, true, 0);
-        this.layer.setCollisionByProperty﻿({ collides: true })﻿
-        //this.layer.setCollisionBetween(0, 9999);
-
         this._initPerlexMap();
         this._generatePerlexMap();
         //this._generateWalkerMap();
+
+        //IMPORTANT: set the collisions after you generated the map
+        this.map.setCollision(1, true, true, 0);
     }
 
     _getRandom(x, y){
@@ -75,7 +73,6 @@ export class TileMap extends Phaser.GameObjects.GameObject {
         let position = start;
         let positions = [];
         positions.push(position);
-        console.log(steps);
         for (var i = 0; i < steps; i++) {
             positions.push(position);
             position = this._getRandomNextStep(position, positions);
@@ -146,22 +143,13 @@ export class TileMap extends Phaser.GameObjects.GameObject {
     }
 
     update(){
-
         this.updateTreshold ++;
-
         if(this.updateTreshold % 2 == 0){
             this.animIndex += 0.01;
             this._generatePerlexMap();
+            this.map.setCollision(1, true);
+            this.map.setCollision(0, false);
         }
-
-        // this.sx += 4;
-        //
-        // if(this.sx == 64){
-        //     this._generateMap();
-        //     this.sx = 0;
-        // }
-
-        //this.scene.cameras.main.scrollX = this.sx;
     }
 
     drawGraphic(graphics, posX, posY, size, color){

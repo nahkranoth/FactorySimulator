@@ -6,6 +6,7 @@ export class Preloader extends Phaser.Scene {
 
     preload(){
         this.load.image("download", "assets/download.jpg");
+        this.load.image("player", "assets/player.png");
     }
 
     create() {

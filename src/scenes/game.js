@@ -8,22 +8,21 @@ export class Game extends Phaser.Scene {
 
     create() {
 
+        console.log("createa");
         this.tilemap = new TileMap({scene:this, opt:{}});
 
-        // this.player = new Player({
-        //     scene:this
-        // });
-        //
-        // this.player.x = 320;
-        // this.player.y = 320;
-        //console.log(this.player.sprite, " - ", this.tilemap.layer);
+        this.player = new Player({
+            scene:this
+        });
 
-        this.sprite1 = this.physics.add.sprite(120, 420, "tiles");
+        this.player.x = 320;
+        this.player.y = 320;
+
 
         this.tilemap.layer.setTileIndexCallback(1, this.hitCoin, this);
-        this.physics.add.collider(this.sprite1, this.tilemap.layer);
-
-        this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
+        this.physics.add.collider(this.player.sprite, this.tilemap.layer);
+        //
+        // this.cameras.main.setBounds(0, 0, this.tilemap.widthInPixels, this.tilemap.heightInPixels);
     }
 
     hitCoin(){
@@ -32,8 +31,6 @@ export class Game extends Phaser.Scene {
 
     update(){
         this.tilemap.update();
-        //
-
-        //this.player.update();
+        this.player.update();
     }
 }
