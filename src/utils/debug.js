@@ -17,6 +17,7 @@ export class DebugRect extends Phaser.GameObjects.GameObject{
         this._drawGraphic(this.debugRect, 0,0, this.size, color, lineColor, outlinesOnly);
         this.setPosition(this.camera.width/2, this.camera.height/2);
         this.setPosition(this.getPosition().x, this.getPosition().y);
+        this.debugRect.setDepth(99);
     }
 
     getPosition(){

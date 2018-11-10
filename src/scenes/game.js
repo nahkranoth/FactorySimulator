@@ -25,7 +25,8 @@ export class Game extends Phaser.Scene {
     }
 
     update(){
-        //this.cameras.main.scrollX += 0.1;
+        this.cameras.main.scrollX -= 2;
+        this.cameras.main.scrollY -= 2;
         this.map.update();
         //this.tilemap.update();
         // this.player.update();

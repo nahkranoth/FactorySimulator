@@ -8,6 +8,9 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         super(params.scene, params.opt);
         this.xCoord = params.opt.xCoord;
         this.yCoord = params.opt.yCoord;
+
+        console.log("Chunk generated with coord X:",this.xCoord," Y:",this.yCoord);
+
         this.chunkHeight = params.opt.chunkHeight;
         this.chunkWidth = params.opt.chunkWidth;
         this.tileSize = params.opt.tileSize;
