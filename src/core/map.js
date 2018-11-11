@@ -11,20 +11,13 @@ export class Map extends Phaser.GameObjects.GameObject {
         super(params.scene, params.opt);
         this.camera = params.scene.cameras.main;
 
-
-        /*TODO:
-          make a division between chunks and active chunks -
-          now I'm itterating through the complete set of chunks -
-          while I know that chunks positioned 2 chunks away from me can never be a neighbour.
-        */
-
         this.chunks = [];
         this.neighbouringChunks = [];
         this.viewportRect = this.camera.worldView;
 
         this.chunkWidth = 32;
         this.chunkHeight = 32;
-        this.tileSize = 16;
+        this.tileSize = 24;
         this.generatedChunkIndex = 0;
 
         this._previousActiveChunk;
@@ -47,17 +40,16 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.chunks.push(this.rootChunk);
 
-        this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
-        this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
-        // this.debugGraph = this.scene.add.graphics();
+        //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
+        //this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
 
     }
 
-    _getChunkByCoord(x, y){
-        let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
-        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
-        return chunks[0];
-    }
+    // _getChunkByCoord(x, y){
+    //     let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
+    //     if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
+    //     return chunks[0];
+    // }
 
     _getNeighbouringChunkByCoord(x, y){
         let chunks = _.filter(this.neighbouringChunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
@@ -120,7 +112,9 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _getActiveChunk(){
-        let p = new Phaser.Geom.Point(this.activeCameraDebugBounds.getPosition().x, this.activeCameraDebugBounds.getPosition().y);
+        let p = new Phaser.Geom.Point(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
+
+        //TODO figure out why switching this.chunks to this.neighbouringchunks gives an error here - For non teleporting that would be the way to go
         let activeChunk = _.filter(this.chunks, (c) => {return Phaser.Geom.Rectangle.ContainsPoint(c.getRectBounds(),p) });
 
         if(activeChunk.length > 1){ console.error("Alert multiple chunks contain camera point. Not possible.")}
@@ -134,7 +128,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     update(){
         this._updateActiveChunk();
         //update to fictional camera position
-        this.activeCameraDebugBounds.setPosition(this.activeCameraDebugBounds.getPosition().x += 2, this.activeCameraDebugBounds.getPosition().y += 2);
+        //this.activeCameraDebugBounds.setPosition(this.activeCameraDebugBounds.getPosition().x += 2, this.activeCameraDebugBounds.getPosition().y += 2);
         //this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
     }
 }

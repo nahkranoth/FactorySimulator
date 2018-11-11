@@ -25,12 +25,14 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
     init(){
         const darkgreen = 0x223322;
         const green = 0x00ff00;
+        const blue = 0x0000ff;
         const tiles = [ 0, 1 ];
 
         let graphics = this.scene.add.graphics();
         this.drawGraphic(graphics, 0,0, this.tileSize, darkgreen);
         this.drawGraphic(graphics, this.tileSize,0, this.tileSize, green);
-        graphics.generateTexture("tiles", 64, this.tileSize);
+        this.drawGraphic(graphics, this.tileSize*2, 0, this.tileSize, blue);
+        graphics.generateTexture("tiles", 96, this.tileSize);
 
         let mapData = this._generateChunk();
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: this.tileSize, tileHeight:this.tileSize});
@@ -45,7 +47,10 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
             yCoord:this.yCoord,
             map:this.map
         });
-        this.tileMapGenerator.generatePerlinMap();
+        //order matters - there should be a condition map for who to overwrite and who not
+        //index, modifier, overwritemap, collision, other properties
+        this.tileMapGenerator.generatePerlinMap(1, 0.3);
+        this.tileMapGenerator.generatePerlinMap(2, 0.08);
     }
 
     addNeighbourChunkReference(neighbour){

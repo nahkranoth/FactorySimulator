@@ -10,7 +10,6 @@ export class TileMapGenerator {
         this.xCoord = params.xCoord;
         this.yCoord = params.yCoord;
         this.map = params.map;
-        this.perlinModifier = 0.1;
     }
 
     _convertToAxis(x, y){
@@ -23,20 +22,20 @@ export class TileMapGenerator {
         return x + y + 2;//add  to make it absolute
     }
 
-    _getRandom(x, y){
+    _getRandom(x, y, modifier){
         let xOffset = Math.abs(x + (this.chunkWidth * this.xCoord));
         let yOffset = Math.abs(y + (this.chunkHeight * this.yCoord));
         let axis = this._convertToAxis(this.xCoord, this.yCoord);
 
-        let perlinValue = Math.abs(Math.round(RandomGenerator.generatePerlin3(xOffset*this.perlinModifier, yOffset*this.perlinModifier, axis)));
+        let perlinValue = Math.abs(Math.round(RandomGenerator.generatePerlin3(xOffset*modifier, yOffset*modifier, axis)));
         return perlinValue;
     }
 
-    generatePerlinMap(){
+    generatePerlinMap(index, modifier){
         for(let y=0;y<this.chunkHeight; y++){
             for(let x=0;x<this.chunkWidth; x++){
                 let tile = this.map.getTileAt(x, y);
-                tile.index = this._getRandom(x, y);
+                tile.index = this._getRandom(x, y, modifier) ? index : tile.index;
             }
         }
     }

@@ -5,7 +5,7 @@ export class Preloader extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image("download", "assets/download.jpg");
+        this.load.image("plaey", "assets/plaey.png");
     }
 
     create() {
