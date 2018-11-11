@@ -12,7 +12,6 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.chunks = [];
         this.neighbouringChunks = [];
-        this.viewportRect = this.camera.worldView;
 
         this.chunkWidth = 8;
         this.chunkHeight = 8;
@@ -25,28 +24,16 @@ export class Map extends Phaser.GameObjects.GameObject {
         this._previousActiveChunk;
 
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
-
         this.rootChunk = this._createChunk(0, 0);
-
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
         this.activeChunk = this.rootChunk;
         this._activeChunkChanged();
 
-        this.chunks.push(this.rootChunk);
-        let tile = this._getTileByCoord(27, 8);
+        let tile = this._getTileByCoord(127, 8);
         tile.index = 2;
-        this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
-        this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
 
-    }
-
-    _getTileByCoord(x, y){
-        let chunkCoords = {x:Math.floor(x/this.chunkWidth), y:Math.floor(y/this.chunkWidth)};
-        let xTile = x % (this.chunkWidth);
-        let yTile = y % (this.chunkHeight);
-        let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tile = chunk.getTileAt({x:xTile, y:yTile});
-        return tile;
+        //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
+        //this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
     }
 
     _getOrCreateChunkByCoord(x, y){
@@ -75,18 +62,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         generatedChunk.setPosition(pos.x, pos.y);
         this.chunks.push(generatedChunk);
         return generatedChunk;
-    }
-
-    _getChunkByCoord(x, y){
-        let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
-        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
-        return chunks[0];
-    }
-
-    _getNeighbouringChunkByCoord(x, y){
-        let chunks = _.filter(this.neighbouringChunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
-        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
-        return chunks[0];
     }
 
     _generateNeighbouringChunks(){
@@ -127,6 +102,23 @@ export class Map extends Phaser.GameObjects.GameObject {
         return false;
     }
 
+    _getTileByCoord(x, y){
+        let chunkCoords = {x:Math.floor(x/this.chunkWidth), y:Math.floor(y/this.chunkWidth)};
+        let xTile = x % (this.chunkWidth);
+        let yTile = y % (this.chunkHeight);
+        let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
+        let tile = chunk.getTileAt({x:xTile, y:yTile});
+        return tile;
+    }
+
+    _getActiveChunk(){
+        let x = this.camera.scrollX;
+        let y = this.camera.scrollY;
+        let coords = this._convertPosToCoord(x, y);
+        let activeChunk = this._getChunkByCoord(coords.x, coords.y);
+        return activeChunk;
+    }
+
     _convertPosToCoord(x, y){
         let xChunkCoord, yChunkCoord;
         xChunkCoord = Math.round((x / this.chunkPixelWidth));
@@ -141,18 +133,22 @@ export class Map extends Phaser.GameObjects.GameObject {
         return {x: xChunkPos, y:yChunkPos};
     }
 
-    _getActiveChunk(){
-        let x = this.camera.scrollX;
-        let y = this.camera.scrollY;
-        let coords = this._convertPosToCoord(x, y);
-        let activeChunk = this._getChunkByCoord(coords.x, coords.y);
-        return activeChunk;
+    _getChunkByCoord(x, y){
+        let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
+        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
+        return chunks[0];
+    }
+
+    _getNeighbouringChunkByCoord(x, y){
+        let chunks = _.filter(this.neighbouringChunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
+        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
+        return chunks[0];
     }
 
     update(){
         this._updateActiveChunk();
         //update to fictional camera position
-        this.activeCameraDebugBounds.setPosition(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
-        this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
+        //this.activeCameraDebugBounds.setPosition(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
+        //this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
     }
 }

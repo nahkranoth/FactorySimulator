@@ -9,7 +9,6 @@ export class Game extends Phaser.Scene {
 
     create() {
         this.cameras.main.roundPixels = true;
-
         this.player = new Player({
             scene:this,
             key:"plaey",
@@ -18,11 +17,7 @@ export class Game extends Phaser.Scene {
         });
 
         this.map = new Map({scene:this,opt:{}});
-        //this.player.x = 1500;
-        //this.player.y = 1500;
         this.cameras.main.startFollow(this.player);
-
-
     }
 
     update(){
@@ -30,7 +25,5 @@ export class Game extends Phaser.Scene {
         //this.player.y += 10;
         this.map.update();
         this.player.update();
-        //this.tilemap.update();
-        // this.player.update();
     }
 }

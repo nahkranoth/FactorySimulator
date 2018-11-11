@@ -51,9 +51,9 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         //order matters - there should be a condition map for who to overwrite and who not
         //index, modifier, overwritemap, collision, other properties
         this.tileMapGenerator.generatePerlinMap(1, 0.3);
-        //this.tileMapGenerator.generatePerlinMap(2, 0.08);
+        this.tileMapGenerator.generatePerlinMap(2, 0.08);
         this.map.setCollision(1);
-        this.map.setCollision(2);
+        console.log(this.layer.layer.data);
         this.scene.physics.add.collider(this.scene.player, this.layer);
     }
 
