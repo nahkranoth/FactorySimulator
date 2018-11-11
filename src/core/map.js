@@ -111,6 +111,16 @@ export class Map extends Phaser.GameObjects.GameObject {
         return tile;
     }
 
+    _getTileByWorldPosition(x, y){
+        let xOffset = x - (this.camera.width/2);
+        let yOffset = y - (this.camera.height/2);
+        let chunkCoords = this._convertPosToCoord(xOffset, yOffset);
+        let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
+        let tilePos = chunk.map.worldToTileXY(x, y);
+        let tile = chunk.getTileAt({x:tilePos.x, y:tilePos.y});
+        return tile;
+    }
+
     _getActiveChunk(){
         let x = this.camera.scrollX;
         let y = this.camera.scrollY;

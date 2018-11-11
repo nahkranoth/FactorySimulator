@@ -9,7 +9,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.rotation = 0.08;
         this.depth = 999999;
-        //this.speed = 3;
+        this.moveSpeed = 100;
     }
 
     update(){
@@ -17,16 +17,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.body.setVelocityY(0);
         if (this.cursors.right.isDown)
         {
-            this.body.setVelocityX(100);
+            this.body.setVelocityX(this.moveSpeed);
         }else if(this.cursors.left.isDown){
-            this.body.setVelocityX(-100);
-
+            this.body.setVelocityX(-this.moveSpeed);
         }
         if (this.cursors.up.isDown)
         {
-            this.body.setVelocityY(-100);
+            this.body.setVelocityY(-this.moveSpeed);
         }else if(this.cursors.down.isDown){
-            this.body.setVelocityY(100);
+            this.body.setVelocityY(this.moveSpeed);
         }
     }
 }

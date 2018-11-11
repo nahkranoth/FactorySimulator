@@ -18,11 +18,19 @@ export class Game extends Phaser.Scene {
 
         this.map = new Map({scene:this,opt:{}});
         this.cameras.main.startFollow(this.player);
+
+        this.input.on('pointerdown', this.placeTile, this);
+
     }
 
+    placeTile(pointer){
+        var mouseWorldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
+        var sourceTile = this.map._getTileByWorldPosition(mouseWorldPoint.x, mouseWorldPoint.y);
+        sourceTile.index = 2;
+    }
+
+
     update(){
-        //this.player.x += 10;
-        //this.player.y += 10;
         this.map.update();
         this.player.update();
     }

@@ -53,7 +53,7 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.tileMapGenerator.generatePerlinMap(1, 0.3);
         this.tileMapGenerator.generatePerlinMap(2, 0.08);
         this.map.setCollision(1);
-        console.log(this.layer.layer.data);
+        this.map.setCollision(2);
         this.scene.physics.add.collider(this.scene.player, this.layer);
     }
 
