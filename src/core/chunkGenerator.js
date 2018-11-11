@@ -1,7 +1,7 @@
 import {RandomGenerator} from '../utils/randomGenerator'
 import {TileData} from '../data/TileData.js';
 
-export class TileMapGenerator {
+export class ChunkGenerator {
     constructor(params){
         this.scene = params.scene;
         this.chunkWidth = params.chunkWidth;
@@ -9,6 +9,8 @@ export class TileMapGenerator {
         this.xCoord = params.xCoord;
         this.yCoord = params.yCoord;
         this.map = params.map;
+        this.layer = params.layer;
+        this.chunk = params.chunk;
     }
 
     init(layer){
@@ -18,14 +20,19 @@ export class TileMapGenerator {
         this.scene.physics.add.collider(this.scene.player, layer);
     }
 
+    clear(){
+        this.layer.forEachTile((tile) => {
+            this.setTile(tile, 0);
+        });
+        this.map.setCollision(0, false);
+    }
+
+    //Convert chunk position to axis.
+    // Doing this to feed into the perlin generator else it would be 4 ways symetric.
     _convertToAxis(x, y){
-        if(x != 0){
-            x = x > 0 ? 1 : -1
-        }
-        if(y != 0){
-            y = y > 0 ? 1 : -1
-        }
-        return x + y + 2;//add  to make it absolute
+        if(x != 0) x = x > 0 ? 1 : -1;
+        if(y != 0) y = y > 0 ? 1 : -1;
+        return x + y + 2;//add 2 to make it absolute
     }
 
     _getRandom(x, y, modifier, octave){
@@ -57,6 +64,7 @@ export class TileMapGenerator {
 
     resetCollision(){
         this.map.setCollisionByProperty({ collision: true });
+        this.map.setCollisionByProperty({ collision: false }, false);
     }
 
 }

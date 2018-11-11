@@ -1,4 +1,4 @@
-import {TileMapGenerator} from '../core/tileMapGenerator.js'
+import {ChunkGenerator} from '../core/chunkGenerator.js'
 
 export class MapChunk extends Phaser.GameObjects.GameObject {
     constructor(params){
@@ -17,7 +17,6 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
 
         this.neighbours = [];
 
-        this.map;
         this.init();
     }
 
@@ -28,19 +27,25 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         let tileset = this.map.addTilesetImage('worldTilesImg');
         this.layer = this.map.createDynamicLayer(0, tileset, this.x, this.y);
 
-        this.tileMapGenerator = new TileMapGenerator({
+        this.chunkGenerator = new ChunkGenerator({
             scene:this.scene,
             chunkWidth:this.chunkWidth,
             chunkHeight:this.chunkHeight,
             xCoord:this.xCoord,
             yCoord:this.yCoord,
-            map:this.map
+            map:this.map,
+            layer:this.layer,
+            chunk:this
         });
-        this.tileMapGenerator.init(this.layer);
+        this.chunkGenerator.init(this.layer);
     }
 
     setTile(tile, index){
-        this.tileMapGenerator.setTile(tile, index);
+        this.chunkGenerator.setTile(tile, index);
+    }
+
+    clear(){
+        this.chunkGenerator.clear();
     }
 
     addNeighbourChunkReference(neighbour){
@@ -61,8 +66,8 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
     }
 
     getTileAt(pos){
-        if(pos.x < 0){ pos.x = this.chunkWidth+pos.x}
-        if(pos.y < 0){ pos.y = this.chunkHeight+pos.y}
+        if(pos.x < 0) pos.x = this.chunkWidth+pos.x;
+        if(pos.y < 0) pos.y = this.chunkHeight+pos.y;
         let tile = this.map.getTileAt(pos.x, pos.y);
         if(tile !== null){
             return tile;

@@ -8,7 +8,7 @@ export class Game extends Phaser.Scene {
     }
 
     create() {
-        TileData.create(this);
+        TileData.create(this);//init static tiledata
         this.cameras.main.roundPixels = true;
         this.player = new Player({
             scene:this,
@@ -21,7 +21,6 @@ export class Game extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         this.input.on('pointerdown', this.placeTile, this);
-
     }
 
     placeTile(){

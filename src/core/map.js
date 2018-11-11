@@ -1,7 +1,7 @@
 import {MapChunk} from '../core/mapChunk.js';
 import {DebugRect} from '../utils/debug.js'
 import {MapChunkNeighbour} from '../core/mapChunkNeighbour'
-import {RandomGenerator} from '../utils/randomGenerator'
+import {MapGenerator} from '../core/mapGenerator'
 import {_} from 'underscore';
 
 export class Map extends Phaser.GameObjects.GameObject {
@@ -23,14 +23,21 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this._previousActiveChunk;
 
+        this.mapGenerator = new MapGenerator({scene:this.scene, map:this});
+
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
         this.rootChunk = this._createChunk(0, 0);
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
         this.activeChunk = this.rootChunk;
         this._activeChunkChanged();
 
-        let tile = this._getTileByCoord(127, 8);
-        tile.index = 2;
+        this.mapGenerator.addConstruct(this.rootChunk);
+
+
+        //this.mapGenerator.addConstruct(this.rootChunk);
+
+        // let tile = this._getTileByCoord(127, 8);
+        // tile.index = 2;
 
         //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
         //this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
@@ -76,6 +83,7 @@ export class Map extends Phaser.GameObjects.GameObject {
                     if(typeof(possibleChunk) == "undefined"){//prevent from building one if allready exists at that world cordinate
                         let chunk = this._createChunk(offsetXCoord, offsetYCoord);
                         this.neighbouringChunks.push(chunk);
+                        this.mapGenerator.addConstruct(chunk);
                     }
                     //then just add as neighbour
                     this.activeChunk.addNeighbourChunkReference(new MapChunkNeighbour({mapChunk:possibleChunk, xDir:x, yDir:y}));
@@ -101,13 +109,13 @@ export class Map extends Phaser.GameObjects.GameObject {
         return false;
     }
 
-    _getTileByCoord(x, y){
+    _getTileAndChunkByCoord(x, y){
         let chunkCoords = {x:Math.floor(x/this.chunkWidth), y:Math.floor(y/this.chunkWidth)};
         let xTile = x % (this.chunkWidth);
         let yTile = y % (this.chunkHeight);
         let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
         let tile = chunk.getTileAt({x:xTile, y:yTile});
-        return tile;
+        return {chunk:chunk, tile:tile};
     }
 
     _getTileByWorldPosition(x, y){
