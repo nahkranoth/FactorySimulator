@@ -1,6 +1,5 @@
 import {MapChunk} from '../core/mapChunk.js';
 import {DebugRect} from '../utils/debug.js'
-import { Perlin3 } from 'tumult'
 import {MapChunkNeighbour} from '../core/mapChunkNeighbour'
 import {RandomGenerator} from '../utils/randomGenerator'
 import {_} from 'underscore';
@@ -43,7 +42,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         this._activeChunkChanged();
 
         this.chunks.push(this.rootChunk);
-        let tile = this._getTileByCoord(-1, 0);
+        let tile = this._getTileByCoord(17, 8);
         tile.index = 2;
         this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
         this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
@@ -51,18 +50,40 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _getTileByCoord(x, y){
-        let chunkCoords = this._convertPosToCoord(x, y, true);
-        let xTile = x % (this.chunkWidth+1);
-        let yTile = y % (this.chunkHeight+1);
+        let chunkCoords = {x:Math.floor(x/this.chunkWidth), y:Math.floor(y/this.chunkWidth)};
+        let xTile = x % (this.chunkWidth);
+        let yTile = y % (this.chunkHeight);
+        let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
+        let tile = chunk.getTileAt({x:xTile, y:yTile});
+        return tile;
+    }
 
-        return this._getChunkByCoord(chunkCoords.x, chunkCoords.y).getTileAt({x:xTile, y:yTile});
+    _getOrCreateChunkByCoord(x, y){
+        let possibleChunk = this._getChunkByCoord(x, y);
+        if(typeof(possibleChunk) == "undefined") {//prevent from building one if allready exists at that world cordinate
+            this.generatedChunkIndex++;
+            possibleChunk = new MapChunk({
+                scene: this.scene,
+                opt: {
+                    index: this.generatedChunkIndex,
+                    xCoord: x,
+                    yCoord: y,
+                    chunkHeight: this.chunkHeight,
+                    chunkWidth: this.chunkWidth,
+                    tileSize: this.tileSize
+                }
+            });
 
+            let pos = this._convertCoordToPos(x, y);
+            possibleChunk.setPosition(pos.x, pos.y);
+            this.chunks.push(possibleChunk);
+        }
+        return possibleChunk;
     }
 
     _getChunkByCoord(x, y){
         let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
         if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
-        if(chunks.length == 0) false;
         return chunks[0];
     }
 
@@ -92,9 +113,7 @@ export class Map extends Phaser.GameObjects.GameObject {
                                 yCoord:offsetYCoord,
                                 chunkHeight:this.chunkHeight,
                                 chunkWidth:this.chunkWidth,
-                                tileSize:this.tileSize,
-                                perlin:this.perlin,
-                                perlinModifier:this.perlinModifier
+                                tileSize:this.tileSize
                             }});
 
                         let xPos = activeChunkPos.x + (x*this.chunkWidth*this.tileSize);
@@ -108,7 +127,6 @@ export class Map extends Phaser.GameObjects.GameObject {
                 }
             }
         }
-        console.log(this.chunks);
     }
 
     _activeChunkChanged(){
@@ -128,16 +146,18 @@ export class Map extends Phaser.GameObjects.GameObject {
         return false;
     }
 
-    _convertPosToCoord(x, y, floored){
+    _convertPosToCoord(x, y){
         let xChunkCoord, yChunkCoord;
-        if(floored){
-            xChunkCoord = Math.floor((x / this.chunkPixelWidth));
-            yChunkCoord = Math.floor((y / this.chunkPixelHeight));
-        }else{
-            xChunkCoord = Math.round((x / this.chunkPixelWidth));
-            yChunkCoord = Math.round((y / this.chunkPixelHeight));
-        }
+        xChunkCoord = Math.round((x / this.chunkPixelWidth));
+        yChunkCoord = Math.round((y / this.chunkPixelHeight));
         return {x: xChunkCoord, y:yChunkCoord};
+    }
+
+    _convertCoordToPos(x, y){
+        let xChunkPos, yChunkPos;
+        xChunkPos = Math.round((x * this.chunkPixelWidth))+(this.camera.width/2);
+        yChunkPos = Math.round((y * this.chunkPixelHeight))+(this.camera.height/2);
+        return {x: xChunkPos, y:yChunkPos};
     }
 
     _getActiveChunk(){

@@ -77,11 +77,12 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
     getTileAt(pos){
         if(pos.x < 0){ pos.x = this.chunkWidth+pos.x}
         if(pos.y < 0){ pos.y = this.chunkHeight+pos.y}
-
         let tile = this.map.getTileAt(pos.x, pos.y);
         if(tile !== null){
             return tile;
         }
+
+        console.warn("No tile found at this position");
         return null;
     }
 
