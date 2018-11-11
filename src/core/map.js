@@ -26,23 +26,14 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
 
-        this.rootChunk = new MapChunk({
-            scene:this.scene,
-            opt:{
-                index:this.generatedChunkIndex,
-                xCoord:0,
-                yCoord:0,
-                chunkHeight:this.chunkHeight,
-                chunkWidth:this.chunkWidth,
-                tileSize:this.tileSize
-            }});
+        this.rootChunk = this._createChunk(0, 0);
 
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
         this.activeChunk = this.rootChunk;
         this._activeChunkChanged();
 
         this.chunks.push(this.rootChunk);
-        let tile = this._getTileByCoord(17, 8);
+        let tile = this._getTileByCoord(27, 8);
         tile.index = 2;
         this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
         this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
@@ -61,24 +52,29 @@ export class Map extends Phaser.GameObjects.GameObject {
     _getOrCreateChunkByCoord(x, y){
         let possibleChunk = this._getChunkByCoord(x, y);
         if(typeof(possibleChunk) == "undefined") {//prevent from building one if allready exists at that world cordinate
-            this.generatedChunkIndex++;
-            possibleChunk = new MapChunk({
-                scene: this.scene,
-                opt: {
-                    index: this.generatedChunkIndex,
-                    xCoord: x,
-                    yCoord: y,
-                    chunkHeight: this.chunkHeight,
-                    chunkWidth: this.chunkWidth,
-                    tileSize: this.tileSize
-                }
-            });
-
-            let pos = this._convertCoordToPos(x, y);
-            possibleChunk.setPosition(pos.x, pos.y);
-            this.chunks.push(possibleChunk);
+            possibleChunk = this._createChunk(x, y);
         }
         return possibleChunk;
+    }
+
+    _createChunk(x, y){
+        this.generatedChunkIndex++;
+        let generatedChunk = new MapChunk({
+            scene: this.scene,
+            opt: {
+                index: this.generatedChunkIndex,
+                xCoord: x,
+                yCoord: y,
+                chunkHeight: this.chunkHeight,
+                chunkWidth: this.chunkWidth,
+                tileSize: this.tileSize
+            }
+        });
+
+        let pos = this._convertCoordToPos(x, y);
+        generatedChunk.setPosition(pos.x, pos.y);
+        this.chunks.push(generatedChunk);
+        return generatedChunk;
     }
 
     _getChunkByCoord(x, y){
@@ -104,22 +100,7 @@ export class Map extends Phaser.GameObjects.GameObject {
                     let offsetYCoord = this.activeChunk.yCoord+y;
                     let possibleChunk = this._getChunkByCoord(offsetXCoord, offsetYCoord);
                     if(typeof(possibleChunk) == "undefined"){//prevent from building one if allready exists at that world cordinate
-                        this.generatedChunkIndex++;
-                        let chunk = new MapChunk({
-                            scene:this.scene,
-                            opt:{
-                                index:this.generatedChunkIndex,
-                                xCoord:offsetXCoord,
-                                yCoord:offsetYCoord,
-                                chunkHeight:this.chunkHeight,
-                                chunkWidth:this.chunkWidth,
-                                tileSize:this.tileSize
-                            }});
-
-                        let xPos = activeChunkPos.x + (x*this.chunkWidth*this.tileSize);
-                        let yPos = activeChunkPos.y + (y*this.chunkHeight*this.tileSize);
-                        chunk.setPosition(xPos, yPos);
-                        this.chunks.push(chunk);
+                        let chunk = this._createChunk(offsetXCoord, offsetYCoord);
                         this.neighbouringChunks.push(chunk);
                     }
                     //then just add as neighbour
