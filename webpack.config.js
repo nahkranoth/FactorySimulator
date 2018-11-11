@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var copyWebpackPlugin = new CopyWebpackPlugin([{
-    from: path.resolve(__dirname, 'assets', '**', '*'),
+    from: path.resolve(__dirname, 'assets/render', '**', '*'),
     to: path.resolve(__dirname, 'build')
 }]);
 

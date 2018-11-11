@@ -27,13 +27,17 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         const darkgreen = 0x223322;
         const green = 0x00ff00;
         const blue = 0x0000ff;
+        const brown = 0x8B4513;
+        const grey = 0x666666;
         const tiles = [ 0, 1 ];
 
         let graphics = this.scene.add.graphics();
         this.drawGraphic(graphics, 0,0, this.tileSize, darkgreen);
         this.drawGraphic(graphics, this.tileSize,0, this.tileSize, green);
         this.drawGraphic(graphics, this.tileSize*2, 0, this.tileSize, blue);
-        graphics.generateTexture("tiles", 96, this.tileSize);
+        this.drawGraphic(graphics, this.tileSize*3, 0, this.tileSize, brown);
+        this.drawGraphic(graphics, this.tileSize*4, 0, this.tileSize, grey);
+        graphics.generateTexture("tiles", 120, this.tileSize);
 
         let mapData = this._generateChunk();
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: this.tileSize, tileHeight:this.tileSize});
@@ -52,9 +56,17 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         //index, modifier, overwritemap, collision, other properties
         this.tileMapGenerator.generatePerlinMap(1, 0.3);
         this.tileMapGenerator.generatePerlinMap(2, 0.08);
-        this.map.setCollision(1);
+        this.tileMapGenerator.generatePerlinMap(4, 0.3, 9);
+        //this.map.setCollision(1);
         this.map.setCollision(2);
+        this.map.setCollision(4);
         this.scene.physics.add.collider(this.scene.player, this.layer);
+    }
+
+    setTile(tile, index){
+        tile.index = index;
+        this.map.setCollision(index);
+
     }
 
     addNeighbourChunkReference(neighbour){
@@ -88,12 +100,6 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
 
     getBounds(){
         return {width:this.chunkWidth*this.tileSize, height:this.chunkHeight*this.tileSize}
-    }
-    
-    getRectBounds(){
-        let bounds = this.getBounds();
-        let pos = this.getPosition();
-        return new Phaser.Geom.Rectangle(pos.x - bounds.width/2, pos.y - bounds.height/2, bounds.width, bounds.height);
     }
 
     getPosition(){

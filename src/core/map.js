@@ -65,7 +65,6 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _generateNeighbouringChunks(){
-        let activeChunkPos = this.activeChunk.getPosition();
         if(this.activeChunk.neighbours.length == 0){
             for(var x=-1;x<=1;x++){
                 for(var y=-1;y<=1;y++){
@@ -118,7 +117,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
         let tilePos = chunk.map.worldToTileXY(x, y);
         let tile = chunk.getTileAt({x:tilePos.x, y:tilePos.y});
-        return tile;
+        return {tile: tile, chunk: chunk};
     }
 
     _getActiveChunk(){

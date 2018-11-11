@@ -23,10 +23,10 @@ export class Game extends Phaser.Scene {
 
     }
 
-    placeTile(pointer){
+    placeTile(){
         var mouseWorldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
-        var sourceTile = this.map._getTileByWorldPosition(mouseWorldPoint.x, mouseWorldPoint.y);
-        sourceTile.index = 2;
+        var source = this.map._getTileByWorldPosition(mouseWorldPoint.x, mouseWorldPoint.y);
+        source.chunk.setTile(source.tile, 3);
     }
 
 
