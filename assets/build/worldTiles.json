@@ -1,0 +1,9 @@
+{
+  "tiles":[
+    {"index":0, "collision":false, "name":"grass"},
+    {"index":1, "collision":false, "name":"trees"},
+    {"index":2, "collision":true, "name":"water"},
+    {"index":3, "collision":true, "name":"wood"},
+    {"index":4, "collision":true, "name":"stone"}
+  ]
+}

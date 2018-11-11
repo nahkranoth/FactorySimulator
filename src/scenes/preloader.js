@@ -6,6 +6,8 @@ export class Preloader extends Phaser.Scene {
 
     preload(){
         this.load.image("plaey", "assets/plaey.png");
+        this.load.image('worldTilesImg', 'assets/worldTiles.png');
+        this﻿.load.json('worldTileData', 'assets/worldTiles.json');﻿﻿
     }
 
     create() {

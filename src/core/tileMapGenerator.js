@@ -1,6 +1,5 @@
-import { _ } from 'underscore'
 import {RandomGenerator} from '../utils/randomGenerator'
-
+import {TileData} from '../data/TileData.js';
 
 export class TileMapGenerator {
     constructor(params){
@@ -10,6 +9,13 @@ export class TileMapGenerator {
         this.xCoord = params.xCoord;
         this.yCoord = params.yCoord;
         this.map = params.map;
+    }
+
+    init(layer){
+        this.generatePerlinMap(1, 0.3);//generate trees
+        this.generatePerlinMap(2, 0.08);//generate lakes
+        this.generatePerlinMap(4, 0.3, 9);//generate rocks
+        this.scene.physics.add.collider(this.scene.player, layer);
     }
 
     _convertToAxis(x, y){
@@ -32,13 +38,25 @@ export class TileMapGenerator {
         return Math.abs(Math.round(RandomGenerator.generatePerlin3(xOffset*modifier, yOffset*modifier, axis)));
     }
 
+    setTile(tile, index){
+        tile.index = index;
+        let data = TileData.getTileData(index);
+        tile.properties.collision = data.collision;
+        this.resetCollision();
+    }
+
     generatePerlinMap(index, modifier, octave){
         for(let y=0;y<this.chunkHeight; y++){
             for(let x=0;x<this.chunkWidth; x++){
                 let tile = this.map.getTileAt(x, y);
-                tile.index = this._getRandom(x, y, modifier, octave) ? index : tile.index;
+                let i = this._getRandom(x, y, modifier, octave) ? index : tile.index;
+                this.setTile(tile, i);
             }
         }
+    }
+
+    resetCollision(){
+        this.map.setCollisionByProperty({ collision: true });
     }
 
 }

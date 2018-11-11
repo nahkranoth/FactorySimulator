@@ -1,4 +1,3 @@
-import {GameObject} from "../core/gameObject"
 
 export class Player extends Phaser.Physics.Arcade.Sprite{
 

@@ -3,8 +3,9 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var copyWebpackPlugin = new CopyWebpackPlugin([{
-    from: path.resolve(__dirname, 'assets/render', '**', '*'),
-    to: path.resolve(__dirname, 'build')
+    from: path.resolve(__dirname, 'assets/build', "**"),
+    to: path.resolve(__dirname, 'build/assets'),
+    flatten:true
 }]);
 
 var definePlugin = new webpack.DefinePlugin({

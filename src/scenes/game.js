@@ -1,6 +1,6 @@
 import {Player} from '../objects/player.js';
-import {TileMapGenerator} from '../core/tileMapGenerator.js';
 import {Map} from '../core/map.js';
+import {TileData} from '../data/TileData.js';
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -8,6 +8,7 @@ export class Game extends Phaser.Scene {
     }
 
     create() {
+        TileData.create(this);
         this.cameras.main.roundPixels = true;
         this.player = new Player({
             scene:this,

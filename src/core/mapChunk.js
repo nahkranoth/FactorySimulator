@@ -1,6 +1,4 @@
-import {DebugRect} from '../utils/debug.js'
 import {TileMapGenerator} from '../core/tileMapGenerator.js'
-import { _ } from 'underscore'
 
 export class MapChunk extends Phaser.GameObjects.GameObject {
     constructor(params){
@@ -24,24 +22,10 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
     }
 
     init(){
-        const darkgreen = 0x223322;
-        const green = 0x00ff00;
-        const blue = 0x0000ff;
-        const brown = 0x8B4513;
-        const grey = 0x666666;
-        const tiles = [ 0, 1 ];
-
-        let graphics = this.scene.add.graphics();
-        this.drawGraphic(graphics, 0,0, this.tileSize, darkgreen);
-        this.drawGraphic(graphics, this.tileSize,0, this.tileSize, green);
-        this.drawGraphic(graphics, this.tileSize*2, 0, this.tileSize, blue);
-        this.drawGraphic(graphics, this.tileSize*3, 0, this.tileSize, brown);
-        this.drawGraphic(graphics, this.tileSize*4, 0, this.tileSize, grey);
-        graphics.generateTexture("tiles", 120, this.tileSize);
 
         let mapData = this._generateChunk();
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: this.tileSize, tileHeight:this.tileSize});
-        let tileset = this.map.addTilesetImage('tiles');
+        let tileset = this.map.addTilesetImage('worldTilesImg');
         this.layer = this.map.createDynamicLayer(0, tileset, this.x, this.y);
 
         this.tileMapGenerator = new TileMapGenerator({
@@ -52,21 +36,11 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
             yCoord:this.yCoord,
             map:this.map
         });
-        //order matters - there should be a condition map for who to overwrite and who not
-        //index, modifier, overwritemap, collision, other properties
-        this.tileMapGenerator.generatePerlinMap(1, 0.3);
-        this.tileMapGenerator.generatePerlinMap(2, 0.08);
-        this.tileMapGenerator.generatePerlinMap(4, 0.3, 9);
-        //this.map.setCollision(1);
-        this.map.setCollision(2);
-        this.map.setCollision(4);
-        this.scene.physics.add.collider(this.scene.player, this.layer);
+        this.tileMapGenerator.init(this.layer);
     }
 
     setTile(tile, index){
-        tile.index = index;
-        this.map.setCollision(index);
-
+        this.tileMapGenerator.setTile(tile, index);
     }
 
     addNeighbourChunkReference(neighbour){
@@ -113,13 +87,4 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.layer.y = y - bounds.height/2;
     }
 
-    drawGraphic(graphics, posX, posY, size, color, lineColor, outlinesOnly){
-        if(!outlinesOnly){
-            graphics.fillStyle(color, 1);
-            graphics.fillRect(posX, posY, size, size);
-        }
-
-        graphics.lineStyle(1, lineColor, 1);
-        graphics.strokeRect(posX, posY, size, size);
-    }
 }
