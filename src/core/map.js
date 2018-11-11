@@ -15,10 +15,13 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.neighbouringChunks = [];
         this.viewportRect = this.camera.worldView;
 
-        this.chunkWidth = 32;
-        this.chunkHeight = 32;
+        this.chunkWidth = 8;
+        this.chunkHeight = 8;
         this.tileSize = 24;
         this.generatedChunkIndex = 0;
+
+        this.chunkPixelWidth = this.chunkWidth * this.tileSize;
+        this.chunkPixelHeight = this.chunkHeight * this.tileSize;
 
         this._previousActiveChunk;
 
@@ -37,19 +40,31 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
         this.activeChunk = this.rootChunk;
+        this._activeChunkChanged();
 
         this.chunks.push(this.rootChunk);
-
-        //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
-        //this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
+        let tile = this._getTileByCoord(-1, 0);
+        tile.index = 2;
+        this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
+        this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
 
     }
 
-    // _getChunkByCoord(x, y){
-    //     let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
-    //     if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
-    //     return chunks[0];
-    // }
+    _getTileByCoord(x, y){
+        let chunkCoords = this._convertPosToCoord(x, y, true);
+        let xTile = x % (this.chunkWidth+1);
+        let yTile = y % (this.chunkHeight+1);
+
+        return this._getChunkByCoord(chunkCoords.x, chunkCoords.y).getTileAt({x:xTile, y:yTile});
+
+    }
+
+    _getChunkByCoord(x, y){
+        let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
+        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
+        if(chunks.length == 0) false;
+        return chunks[0];
+    }
 
     _getNeighbouringChunkByCoord(x, y){
         let chunks = _.filter(this.neighbouringChunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
@@ -66,7 +81,7 @@ export class Map extends Phaser.GameObjects.GameObject {
                     if(x == 0 && y == 0) continue;
                     let offsetXCoord = this.activeChunk.xCoord+x;
                     let offsetYCoord = this.activeChunk.yCoord+y;
-                    let possibleChunk = this._getNeighbouringChunkByCoord(offsetXCoord, offsetYCoord);
+                    let possibleChunk = this._getChunkByCoord(offsetXCoord, offsetYCoord);
                     if(typeof(possibleChunk) == "undefined"){//prevent from building one if allready exists at that world cordinate
                         this.generatedChunkIndex++;
                         let chunk = new MapChunk({
@@ -93,9 +108,11 @@ export class Map extends Phaser.GameObjects.GameObject {
                 }
             }
         }
+        console.log(this.chunks);
     }
 
     _activeChunkChanged(){
+        console.log("ACTIVE CHUNK CHANGED");
         this.neighbouringChunks = [];
         this._generateNeighbouringChunks();
     }
@@ -111,24 +128,30 @@ export class Map extends Phaser.GameObjects.GameObject {
         return false;
     }
 
-    _getActiveChunk(){
-        let p = new Phaser.Geom.Point(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
-
-        //TODO figure out why switching this.chunks to this.neighbouringchunks gives an error here - For non teleporting that would be the way to go
-        let activeChunk = _.filter(this.chunks, (c) => {return Phaser.Geom.Rectangle.ContainsPoint(c.getRectBounds(),p) });
-
-        if(activeChunk.length > 1){ console.error("Alert multiple chunks contain camera point. Not possible.")}
-        if(activeChunk.length == 0){
-            console.warn("Alert camera not on chunk. Avoid.");
-            return false
+    _convertPosToCoord(x, y, floored){
+        let xChunkCoord, yChunkCoord;
+        if(floored){
+            xChunkCoord = Math.floor((x / this.chunkPixelWidth));
+            yChunkCoord = Math.floor((y / this.chunkPixelHeight));
+        }else{
+            xChunkCoord = Math.round((x / this.chunkPixelWidth));
+            yChunkCoord = Math.round((y / this.chunkPixelHeight));
         }
-        return activeChunk[0];
+        return {x: xChunkCoord, y:yChunkCoord};
+    }
+
+    _getActiveChunk(){
+        let x = this.camera.scrollX;
+        let y = this.camera.scrollY;
+        let coords = this._convertPosToCoord(x, y);
+        let activeChunk = this._getChunkByCoord(coords.x, coords.y);
+        return activeChunk;
     }
 
     update(){
         this._updateActiveChunk();
         //update to fictional camera position
-        //this.activeCameraDebugBounds.setPosition(this.activeCameraDebugBounds.getPosition().x += 2, this.activeCameraDebugBounds.getPosition().y += 2);
-        //this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
+        this.activeCameraDebugBounds.setPosition(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
+        this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
     }
 }

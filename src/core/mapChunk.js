@@ -5,6 +5,7 @@ import { _ } from 'underscore'
 export class MapChunk extends Phaser.GameObjects.GameObject {
     constructor(params){
         super(params.scene, params.opt);
+        this.scene = params.scene;
         this.xCoord = params.opt.xCoord;
         this.yCoord = params.opt.yCoord;
         this.index = params.opt.index;
@@ -50,7 +51,10 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         //order matters - there should be a condition map for who to overwrite and who not
         //index, modifier, overwritemap, collision, other properties
         this.tileMapGenerator.generatePerlinMap(1, 0.3);
-        this.tileMapGenerator.generatePerlinMap(2, 0.08);
+        //this.tileMapGenerator.generatePerlinMap(2, 0.08);
+        this.map.setCollision(1);
+        this.map.setCollision(2);
+        this.scene.physics.add.collider(this.scene.player, this.layer);
     }
 
     addNeighbourChunkReference(neighbour){
@@ -70,7 +74,10 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         return mapData;
     }
 
-    _getTileAt(pos){
+    getTileAt(pos){
+        if(pos.x < 0){ pos.x = this.chunkWidth+pos.x}
+        if(pos.y < 0){ pos.y = this.chunkHeight+pos.y}
+
         let tile = this.map.getTileAt(pos.x, pos.y);
         if(tile !== null){
             return tile;

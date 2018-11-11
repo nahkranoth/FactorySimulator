@@ -10,8 +10,6 @@ export class Game extends Phaser.Scene {
     create() {
         this.cameras.main.roundPixels = true;
 
-        this.map = new Map({scene:this,opt:{}});
-
         this.player = new Player({
             scene:this,
             key:"plaey",
@@ -19,7 +17,11 @@ export class Game extends Phaser.Scene {
             y:this.cameras.main.height/2
         });
 
+        this.map = new Map({scene:this,opt:{}});
+        //this.player.x = 1500;
+        //this.player.y = 1500;
         this.cameras.main.startFollow(this.player);
+
 
     }
 

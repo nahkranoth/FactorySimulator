@@ -1,13 +1,13 @@
 import {GameObject} from "../core/gameObject"
 
-export class Player extends Phaser.GameObjects.Sprite{
+export class Player extends Phaser.Physics.Arcade.Sprite{
 
     constructor(params) {
         super(params.scene, params.x, params.y, params.key);
         this.scene.add.existing(this);
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.rotation = 0.08;
-        this.depth = 99999;
+        this.depth = 999999;
         this.speed = 3;
     }
 
