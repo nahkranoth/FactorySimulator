@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const ImagePlugin = require(path.resolve(__dirname, 'custom/imagePlugin'));
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var copyWebpackPlugin = new CopyWebpackPlugin([{
@@ -7,6 +8,8 @@ var copyWebpackPlugin = new CopyWebpackPlugin([{
     to: path.resolve(__dirname, 'build/assets'),
     flatten:true
 }]);
+
+var imagePlugin = new ImagePlugin();
 
 var definePlugin = new webpack.DefinePlugin({
     __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true')),
@@ -31,13 +34,18 @@ module.exports = {
     plugins: [
         definePlugin,
         copyWebpackPlugin,
+        imagePlugin,
         new webpack.ProvidePlugin({
             _: 'underscore'
         })
     ],
     devServer: {
         contentBase: path.join(__dirname, 'build'),
-        open: true
+        open: true,
+        watchOptions: {
+            poll: true,
+            ignored: ['build']
+        }
     },
     optimization: {
         splitChunks: {
