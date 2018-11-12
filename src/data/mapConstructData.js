@@ -1,9 +1,11 @@
 export class MapConstructData{
-
-    //NOTE: All maps are drawn turned 90 degrees counterclockwise
-
-
+    //NOTE: All maps turned counterClockwise on return because of easier placement.
     static getBuildingOne(){
+
+        let properties = {
+            probability:1
+        };
+
         let map = [
             [ 3, 3, 3, 3, 3],
             [ 3,-1,-1,-1, 3],
@@ -14,7 +16,10 @@ export class MapConstructData{
             [ 3,-1,-1,-1, 3],
             [ 3,-1,-1,-1, 3]
         ];
-        return MapConstructData.rotateMap(map);
+
+        map = MapConstructData.rotateMap(map);
+
+        return {map:map, properties:properties};
     }
 
     static rotateMap(grid){

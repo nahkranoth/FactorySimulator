@@ -33,19 +33,18 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.mapGenerator.addConstruct(this.rootChunk);
 
-
         //this.mapGenerator.addConstruct(this.rootChunk);
 
         // let tile = this._getTileByCoord(127, 8);
         // tile.index = 2;
 
-        this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
-        this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
+        //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
+        //this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
     }
 
     _getOrCreateChunkByCoord(x, y){
         let possibleChunk = this._getChunkByCoord(x, y);
-        if(typeof(possibleChunk) == "undefined") {//prevent from building one if allready exists at that world cordinate
+        if(typeof(possibleChunk) == "undefined") {//prevent from building one if already exists at that world cordinate
             possibleChunk = this._createChunk(x, y);
             this.mapGenerator.addConstruct(possibleChunk);
         }
@@ -161,7 +160,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     update(){
         this._updateActiveChunk();
         //update to fictional camera position
-        this.activeCameraDebugBounds.setPosition(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
-        this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
+        //this.activeCameraDebugBounds.setPosition(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
+        //this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
     }
 }

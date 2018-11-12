@@ -49,7 +49,6 @@ export class ChunkGenerator {
         tile.index = index;
         let data = TileData.getTileData(index);
         tile.properties.collision = data.collision;
-        this.resetCollision();
     }
 
     generatePerlinMap(index, modifier, octave){
@@ -60,6 +59,7 @@ export class ChunkGenerator {
                 this.setTile(tile, i);
             }
         }
+        this.resetCollision();
     }
 
     resetCollision(){
