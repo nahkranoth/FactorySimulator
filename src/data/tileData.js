@@ -11,3 +11,9 @@ export class TileData{
     }
 }
 TileData.worldTileData = [];
+
+TileData.PROPERTIES = {
+    TILESIZE:24,
+    CHUNKWIDTH:8,
+    CHUNKHEIGHT:8
+};

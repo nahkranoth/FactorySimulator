@@ -7,7 +7,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.scene.add.existing(this);
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.rotation = 0.08;
-        this.depth = 999999;
+        this.depth = 10000;
         this.moveSpeed = 200;
     }
 

@@ -1,5 +1,5 @@
 import {MapChunk} from '../core/mapChunk.js';
-import {DebugRect} from '../utils/debug.js'
+import {TileData} from '../data/tileData.js'
 import {MapChunkNeighbour} from '../core/mapChunkNeighbour'
 import {MapGenerator} from '../core/mapGenerator'
 import {_} from 'underscore';
@@ -13,9 +13,9 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.chunks = [];
         this.neighbouringChunks = [];
 
-        this.chunkWidth = 8;
-        this.chunkHeight = 8;
-        this.tileSize = 24;
+        this.chunkWidth = TileData.PROPERTIES.CHUNKWIDTH;
+        this.chunkHeight = TileData.PROPERTIES.CHUNKHEIGHT;
+        this.tileSize = TileData.PROPERTIES.TILESIZE;
         this.generatedChunkIndex = 0;
 
         this.chunkPixelWidth = this.chunkWidth * this.tileSize;

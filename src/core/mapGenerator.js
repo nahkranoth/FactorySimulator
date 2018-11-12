@@ -26,6 +26,7 @@ export class MapGenerator {
                 let yOffset = rootTile.y + y + (chunk.chunkHeight * chunk.yCoord);
                 let source = this.map._getTileAndChunkByCoord(xOffset, yOffset);
                 source.chunk.setTile(source.tile, constructData[x][y]);
+                source.chunk.resetCollision();
             }
         }
     }

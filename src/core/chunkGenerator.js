@@ -1,5 +1,5 @@
 import {RandomGenerator} from '../utils/randomGenerator'
-import {TileData} from '../data/TileData.js';
+import {TileData} from '../data/tileData.js';
 
 export class ChunkGenerator {
     constructor(params){

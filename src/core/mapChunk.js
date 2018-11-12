@@ -44,6 +44,10 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.chunkGenerator.setTile(tile, index);
     }
 
+    resetCollision(){
+        this.chunkGenerator.resetCollision();
+    }
+
     clear(){
         this.chunkGenerator.clear();
     }

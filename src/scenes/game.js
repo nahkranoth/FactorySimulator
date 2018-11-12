@@ -1,6 +1,7 @@
 import {Player} from '../objects/player.js';
 import {Map} from '../core/map.js';
-import {TileData} from '../data/TileData.js';
+import {GUI} from './gui.js';
+import {TileData} from '../data/tileData.js';
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -10,6 +11,7 @@ export class Game extends Phaser.Scene {
     create() {
         TileData.create(this);//init static tiledata
         this.cameras.main.roundPixels = true;
+
         this.player = new Player({
             scene:this,
             key:"plaey",
@@ -17,8 +19,9 @@ export class Game extends Phaser.Scene {
             y:this.cameras.main.height/2
         });
 
-        this.map = new Map({scene:this,opt:{}});
         this.cameras.main.startFollow(this.player);
+
+        this.map = new Map({scene:this,opt:{}});
 
         this.input.on('pointerdown', this.placeTile, this);
     }
@@ -27,8 +30,8 @@ export class Game extends Phaser.Scene {
         var mouseWorldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
         var source = this.map._getTileByWorldPosition(mouseWorldPoint.x, mouseWorldPoint.y);
         source.chunk.setTile(source.tile, 3);
+        source.chunk.resetCollision();
     }
-
 
     update(){
         this.map.update();
