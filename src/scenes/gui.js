@@ -32,17 +32,12 @@ export class GUI extends Phaser.Scene {
     }
 
     generateTiles(){
-        let tiles = this.add.sprite( 0, 0, "worldTilesImg");
-        let tileWidth = tiles.width;
-        let tileHeight = tiles.height;
-        let tileAmount = tileWidth/TileData.PROPERTIES.TILESIZE;
-        let croppedTileWidth = tileWidth/tileAmount;
-        tiles.destroy();//got the sizes, thats all I needed
-
-        let returnTiles = [tiles];
-        for(var i=0;i<tileAmount;i++){
-            let x = croppedTileWidth*i;
-            let sprite = this.add.sprite(x, 0, "worldTilesImg").setCrop(x, 0, croppedTileWidth, tileHeight).setInteractive();
+        let returnTiles = [];
+        console.log(TileData.worldTileData.tiles);
+        for(var i=0;i<TileData.worldTileData.tiles.length;i++){
+            let data = TileData.worldTileData.tiles[i];
+            let x = TileData.PROPERTIES.TILESIZE*i;
+            let sprite = this.add.sprite(x, 0, data.name).setInteractive();
 
             sprite.on("pointerdown", (pointer) => {
                 sprite.setTint(0xff0000);
