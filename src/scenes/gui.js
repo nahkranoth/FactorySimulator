@@ -23,27 +23,31 @@ export class GUI extends Phaser.Scene {
         graphics.generateTexture("bg", width, height);
         graphics.destroy();
         //Sprite Editor
-        let tiles = this.generateTiles();
+        this.tileButtons = this.generateTiles();
+        this.selectedTileButton = 0;
         let bg = this.add.sprite( 0, 0, "bg");
         let sprites = [bg];
-        sprites = sprites.concat(tiles);
+        sprites = sprites.concat(this.tileButtons);
         let container = this.add.container(x, y, sprites);
+        this.indexSelected = 0;
+    }
 
+    tileButtonResetTint(){
+        this.tileButtons.forEach((t) => {t.setTint(0xffffff)});
     }
 
     generateTiles(){
         let returnTiles = [];
-        console.log(TileData.worldTileData.tiles);
-        let tileSelectorContainer = this.add.container();
         for(var i=0;i<TileData.worldTileData.tiles.length;i++){
             let data = TileData.worldTileData.tiles[i];
             let x = TileData.PROPERTIES.TILESIZE*i;
             let sprite = this.add.sprite(x, 0, "worldTilesAtlas", data.name).setInteractive();
-            tileSelectorContainer.add(sprite);
-            sprite.on("pointerdown", (pointer) => {
+            sprite.selectionIndex = data.index;
+            sprite.on("pointerdown", () => {
+                this.tileButtonResetTint();
                 sprite.setTint(0xff0000);
+                this.indexSelected = sprite.selectionIndex;
             });
-            tileSelectorContainer.x = 100;
             returnTiles.push(sprite);
         }
 

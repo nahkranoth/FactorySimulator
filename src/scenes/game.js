@@ -19,16 +19,16 @@ export class Game extends Phaser.Scene {
         });
 
         this.cameras.main.startFollow(this.player);
-
+        this.gui = this.scene.manager.getScene("gui");
         this.map = new Map({scene:this,opt:{}});
-
         this.input.on('pointerdown', this.placeTile, this);
     }
 
     placeTile(){
         var mouseWorldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
         var source = this.map._getTileByWorldPosition(mouseWorldPoint.x, mouseWorldPoint.y);
-        source.chunk.setTile(source.tile, 3);
+        console.log(this.gui.indexSelected);
+        source.chunk.setTile(source.tile, this.gui.indexSelected);
         source.chunk.resetCollision();
     }
 
