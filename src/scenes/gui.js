@@ -34,15 +34,16 @@ export class GUI extends Phaser.Scene {
     generateTiles(){
         let returnTiles = [];
         console.log(TileData.worldTileData.tiles);
+        let tileSelectorContainer = this.add.container();
         for(var i=0;i<TileData.worldTileData.tiles.length;i++){
             let data = TileData.worldTileData.tiles[i];
             let x = TileData.PROPERTIES.TILESIZE*i;
-            let sprite = this.add.sprite(x, 0, data.name).setInteractive();
-
+            let sprite = this.add.sprite(x, 0, "worldTilesAtlas", data.name).setInteractive();
+            tileSelectorContainer.add(sprite);
             sprite.on("pointerdown", (pointer) => {
                 sprite.setTint(0xff0000);
             });
-
+            tileSelectorContainer.x = 100;
             returnTiles.push(sprite);
         }
 

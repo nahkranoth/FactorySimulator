@@ -7,16 +7,12 @@ export class Preloader extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image("plaey", "assets/plaey.png");
-        this.load.image('worldTilesImg', 'assets/worldTiles.png');
-        this.load.json('worldTileData', 'assets/worldTiles.json');﻿﻿
-
+        this.load.json('worldTileData', 'assets/worldTiles.json');
         this.load.once('filecomplete', ()=>{
             var worldTileData = this.cache.json.get('worldTileData');
-            for(var i=0;i<worldTileData.tiles.length;i++){
-                let tileData = worldTileData.tiles[i];
-                this.load.image(tileData.name, tileData.image_url);
-            }
+            this.load.image("plaey", "assets/plaey.png");
+            this.load.image("worldTilesImg", "assets/worldTiles.png");
+            this.load.atlas('worldTilesAtlas', 'assets/worldTiles.png', 'assets/worldTiles_atlas.json');
         });
     }
 
