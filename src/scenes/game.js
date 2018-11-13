@@ -9,7 +9,6 @@ export class Game extends Phaser.Scene {
     }
 
     create() {
-        TileData.create(this);//init static tiledata
         this.cameras.main.roundPixels = true;
 
         this.player = new Player({

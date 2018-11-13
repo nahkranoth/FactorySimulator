@@ -2,8 +2,8 @@ import { _ } from 'underscore'
 
 
 export class TileData{
-    static create(scene){
-        TileData.worldTileData = scene.cache.json.get('worldTileData');
+    static create(tileData){
+        TileData.worldTileData = tileData;
     }
 
     static getTileData(index){

@@ -1,9 +1,9 @@
 {
   "tiles":[
-    {"index":0, "collision":false, "name":"grass"},
-    {"index":1, "collision":false, "name":"trees"},
-    {"index":2, "collision":true, "name":"water"},
-    {"index":3, "collision":true, "name":"wood"},
-    {"index":4, "collision":true, "name":"stone"}
+    {"index":0, "collision":false, "name":"worldTile_grass", "image_url":"<<SHOULD BE FILLED BY IMAGEPLUGIN>>"},
+    {"index":1, "collision":false, "name":"worldTile_trees", "image_url":"<<SHOULD BE FILLED BY IMAGEPLUGIN>>"},
+    {"index":2, "collision":true, "name":"worldTile_water", "image_url":"<<SHOULD BE FILLED BY IMAGEPLUGIN>>"},
+    {"index":3, "collision":true, "name":"worldTile_wood", "image_url":"<<SHOULD BE FILLED BY IMAGEPLUGIN>>"},
+    {"index":4, "collision":true, "name":"worldTile_stone", "image_url":"<<SHOULD BE FILLED BY IMAGEPLUGIN>>"}
   ]
 }
