@@ -8,27 +8,34 @@ export class ChunkGenerator {
         this.chunkHeight = params.chunkHeight;
         this.xCoord = params.xCoord;
         this.yCoord = params.yCoord;
-        this.map = params.map;
+        this.tileMap = params.tileMap;
         this.layer = params.layer;
         this.chunk = params.chunk;
+        this.init();
     }
 
-    init(layer){
+    init(){
         this.generatePerlinMap(1, 0.3);//generate trees
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 9);//generate rocks
-        this.scene.physics.add.collider(this.scene.player, layer);
+
+        this.treeList = [];
+        this.generateTrees();
+
+        this.scene.physics.add.collider(this.scene.player, this.layer);
     }
 
     clear(){
         this.layer.forEachTile((tile) => {
             this.setTile(tile, 0);
         });
-        this.map.setCollision(0, false);
+        this.tileMap.setCollision(0, false);
     }
 
     generateTrees(){
-
+        for(var i=0;i<3;i++){
+            this.treeList.push({x:this.chunk.x + (i*40), y:this.chunk.y});
+        }
     }
 
     //Convert chunk position to axis.
@@ -58,7 +65,7 @@ export class ChunkGenerator {
     generatePerlinMap(index, modifier, octave){
         for(let y=0;y<this.chunkHeight; y++){
             for(let x=0;x<this.chunkWidth; x++){
-                let tile = this.map.getTileAt(x, y);
+                let tile = this.tileMap.getTileAt(x, y);
                 let i = this._getRandom(x, y, modifier, octave) ? index : tile.index;
                 this.setTile(tile, i);
             }
@@ -67,8 +74,8 @@ export class ChunkGenerator {
     }
 
     resetCollision(){
-        this.map.setCollisionByProperty({ collision: true });
-        this.map.setCollisionByProperty({ collision: false }, false);
+        this.tileMap.setCollisionByProperty({ collision: true });
+        this.tileMap.setCollisionByProperty({ collision: false }, false);
     }
 
 }

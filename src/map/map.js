@@ -24,15 +24,16 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this._previousActiveChunk;
 
-        this.mapGenerator = new MapGenerator({scene:this.scene, map:this});
+        this.mapSpriteEntityFactory = new MapSpriteEntityFactory(this.scene);
 
+        this.mapGenerator = new MapGenerator({scene:this.scene, map:this});
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
         this.rootChunk = this._createChunk(0, 0);
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
         this.activeChunk = this.rootChunk;
-        this._activeChunkChanged();
 
-        this.mapSpriteEntityFactory = new MapSpriteEntityFactory(this.scene);
+        this._activeChunkChanged();
+        this._startSpriteEntityFactory();
 
         console.log(this.mapSpriteEntityFactory);
         //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
@@ -56,20 +57,23 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     _createChunk(x, y){
         this.generatedChunkIndex++;
+
+        let pos = this._convertCoordToPos(x, y);
+
         let generatedChunk = new MapChunk({
             scene: this.scene,
             opt: {
                 index: this.generatedChunkIndex,
                 xCoord: x,
                 yCoord: y,
+                x:pos.x,
+                y:pos.y,
                 chunkHeight: this.chunkHeight,
                 chunkWidth: this.chunkWidth,
                 tileSize: this.tileSize
             }
         });
 
-        let pos = this._convertCoordToPos(x, y);
-        generatedChunk.setPosition(pos.x, pos.y);
         this.chunks.push(generatedChunk);
         return generatedChunk;
     }
@@ -90,10 +94,25 @@ export class Map extends Phaser.GameObjects.GameObject {
         }
     }
 
+    _startSpriteEntityFactory(){
+        this._updateChunkSpriteEntities(this.activeChunk);
+        for(var i=0;i<this.activeChunk.neighbours.length;i++){
+            this._updateChunkSpriteEntities(this.activeChunk.neighbours[i].mapChunk);
+        }
+    }
+
+    _updateChunkSpriteEntities(chunk){
+        console.log(chunk.chunkGenerator);
+        for(var j=0;j<chunk.chunkGenerator.treeList.length;j++){
+            this.mapSpriteEntityFactory.setFreshSprite(chunk.x + (j*40),chunk.y);
+        }
+    }
+
     _activeChunkChanged(){
         console.log("ACTIVE CHUNK CHANGED");
         this.neighbouringChunks = [];
         this._generateNeighbouringChunks();
+        //this._updateSpriteEntityFactory();
     }
 
     _updateActiveChunk(){
@@ -127,7 +146,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         let yOffset = y - (this.camera.height/2);
         let chunkCoords = this._convertPosToChunkCoord(xOffset, yOffset);
         let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tilePos = chunk.map.worldToTileXY(x, y);
+        let tilePos = chunk.tileMap.worldToTileXY(x, y);
         let tile = chunk.getTileAt({x:tilePos.x, y:tilePos.y});
         return {tile: tile, chunk: chunk};
     }

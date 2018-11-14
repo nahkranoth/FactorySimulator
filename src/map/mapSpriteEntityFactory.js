@@ -4,24 +4,43 @@ import {MapSpriteEntity} from "../map/mapSpriteEnitity";
 export class MapSpriteEntityFactory{
     constructor(scene){
         this.scene = scene;
-        this.poolAmount = TileData.PROPERTIES.CHUNKWIDTH * TileData.PROPERTIES.CHUNKHEIGHT;
+        this.poolMax = 40; //TileData.PROPERTIES.CHUNKWIDTH * TileData.PROPERTIES.CHUNKHEIGHT;
         this.spritePool = [];
-        this.generatePool();
+        this.spritePoolIndex = 0;
     }
 
-    generatePool(){
-        for(var i=0;i<this.poolAmount;i++){
-            let sprite = new MapSpriteEntity({
-                scene: this.scene,
-                key: 'worldEntities',
-                x: 100,
-                y: 100
-            });
-            this.spritePool.push(sprite);
-        }
+    //TODO: Refactor to seperate SpritePool Object to be re-used by NPC's etc
+
+    _createNewSprite(){
+        let index = this.spritePool.length;
+        let sprite = new MapSpriteEntity({
+            scene: this.scene,
+            key: 'worldEntities',
+            index:index,
+            x:400,
+            y:300 + (20 * index)
+        });
+        this.spritePool.push(sprite);
+        console.log("Create new sprite");
+        return sprite;
     }
 
-    getFreshSprite(x, y, key){
+    _getOrCreateSprite(){
+        if(this.spritePool.length <= this.poolMax) return this._createNewSprite();
+        return this._getFromSpritePool();
+    }
 
+    _getFromSpritePool(){
+        this.spritePoolIndex %= (this.poolMax+1);
+        this.spritePoolIndex++;
+        console.log("lenght ",this.spritePoolIndex-1);
+        return this.spritePool[this.spritePool.length - (this.spritePoolIndex)];
+    }
+
+    setFreshSprite(x, y, frame){
+        let sprite = this._getOrCreateSprite();
+        if(frame) sprite.setFrame(frame);
+        sprite.setPosition(x, y);
+        sprite.setDepth(y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART);
     }
 }
