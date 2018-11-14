@@ -33,7 +33,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.activeChunk = this.rootChunk;
 
         this._activeChunkChanged();
-        this._startSpriteEntityFactory();
+        this._updateSpriteEntityFactory();
 
         console.log(this.mapSpriteEntityFactory);
         //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
@@ -47,12 +47,14 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _getOrCreateChunkByCoord(x, y){
+        let fresh = false;
         let possibleChunk = this._getChunkByCoord(x, y);
         if(typeof(possibleChunk) == "undefined") {//prevent from building one if already exists at that world cordinate
             possibleChunk = this._createChunk(x, y);
             this.mapGenerator.addConstruct(possibleChunk);
+            fresh = true;
         }
-        return possibleChunk;
+        return {chunk: possibleChunk, fresh: fresh};
     }
 
     _createChunk(x, y){
@@ -87,22 +89,20 @@ export class Map extends Phaser.GameObjects.GameObject {
                     let offsetXCoord = this.activeChunk.xCoord+x;
                     let offsetYCoord = this.activeChunk.yCoord+y;
                     let possibleChunk = this._getOrCreateChunkByCoord(offsetXCoord, offsetYCoord);
-                    //then just add as neighbour
-                    this.activeChunk.addNeighbourChunkReference(new MapChunkNeighbour({mapChunk:possibleChunk, xDir:x, yDir:y}));
+                    this.activeChunk.addNeighbourChunkReference(new MapChunkNeighbour({mapChunk:possibleChunk.chunk, xDir:x, yDir:y}));
                 }
             }
         }
     }
 
-    _startSpriteEntityFactory(){
-        this._updateChunkSpriteEntities(this.activeChunk);
+    _updateSpriteEntityFactory(){
         for(var i=0;i<this.activeChunk.neighbours.length;i++){
             this._updateChunkSpriteEntities(this.activeChunk.neighbours[i].mapChunk);
         }
+        this._updateChunkSpriteEntities(this.activeChunk);
     }
 
     _updateChunkSpriteEntities(chunk){
-        console.log(chunk.chunkGenerator);
         for(var j=0;j<chunk.chunkGenerator.treeList.length;j++){
             this.mapSpriteEntityFactory.setFreshSprite(chunk.x + (j*40),chunk.y);
         }
@@ -112,7 +112,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         console.log("ACTIVE CHUNK CHANGED");
         this.neighbouringChunks = [];
         this._generateNeighbouringChunks();
-        //this._updateSpriteEntityFactory();
+        this._updateSpriteEntityFactory();
     }
 
     _updateActiveChunk(){
@@ -136,19 +136,19 @@ export class Map extends Phaser.GameObjects.GameObject {
         let chunkCoords = {x:Math.floor(x/this.chunkWidth), y:Math.floor(y/this.chunkWidth)};
         let xTile = x % (this.chunkWidth);
         let yTile = y % (this.chunkHeight);
-        let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tile = chunk.getTileAt({x:xTile, y:yTile});
-        return {chunk:chunk, tile:tile};
+        let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
+        let tile = possibleChunk.chunk.getTileAt({x:xTile, y:yTile});
+        return {chunk:possibleChunk.chunk, tile:tile};
     }
 
     _getTileByWorldPosition(x, y){
         let xOffset = x - (this.camera.width/2);
         let yOffset = y - (this.camera.height/2);
         let chunkCoords = this._convertPosToChunkCoord(xOffset, yOffset);
-        let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tilePos = chunk.tileMap.worldToTileXY(x, y);
-        let tile = chunk.getTileAt({x:tilePos.x, y:tilePos.y});
-        return {tile: tile, chunk: chunk};
+        let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
+        let tilePos = possibleChunk.chunk.tileMap.worldToTileXY(x, y);
+        let tile = possibleChunk.chunk.getTileAt({x:tilePos.x, y:tilePos.y});
+        return {tile: tile, chunk: possibleChunk.chunk};
     }
 
     _getTileWorldCoord(tile, chunk) {

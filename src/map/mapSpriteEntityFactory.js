@@ -4,7 +4,7 @@ import {MapSpriteEntity} from "../map/mapSpriteEnitity";
 export class MapSpriteEntityFactory{
     constructor(scene){
         this.scene = scene;
-        this.poolMax = 40; //TileData.PROPERTIES.CHUNKWIDTH * TileData.PROPERTIES.CHUNKHEIGHT;
+        this.poolMax = 50; //TileData.PROPERTIES.CHUNKWIDTH * TileData.PROPERTIES.CHUNKHEIGHT;
         this.spritePool = [];
         this.spritePoolIndex = 0;
     }
@@ -21,7 +21,7 @@ export class MapSpriteEntityFactory{
             y:300 + (20 * index)
         });
         this.spritePool.push(sprite);
-        console.log("Create new sprite");
+        //console.log("Create new sprite");
         return sprite;
     }
 
@@ -33,7 +33,7 @@ export class MapSpriteEntityFactory{
     _getFromSpritePool(){
         this.spritePoolIndex %= (this.poolMax+1);
         this.spritePoolIndex++;
-        console.log("lenght ",this.spritePoolIndex-1);
+        //console.log("lenght ",this.spritePoolIndex-1);
         return this.spritePool[this.spritePool.length - (this.spritePoolIndex)];
     }
 
