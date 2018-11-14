@@ -4,24 +4,23 @@ export class MapGenerator {
     constructor(params){
         this.scene = params.scene;
         this.map = params.map;
+        MapConstructData.init(this.scene);
     }
 
     addConstruct(chunk){
-        let constructData1 = MapConstructData.getBuildingOne();
-        if(this.diceRollBuildAllowed(constructData1))this.createBuilding(chunk, constructData1.map);
-
-        let constructData2 = MapConstructData.getBuildingTwo();
-        if(this.diceRollBuildAllowed(constructData2))this.createBuilding(chunk, constructData2.map);
-
-        let constructData3 = MapConstructData.getBuildingThree();
-        if(this.diceRollBuildAllowed(constructData3))this.createBuilding(chunk, constructData3.map);
-
+        for(var i=0;i<MapConstructData.getAmountOfBuildings();i++){
+            let constructData = MapConstructData.getBuilding(i);
+            if(this.diceRollBuildAllowed(constructData.properties.probability)){
+                this.createBuilding(chunk, constructData.map);
+                break;//TODO: this makes the probability broken - sort buildings on probability first
+            }
+        }
     }
 
-    diceRollBuildAllowed(constructData){
+    diceRollBuildAllowed(probability){
         let ran = Math.round(Math.random() * 1000);
-        if(typeof(constructData.properties.probability) == "undefined" || constructData.properties.probability == 0) console.log("Note that constructData has a probability of ZERO or is undefined");
-        return ran <= constructData.properties.probability;
+        if(typeof(probability) == "undefined" || probability == 0) console.log("Note that constructData has a probability of ZERO or is undefined");
+        return ran <= probability;
     }
 
     createBuilding(chunk, constructData){

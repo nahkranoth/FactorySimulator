@@ -44,7 +44,6 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     resetChunkCollisionsFor(chunkList){
         chunkList.forEach((c)=>{
-            console.log("RUN RESET ON: "+c);
             c.resetCollision();
         })
     }

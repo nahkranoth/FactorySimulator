@@ -8,11 +8,14 @@ export class Preloader extends Phaser.Scene {
 
     preload(){
         this.load.json('worldTileData', 'assets/worldTiles.json');
+        //for when I need to wait on a file first
         this.load.once('filecomplete', ()=>{
-            var worldTileData = this.cache.json.get('worldTileData');
-            this.load.image("plaey", "assets/plaey.png");
-            this.load.image("worldTilesImg", "assets/worldTiles.png");
-            this.load.atlas('worldTilesAtlas', 'assets/worldTiles.png', 'assets/worldTiles_atlas.json');
+            this.load.json('mapConstructData', 'assets/constructionMaps.json');
+                this.load.once('filecomplete', ()=>{
+                    this.load.image("plaey", "assets/plaey.png");
+                    this.load.image("worldTilesImg", "assets/worldTiles.png");
+                    this.load.atlas('worldTilesAtlas', 'assets/worldTiles.png', 'assets/worldTiles_atlas.json');
+                });
         });
     }
 
