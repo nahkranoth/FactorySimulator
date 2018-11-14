@@ -14,6 +14,7 @@ export class Preloader extends Phaser.Scene {
                 this.load.once('filecomplete', ()=>{
                     this.load.image("plaey", "assets/plaey.png");
                     this.load.image("worldTilesImg", "assets/worldTiles.png");
+                    this.load.image("worldEntities", "assets/worldEntities.png");
                     this.load.atlas('worldTilesAtlas', 'assets/worldTiles.png', 'assets/worldTiles_atlas.json');
                 });
         });

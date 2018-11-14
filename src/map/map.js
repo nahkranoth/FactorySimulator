@@ -1,7 +1,8 @@
 import {MapChunk} from '../map/mapChunk.js';
 import {TileData} from '../data/tileData.js'
-import {MapChunkNeighbour} from '../map/mapChunkNeighbour'
-import {MapGenerator} from '../map/mapGenerator'
+import {MapChunkNeighbour} from '../map/mapChunkNeighbour.js'
+import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
+import {MapGenerator} from '../map/mapGenerator.js'
 import {_} from 'underscore';
 
 export class Map extends Phaser.GameObjects.GameObject {
@@ -31,13 +32,9 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.activeChunk = this.rootChunk;
         this._activeChunkChanged();
 
-        this.mapGenerator.addConstruct(this.rootChunk);
+        this.mapSpriteEntityFactory = new MapSpriteEntityFactory(this.scene);
 
-        //this.mapGenerator.addConstruct(this.rootChunk);
-
-        // let tile = this._getTileByCoord(127, 8);
-        // tile.index = 2;
-
+        console.log(this.mapSpriteEntityFactory);
         //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
         //this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
     }
