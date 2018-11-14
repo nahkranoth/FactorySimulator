@@ -53,23 +53,13 @@ export class MapBuildController{
         if(!this.draw) return;
         let tempSource = this.map._getTileByWorldPosition(event.x, event.y);
         let tileWorldPos = this.map._getTileWorldCoord(tempSource.tile, tempSource.chunk);
-        let xDiff = tileWorldPos.x - this.startPos.x;
-        let yDiff = tileWorldPos.y - this.startPos.y;
-        let xDirection = xDiff > 0 ? 1 : -1;
-        let yDirection = yDiff > 0 ? 1 : -1;
-        let width = Math.abs(xDiff);
-        let height = Math.abs(yDiff);
-
-        for(var x=0;x<width+1;x++){
-            for(var y=0;y<height+1;y++) {
-                let source = this.map._getTileAndChunkByCoord(this.startPos.x + (x * xDirection), this.startPos.y + (y * yDirection));
+        var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
+        for(var x=0;x<range.width+1;x++){
+            for(var y=0;y<range.height+1;y++) {
+                let source = this.map._getTileAndChunkByCoord(this.startPos.x + (x * range.xDirection), this.startPos.y + (y * range.yDirection));
                 source.chunk.setTile(source.tile, 4);
             }
         }
-
-        console.log(xDiff);
-
-        tempSource.chunk.setTile(tempSource.tile, 4);
     }
 
     stopTileSelect(event){
@@ -77,6 +67,16 @@ export class MapBuildController{
         stopSource.chunk.setTile(stopSource.tile, 4);
 
         this.draw = false;
+    }
+
+    _getTileSelectionRangeAndDirection(startPos, endPos){
+        let _xDiff = endPos.x - startPos.x;
+        let _yDiff = endPos.y - startPos.y;
+        let xDirection = _xDiff > 0 ? 1 : -1;
+        let yDirection = _yDiff > 0 ? 1 : -1;
+        let width = Math.abs(_xDiff);
+        let height = Math.abs(_yDiff);
+        return {width:width, height:height, xDirection:xDirection, yDirection:yDirection};
     }
 
 }
