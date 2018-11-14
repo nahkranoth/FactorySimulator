@@ -103,8 +103,10 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _updateChunkSpriteEntities(chunk){
-        for(var j=0;j<chunk.chunkGenerator.treeList.length;j++){
-            this.mapSpriteEntityFactory.setFreshSprite(chunk.x + (j*40),chunk.y);
+        let treeList= chunk.chunkGenerator.treeList;
+        for(var j=0;j<treeList.length;j++){
+            let currentTree = treeList[j];
+            this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y);
         }
     }
 

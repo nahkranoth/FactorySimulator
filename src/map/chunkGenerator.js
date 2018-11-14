@@ -33,8 +33,12 @@ export class ChunkGenerator {
     }
 
     generateTrees(){
-        for(var i=0;i<3;i++){
-            this.treeList.push({x:this.chunk.x + (i*40), y:this.chunk.y});
+        let treeAmount = Math.round(Math.random()*10);
+        let chunkDimensions = TileData.getChunkDimensionsInPixels();
+        for(var i=0;i<treeAmount;i++){
+            let posX = (Math.random()*chunkDimensions.x) + this.chunk.x - (chunkDimensions.x/2);
+            let posY = (Math.random()*chunkDimensions.y) + this.chunk.y - (chunkDimensions.y/2);
+            this.treeList.push({x:posX, y:posY});
         }
     }
 
