@@ -26,6 +26,8 @@ export class MapGenerator {
 
     createBuilding(chunk, constructData){
         let rootTile = chunk.getTileAt({x:1,y:1});
+        let touchedChunks = [];
+
         for(var x=0;x<constructData.length;x++){
             let xOffset = rootTile.x + x + (chunk.chunkWidth * chunk.xCoord);
             for(var y=0;y<constructData[x].length;y++) {
@@ -33,8 +35,11 @@ export class MapGenerator {
                 let yOffset = rootTile.y + y + (chunk.chunkHeight * chunk.yCoord);
                 let source = this.map._getTileAndChunkByCoord(xOffset, yOffset);
                 source.chunk.setTile(source.tile, constructData[x][y]);
-                source.chunk.resetCollision();
+                if(touchedChunks.indexOf(source.chunk) == -1){
+                    touchedChunks.push(source.chunk);
+                }
             }
         }
+        this.map.resetChunkCollisionsFor(touchedChunks);
     }
 }

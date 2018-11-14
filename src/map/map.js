@@ -42,6 +42,13 @@ export class Map extends Phaser.GameObjects.GameObject {
         //this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
     }
 
+    resetChunkCollisionsFor(chunkList){
+        chunkList.forEach((c)=>{
+            console.log("RUN RESET ON: "+c);
+            c.resetCollision();
+        })
+    }
+
     _getOrCreateChunkByCoord(x, y){
         let possibleChunk = this._getChunkByCoord(x, y);
         if(typeof(possibleChunk) == "undefined") {//prevent from building one if already exists at that world cordinate
