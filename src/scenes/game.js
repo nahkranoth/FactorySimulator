@@ -1,7 +1,6 @@
 import {Player} from '../objects/player.js';
-import {Map} from '../core/map.js';
-import {GUI} from './gui.js';
-import {TileData} from '../data/tileData.js';
+import {Map} from '../map/map.js';
+import {MapBuildController} from '../map/mapBuildController';
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -21,16 +20,11 @@ export class Game extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
         this.gui = this.scene.manager.getScene("gui");
         this.map = new Map({scene:this,opt:{}});
-        this.input.on('pointerdown', this.placeTile, this);
+
+        this.mapBuildController = new MapBuildController({scene:this, gui:this.gui, map:this.map});
+
     }
 
-    placeTile(){
-        var mouseWorldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
-        var source = this.map._getTileByWorldPosition(mouseWorldPoint.x, mouseWorldPoint.y);
-        console.log(this.gui.indexSelected);
-        source.chunk.setTile(source.tile, this.gui.indexSelected);
-        source.chunk.resetCollision();
-    }
 
     update(){
         this.map.update();

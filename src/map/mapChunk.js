@@ -1,4 +1,4 @@
-import {ChunkGenerator} from '../core/chunkGenerator.js'
+import {ChunkGenerator} from '../map/chunkGenerator.js'
 
 export class MapChunk extends Phaser.GameObjects.GameObject {
     constructor(params){

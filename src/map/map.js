@@ -1,7 +1,7 @@
-import {MapChunk} from '../core/mapChunk.js';
+import {MapChunk} from '../map/mapChunk.js';
 import {TileData} from '../data/tileData.js'
-import {MapChunkNeighbour} from '../core/mapChunkNeighbour'
-import {MapGenerator} from '../core/mapGenerator'
+import {MapChunkNeighbour} from '../map/mapChunkNeighbour'
+import {MapGenerator} from '../map/mapGenerator'
 import {_} from 'underscore';
 
 export class Map extends Phaser.GameObjects.GameObject {
