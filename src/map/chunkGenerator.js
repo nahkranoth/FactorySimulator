@@ -27,6 +27,10 @@ export class ChunkGenerator {
         this.map.setCollision(0, false);
     }
 
+    generateTrees(){
+
+    }
+
     //Convert chunk position to axis.
     // Doing this to feed into the perlin generator else it would be 4 ways symetric.
     _convertToAxis(x, y){

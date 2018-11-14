@@ -17,5 +17,6 @@ TileData.worldTileData = [];
 TileData.PROPERTIES = {
     TILESIZE:24,
     CHUNKWIDTH:24,
-    CHUNKHEIGHT:24
+    CHUNKHEIGHT:24,
+    DEPTHSTART:1000000
 };

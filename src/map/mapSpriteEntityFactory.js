@@ -19,8 +19,6 @@ export class MapSpriteEntityFactory{
             });
             this.spritePool.push(sprite);
         }
-
-        console.log(this.scene);
     }
 
     getFreshSprite(x, y, key){

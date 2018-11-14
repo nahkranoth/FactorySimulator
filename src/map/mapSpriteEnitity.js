@@ -6,6 +6,6 @@ export class MapSpriteEntity extends Phaser.GameObjects.Sprite{
         this.scene = params.scene;﻿
 
         this.scene.add.existing(this);﻿
-        this.depth = this.y + TileData.PROPERTIES.TILESIZE;
+        this.depth = this.y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART;
     }
 }
