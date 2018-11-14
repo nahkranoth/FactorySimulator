@@ -9,21 +9,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.rotation = 0.08;
         this.depth = 10000;
         this.moveSpeed = 200;
+
+        this.keyW= this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keyA = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyS = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyD = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     }
 
     update(){
         this.body.setVelocityX(0);
         this.body.setVelocityY(0);
-        if (this.cursors.right.isDown)
+        if (this.cursors.right.isDown || this.keyD.isDown)
         {
             this.body.setVelocityX(this.moveSpeed);
-        }else if(this.cursors.left.isDown){
+        }else if(this.cursors.left.isDown || this.keyA.isDown){
             this.body.setVelocityX(-this.moveSpeed);
         }
-        if (this.cursors.up.isDown)
+
+        if (this.cursors.up.isDown || this.keyW.isDown)
         {
             this.body.setVelocityY(-this.moveSpeed);
-        }else if(this.cursors.down.isDown){
+        }else if(this.cursors.down.isDown || this.keyS.isDown){
             this.body.setVelocityY(this.moveSpeed);
         }
     }

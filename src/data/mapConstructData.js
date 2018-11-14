@@ -2,7 +2,7 @@ export class MapConstructData{
     //NOTE: All maps turned counterClockwise on return because of easier placement.
     static getBuildingOne(){
         let properties = {
-            probability:10 // 10.0%
+            probability:10 // 1%
         };
         let map = [
             [ 3, 3, 3, 3, 3],
@@ -41,6 +41,25 @@ export class MapConstructData{
             [2,2,4,4,4,4,4,4,4,4,5,5,4,4,4,4,4,4,4,4,2,2],
             [2,2,2,2,2,2,2,2,2,2,5,5,2,2,2,2,2,2,2,2,2,2],
             [2,2,2,2,2,2,2,2,2,2,5,5,2,2,2,2,2,2,2,2,2,2]
+        ];
+        map = MapConstructData.rotateMap(map);
+        return {map:map, properties:properties};
+    }
+
+    static getBuildingThree(){
+        let properties = {
+            probability:10 // 1%
+        };
+        let map =  [
+            [4,4,4,4,4,4,4,4,4],
+            [4,3,3,3,3,3,3,3,4],
+            [4,3,5,5,5,5,5,3,4],
+            [4,3,5,4,5,4,5,3,4],
+            [4,3,5,5,5,5,5,3,4],
+            [4,4,3,5,5,5,3,4,4],
+            [0,4,3,5,4,5,3,4,0],
+            [0,4,4,5,5,5,4,4,0],
+            [2,4,4,5,5,5,4,4,0]
         ];
         map = MapConstructData.rotateMap(map);
         return {map:map, properties:properties};

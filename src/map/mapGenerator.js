@@ -12,6 +12,10 @@ export class MapGenerator {
 
         let constructData2 = MapConstructData.getBuildingTwo();
         if(this.diceRollBuildAllowed(constructData2))this.createBuilding(chunk, constructData2.map);
+
+        let constructData3 = MapConstructData.getBuildingThree();
+        if(this.diceRollBuildAllowed(constructData3))this.createBuilding(chunk, constructData3.map);
+
     }
 
     diceRollBuildAllowed(constructData){
