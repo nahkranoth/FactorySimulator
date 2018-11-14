@@ -7,12 +7,15 @@ export class MapGenerator {
     }
 
     addConstruct(chunk){
-        let constructData = MapConstructData.getBuildingOne();
-        if(this.diceRollBuildAllowed(constructData))this.createBuilding(chunk, constructData.map);
+        let constructData1 = MapConstructData.getBuildingOne();
+        if(this.diceRollBuildAllowed(constructData1))this.createBuilding(chunk, constructData1.map);
+
+        let constructData2 = MapConstructData.getBuildingTwo();
+        if(this.diceRollBuildAllowed(constructData2))this.createBuilding(chunk, constructData2.map);
     }
 
     diceRollBuildAllowed(constructData){
-        let ran = Math.round(Math.random() * 100);
+        let ran = Math.round(Math.random() * 1000);
         if(typeof(constructData.properties.probability) == "undefined" || constructData.properties.probability == 0) console.log("Note that constructData has a probability of ZERO or is undefined");
         return ran <= constructData.properties.probability;
     }

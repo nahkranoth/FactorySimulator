@@ -34,8 +34,12 @@ export class MapBuildController{
         this.scene.input.on('pointerup', this.callbackMode[mode].pointerup, this);
     }
 
-    startTilePlace(){
+    startTilePlace(event){
         this.draw = true;
+        let pointerPos = this.map._getWorldPositionFromPointerPosition(event.x, event.y);
+        let source = this.map._getTileByWorldPosition(pointerPos.x, pointerPos.y);
+        source.chunk.setTile(source.tile, this.gui.indexSelected);
+        source.chunk.resetCollision();
     }
 
     moveTilePlace(event){
@@ -75,6 +79,8 @@ export class MapBuildController{
                 outArr[x].push(source.tile.index);
             }
         }
+
+        console.log(MapConstructData.mapDataToString(outArr));
         this.draw = false;
     }
 

@@ -4,6 +4,7 @@
     {"index":1, "collision":false, "name":"worldTile_trees"},
     {"index":2, "collision":true, "name":"worldTile_water"},
     {"index":3, "collision":true, "name":"worldTile_wood"},
-    {"index":4, "collision":true, "name":"worldTile_stone"}
+    {"index":4, "collision":true, "name":"worldTile_stone"},
+    {"index":5, "collision":false, "name":"worldTile_timber"}
   ]
 }
