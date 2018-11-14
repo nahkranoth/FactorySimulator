@@ -12,11 +12,16 @@ export class MapBuildController{
         this.draw = false;
 
         this.callbackMode = {
-            "place":{"pointerdown": this.startPlaceTile, "pointermove":this.movePlaceTile, "pointerup":this.stopPlaceTile},
-            "select":{"pointerdown": this.startTileSelect, "pointermove":this.moveTileSelect, "pointerup":this.stopTileSelect}
+            "place":{"pointerdown": this.startTilePlace, "pointermove":this.moveTilePlace, "pointerup":this.stopTilePlace},
+            "select":{"pointerdown": this.startTileSelect, "pointermove":this.moveTileSelect, "pointerup":this.stopTileSelect},
+            "fill":{"pointerdown": this.startTileFill, "pointermove":this.moveTileFill, "pointerup":this.stopTileFill}
         };
 
         this.setBuildMode("place");
+
+        this.scene.input.keyboard.on('keydown_A', () => this.setBuildMode("place"));
+        this.scene.input.keyboard.on('keydown_S', () => this.setBuildMode("select"));
+        this.scene.input.keyboard.on('keydown_D', () => this.setBuildMode("fill"));
     }
 
     setBuildMode(mode){
@@ -29,18 +34,18 @@ export class MapBuildController{
         this.scene.input.on('pointerup', this.callbackMode[mode].pointerup, this);
     }
 
-    startPlaceTile(){
+    startTilePlace(){
         this.draw = true;
     }
 
-    movePlaceTile(event){
+    moveTilePlace(event){
         if(!this.draw) return;
         var source = this.map._getTileByWorldPosition(event.x, event.y);
         source.chunk.setTile(source.tile, this.gui.indexSelected);
         source.chunk.resetCollision();
     }
 
-    stopPlaceTile(){
+    stopTilePlace(){
         this.draw = false;
     }
 
@@ -48,20 +53,16 @@ export class MapBuildController{
         this.draw = true;
         this.startSource = this.map._getTileByWorldPosition(event.x, event.y);
         this.startPos = this.map._getTileWorldCoord(this.startSource.tile, this.startSource.chunk);
-        //this.startSource.chunk.setTile(this.startSource.tile, 4);
     }
 
     moveTileSelect(event){
-        if(!this.draw) return;
-        //let tempSource = this.map._getTileByWorldPosition(event.x, event.y);
+        //if(!this.draw) return;
     }
 
     stopTileSelect(event){
         let stopSource = this.map._getTileByWorldPosition(event.x, event.y);
         let tileWorldPos = this.map._getTileWorldCoord(stopSource.tile, stopSource.chunk);
-
         var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
-
         let outArr = [];
 
         for(var x=0;x<range.width+1;x++){
@@ -69,10 +70,34 @@ export class MapBuildController{
             for(var y=0;y<range.height+1;y++) {
                 let source = this.map._getTileAndChunkByCoord(this.startPos.x + (x * range.xDirection), this.startPos.y + (y * range.yDirection));
                 outArr[x].push(source.tile.index);
-                //source.chunk.setTile(source.tile, 4);
             }
         }
         console.log(MapConstructData.mapDataToString(outArr));
+        this.draw = false;
+    }
+
+    startTileFill(event){
+        this.draw = true;
+        this.startSource = this.map._getTileByWorldPosition(event.x, event.y);
+        this.startPos = this.map._getTileWorldCoord(this.startSource.tile, this.startSource.chunk);
+    }
+
+    moveTileFill(event){
+        //if(!this.draw) return;
+    }
+
+    stopTileFill(event){
+        let stopSource = this.map._getTileByWorldPosition(event.x, event.y);
+        let tileWorldPos = this.map._getTileWorldCoord(stopSource.tile, stopSource.chunk);
+        var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
+        let outArr = [];
+
+        for(var x=0;x<range.width+1;x++){
+            for(var y=0;y<range.height+1;y++) {
+                let source = this.map._getTileAndChunkByCoord(this.startPos.x + (x * range.xDirection), this.startPos.y + (y * range.yDirection));
+                source.chunk.setTile(source.tile, this.gui.indexSelected);
+            }
+        }
         this.draw = false;
     }
 
