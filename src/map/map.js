@@ -116,22 +116,29 @@ export class Map extends Phaser.GameObjects.GameObject {
     _getTileByWorldPosition(x, y){
         let xOffset = x - (this.camera.width/2);
         let yOffset = y - (this.camera.height/2);
-        let chunkCoords = this._convertPosToCoord(xOffset, yOffset);
+        let chunkCoords = this._convertPosToChunkCoord(xOffset, yOffset);
         let chunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
         let tilePos = chunk.map.worldToTileXY(x, y);
         let tile = chunk.getTileAt({x:tilePos.x, y:tilePos.y});
         return {tile: tile, chunk: chunk};
     }
 
+    _getTileWorldCoord(tile, chunk) {
+        let chunkWorldXPos = chunk.xCoord * TileData.PROPERTIES.CHUNKWIDTH;
+        let chunkWorldYPos = chunk.yCoord * TileData.PROPERTIES.CHUNKHEIGHT;
+        let xWorld = chunkWorldXPos + tile.x;
+        let yWorld = chunkWorldYPos + tile.y;
+        return {x: xWorld, y: yWorld};
+    }
     _getActiveChunk(){
         let x = this.camera.scrollX;
         let y = this.camera.scrollY;
-        let coords = this._convertPosToCoord(x, y);
+        let coords = this._convertPosToChunkCoord(x, y);
         let activeChunk = this._getChunkByCoord(coords.x, coords.y);
         return activeChunk;
     }
 
-    _convertPosToCoord(x, y){
+    _convertPosToChunkCoord(x, y){
         let xChunkCoord, yChunkCoord;
         xChunkCoord = Math.round((x / this.chunkPixelWidth));
         yChunkCoord = Math.round((y / this.chunkPixelHeight));

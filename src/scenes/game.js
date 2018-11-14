@@ -22,7 +22,7 @@ export class Game extends Phaser.Scene {
         this.map = new Map({scene:this,opt:{}});
 
         this.mapBuildController = new MapBuildController({scene:this, gui:this.gui, map:this.map});
-
+        this.mapBuildController.setBuildMode("select");
     }
 
 
