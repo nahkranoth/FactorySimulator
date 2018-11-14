@@ -1,3 +1,5 @@
+import {MapConstructData} from "../data/mapConstructData.js"
+
 export class MapBuildController{
     constructor(params){
         this.scene = params.scene;
@@ -46,26 +48,31 @@ export class MapBuildController{
         this.draw = true;
         this.startSource = this.map._getTileByWorldPosition(event.x, event.y);
         this.startPos = this.map._getTileWorldCoord(this.startSource.tile, this.startSource.chunk);
-        this.startSource.chunk.setTile(this.startSource.tile, 4);
+        //this.startSource.chunk.setTile(this.startSource.tile, 4);
     }
 
     moveTileSelect(event){
         if(!this.draw) return;
-        let tempSource = this.map._getTileByWorldPosition(event.x, event.y);
-        let tileWorldPos = this.map._getTileWorldCoord(tempSource.tile, tempSource.chunk);
-        var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
-        for(var x=0;x<range.width+1;x++){
-            for(var y=0;y<range.height+1;y++) {
-                let source = this.map._getTileAndChunkByCoord(this.startPos.x + (x * range.xDirection), this.startPos.y + (y * range.yDirection));
-                source.chunk.setTile(source.tile, 4);
-            }
-        }
+        //let tempSource = this.map._getTileByWorldPosition(event.x, event.y);
     }
 
     stopTileSelect(event){
         let stopSource = this.map._getTileByWorldPosition(event.x, event.y);
-        stopSource.chunk.setTile(stopSource.tile, 4);
+        let tileWorldPos = this.map._getTileWorldCoord(stopSource.tile, stopSource.chunk);
 
+        var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
+
+        let outArr = [];
+
+        for(var x=0;x<range.width+1;x++){
+            outArr.push([]);
+            for(var y=0;y<range.height+1;y++) {
+                let source = this.map._getTileAndChunkByCoord(this.startPos.x + (x * range.xDirection), this.startPos.y + (y * range.yDirection));
+                outArr[x].push(source.tile.index);
+                //source.chunk.setTile(source.tile, 4);
+            }
+        }
+        console.log(MapConstructData.mapDataToString(outArr));
         this.draw = false;
     }
 
