@@ -19,8 +19,8 @@ export class MapSpriteEntityFactory{
             });
             this.spritePool.push(sprite);
         }
-        this.poolContainer = this.scene.add.container(0, 0, this.spritePool);
-        this.scene.add.existing(this.poolContainer);
+
+        console.log(this.scene);
     }
 
     getFreshSprite(x, y, key){

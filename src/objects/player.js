@@ -1,3 +1,4 @@
+import {TileData} from "../data/tileData";
 
 export class Player extends Phaser.Physics.Arcade.Sprite{
 
@@ -7,9 +8,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.scene.add.existing(this);
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.rotation = 0.08;
-        this.depth = 10000;
         this.moveSpeed = 200;
-
+        this.depth = 999;
         this.keyW= this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         this.keyA = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keyS = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -29,7 +29,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         if (this.cursors.up.isDown || this.keyW.isDown)
         {
             this.body.setVelocityY(-this.moveSpeed);
+            this.depth = this.y + TileData.PROPERTIES.TILESIZE;
         }else if(this.cursors.down.isDown || this.keyS.isDown){
+            this.depth = this.y + TileData.PROPERTIES.TILESIZE;
             this.body.setVelocityY(this.moveSpeed);
         }
     }

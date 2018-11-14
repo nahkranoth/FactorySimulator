@@ -1,6 +1,7 @@
 import {Player} from '../objects/player.js';
 import {Map} from '../map/map.js';
 import {MapBuildController} from '../map/mapBuildController';
+import {MapSpriteEntity} from "../map/mapSpriteEnitity";
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -10,6 +11,10 @@ export class Game extends Phaser.Scene {
     create() {
         this.cameras.main.roundPixels = true;
 
+        this.tileMapContainer = this.add.container(0,0);
+
+        this.tileMapContainer.setDepth(0);
+        //ORDER MATTERS. NO REALLY!
         this.player = new Player({
             scene:this,
             key:"plaey",
@@ -22,7 +27,6 @@ export class Game extends Phaser.Scene {
         this.map = new Map({scene:this,opt:{}});
 
         this.mapBuildController = new MapBuildController({scene:this, gui:this.gui, map:this.map});
-
         //Depth Controller
     }
 

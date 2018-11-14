@@ -26,7 +26,7 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.map = this.scene.make.tilemap({data:mapData, tileWidth: this.tileSize, tileHeight:this.tileSize});
         let tileset = this.map.addTilesetImage('worldTilesImg');
         this.layer = this.map.createDynamicLayer(0, tileset, this.x, this.y);
-
+        this.scene.tileMapContainer.add(this.layer);
         this.chunkGenerator = new ChunkGenerator({
             scene:this.scene,
             chunkWidth:this.chunkWidth,
