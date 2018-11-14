@@ -40,7 +40,8 @@ export class MapBuildController{
 
     moveTilePlace(event){
         if(!this.draw) return;
-        var source = this.map._getTileByWorldPosition(event.x, event.y);
+        let pointerPos = this.map._getWorldPositionFromPointerPosition(event.x, event.y);
+        let source = this.map._getTileByWorldPosition(pointerPos.x, pointerPos.y);
         source.chunk.setTile(source.tile, this.gui.indexSelected);
         source.chunk.resetCollision();
     }
@@ -51,7 +52,8 @@ export class MapBuildController{
 
     startTileSelect(event){
         this.draw = true;
-        this.startSource = this.map._getTileByWorldPosition(event.x, event.y);
+        let pointerPos = this.map._getWorldPositionFromPointerPosition(event.x, event.y);
+        this.startSource = this.map._getTileByWorldPosition(pointerPos.x, pointerPos.y);
         this.startPos = this.map._getTileWorldCoord(this.startSource.tile, this.startSource.chunk);
     }
 
@@ -60,7 +62,8 @@ export class MapBuildController{
     }
 
     stopTileSelect(event){
-        let stopSource = this.map._getTileByWorldPosition(event.x, event.y);
+        let pointerPos = this.map._getWorldPositionFromPointerPosition(event.x, event.y);
+        let stopSource = this.map._getTileByWorldPosition(pointerPos.x, pointerPos.y);
         let tileWorldPos = this.map._getTileWorldCoord(stopSource.tile, stopSource.chunk);
         var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
         let outArr = [];
@@ -72,13 +75,13 @@ export class MapBuildController{
                 outArr[x].push(source.tile.index);
             }
         }
-        console.log(MapConstructData.mapDataToString(outArr));
         this.draw = false;
     }
 
     startTileFill(event){
         this.draw = true;
-        this.startSource = this.map._getTileByWorldPosition(event.x, event.y);
+        let pointerPos = this.map._getWorldPositionFromPointerPosition(event.x, event.y);
+        this.startSource = this.map._getTileByWorldPosition(pointerPos.x, pointerPos.y);
         this.startPos = this.map._getTileWorldCoord(this.startSource.tile, this.startSource.chunk);
     }
 
@@ -87,7 +90,8 @@ export class MapBuildController{
     }
 
     stopTileFill(event){
-        let stopSource = this.map._getTileByWorldPosition(event.x, event.y);
+        let pointerPos = this.map._getWorldPositionFromPointerPosition(event.x, event.y);
+        let stopSource = this.map._getTileByWorldPosition(pointerPos.x, pointerPos.y);
         let tileWorldPos = this.map._getTileWorldCoord(stopSource.tile, stopSource.chunk);
         var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
         let outArr = [];
@@ -96,6 +100,7 @@ export class MapBuildController{
             for(var y=0;y<range.height+1;y++) {
                 let source = this.map._getTileAndChunkByCoord(this.startPos.x + (x * range.xDirection), this.startPos.y + (y * range.yDirection));
                 source.chunk.setTile(source.tile, this.gui.indexSelected);
+                source.chunk.resetCollision();
             }
         }
         this.draw = false;

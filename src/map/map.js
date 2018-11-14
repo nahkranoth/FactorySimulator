@@ -104,6 +104,12 @@ export class Map extends Phaser.GameObjects.GameObject {
         return false;
     }
 
+    _getWorldPositionFromPointerPosition(x, y){
+        let cameraX = this.scene.cameras.main.scrollX;
+        let cameraY = this.scene.cameras.main.scrollY;
+        return({x:x+cameraX, y:y+cameraY});
+    }
+
     _getTileAndChunkByCoord(x, y){
         let chunkCoords = {x:Math.floor(x/this.chunkWidth), y:Math.floor(y/this.chunkWidth)};
         let xTile = x % (this.chunkWidth);
