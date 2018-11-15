@@ -1,10 +1,11 @@
 import {_} from 'underscore';
-import {MapChunk} from '../map/mapChunk.js';
+import {MapChunk} from './mapChunk.js';
 import {TileData} from '../data/tileData.js'
-import {MapChunkNeighbour} from '../map/mapChunkNeighbour.js'
-import {MapGenerator} from '../map/mapGenerator.js'
-import {MapDebugController} from "../map/mapDebugController.js";
-import {MapWorldEntityController} from "../map/mapWorldEntityController.js";
+import {MapChunkNeighbour} from './mapChunkNeighbour.js'
+import {MapGenerator} from './mapGenerator.js'
+import {MapDebugController} from "./mapDebugController.js";
+import {MapWorldEntityController} from "./mapWorldEntityController.js";
+import {MapChunkController} from "./mapChunkController";
 
 export class Map extends Phaser.GameObjects.GameObject {
 
@@ -12,22 +13,14 @@ export class Map extends Phaser.GameObjects.GameObject {
         super(params.scene, params.opt);
         this.camera = params.scene.cameras.main;
 
-        this.chunks = [];
-
-        this.chunkWidth = TileData.PROPERTIES.CHUNKWIDTH;
-        this.chunkHeight = TileData.PROPERTIES.CHUNKHEIGHT;
-        this.tileSize = TileData.PROPERTIES.TILESIZE;
-        this.generatedChunkIndex = 0;
-
-        this.chunkPixelWidth = this.chunkWidth * this.tileSize;
-        this.chunkPixelHeight = this.chunkHeight * this.tileSize;
-
-        this._previousActiveChunk;
+        this.mapChunkController = new MapChunkController({scene:this.scene});
 
         this.mapGenerator = new MapGenerator({scene:this.scene, map:this});
+
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
         this.rootChunk = this._createChunk(0, 0);
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
+        
         this.activeChunk = this.rootChunk;
 
         this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
@@ -55,25 +48,25 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _createChunk(x, y){
-        this.generatedChunkIndex++;
+        this.mapChunkController.generatedChunkIndex++;
 
         let pos = this._convertCoordToPos(x, y);
 
         let generatedChunk = new MapChunk({
             scene: this.scene,
             opt: {
-                index: this.generatedChunkIndex,
+                index: this.mapChunkController.generatedChunkIndex,
                 xCoord: x,
                 yCoord: y,
                 x:pos.x,
                 y:pos.y,
-                chunkHeight: this.chunkHeight,
-                chunkWidth: this.chunkWidth,
-                tileSize: this.tileSize
+                chunkHeight: TileData.PROPERTIES.CHUNKHEIGHT,
+                chunkWidth: TileData.PROPERTIES.CHUNKWIDTH,
+                tileSize: TileData.PROPERTIES.TILESIZE
             }
         });
 
-        this.chunks.push(generatedChunk);
+        this.mapChunkController.chunks.push(generatedChunk);
         return generatedChunk;
     }
 
@@ -100,10 +93,10 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     _updateActiveChunk(){
         let currentActiveChunk = this.getActiveChunk();
-        if(this._previousActiveChunk != currentActiveChunk) {
+        if(this.mapChunkController._previousActiveChunk != currentActiveChunk) {
             this.activeChunk = currentActiveChunk;
             this._activeChunkChanged();
-            this._previousActiveChunk = currentActiveChunk;
+            this.mapChunkController._previousActiveChunk = currentActiveChunk;
             return true;
         }
         return false;
@@ -116,9 +109,9 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _getTileAndChunkByCoord(x, y){
-        let chunkCoords = {x:Math.floor(x/this.chunkWidth), y:Math.floor(y/this.chunkWidth)};
-        let xTile = x % (this.chunkWidth);
-        let yTile = y % (this.chunkHeight);
+        let chunkCoords = {x:Math.floor(x/TileData.PROPERTIES.CHUNKWIDTH), y:Math.floor(y/TileData.PROPERTIES.CHUNKWIDTH)};
+        let xTile = x % (TileData.PROPERTIES.CHUNKWIDTH);
+        let yTile = y % (TileData.PROPERTIES.CHUNKHEIGHT);
         let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
         let tile = possibleChunk.chunk.getTileAt({x:xTile, y:yTile});
         return {chunk:possibleChunk.chunk, tile:tile};
@@ -152,20 +145,20 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     _convertPosToChunkCoord(x, y){
         let xChunkCoord, yChunkCoord;
-        xChunkCoord = Math.round((x / this.chunkPixelWidth));
-        yChunkCoord = Math.round((y / this.chunkPixelHeight));
+        xChunkCoord = Math.round((x / TileData.getChunkDimensionsInPixels().x));
+        yChunkCoord = Math.round((y / TileData.getChunkDimensionsInPixels().x));
         return {x: xChunkCoord, y:yChunkCoord};
     }
 
     _convertCoordToPos(x, y){
         let xChunkPos, yChunkPos;
-        xChunkPos = Math.round((x * this.chunkPixelWidth))+(this.camera.width/2);
-        yChunkPos = Math.round((y * this.chunkPixelHeight))+(this.camera.height/2);
-        return {x: xChunkPos, y:yChunkPos};wd
+        xChunkPos = Math.round((x * TileData.getChunkDimensionsInPixels().x))+(this.camera.width/2);
+        yChunkPos = Math.round((y * TileData.getChunkDimensionsInPixels().y))+(this.camera.height/2);
+        return {x: xChunkPos, y:yChunkPos};
     }
 
     _getChunkByCoord(x, y){
-        let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
+        let chunks = _.filter(this.mapChunkController.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
         if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
         return chunks[0];
     }
