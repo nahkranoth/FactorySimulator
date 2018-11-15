@@ -4,7 +4,7 @@ import {MapChunkNeighbour} from '../map/mapChunkNeighbour.js'
 import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
 import {MapGenerator} from '../map/mapGenerator.js'
 import {_} from 'underscore';
-import {DebugRect} from "../utils/debug";
+import {MapDebugController} from "../map/mapDebugController.js";
 
 export class Map extends Phaser.GameObjects.GameObject {
 
@@ -36,20 +36,9 @@ export class Map extends Phaser.GameObjects.GameObject {
         this._activeChunkChanged();
         this._updateSpriteEntityFactory();
 
-        this.DEBUG = true;
-        this.initDebug();
+        this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, rootChunk:this.rootChunk});
     }
 
-    initDebug(){
-        if(!this.DEBUG) return;
-        this.neighbourDebugs = [];
-        for(var i=0;i<8;i++){
-            let liveNeighboursChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0xff00ff, outlinesOnly:true});
-            this.neighbourDebugs.push(liveNeighboursChunkDebugBounds);
-        }
-        this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
-        this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
-    }
 
     resetChunkCollisionsFor(chunkList){
         chunkList.forEach((c)=>{
@@ -129,7 +118,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _updateActiveChunk(){
-        let currentActiveChunk = this._getActiveChunk();
+        let currentActiveChunk = this.getActiveChunk();
         if(this._previousActiveChunk != currentActiveChunk) {
             this.activeChunk = currentActiveChunk;
             this._activeChunkChanged();
@@ -171,7 +160,8 @@ export class Map extends Phaser.GameObjects.GameObject {
         let yWorld = chunkWorldYPos + tile.y;
         return {x: xWorld, y: yWorld};
     }
-    _getActiveChunk(){
+
+    getActiveChunk(){
         let x = this.camera.scrollX;
         let y = this.camera.scrollY;
         let coords = this._convertPosToChunkCoord(x, y);
@@ -207,14 +197,6 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     update(){
         this._updateActiveChunk();
-
-        //DEBUG PART -- DONT PLACE ANYTHING UNDERNEATH THIS!!!
-        if(!DEBUG) return;
-        this.activeCameraDebugBounds.setPosition(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
-        this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
-        for(var i=0;i<this.neighbourDebugs.length;i++){
-            let neighbour = this.activeChunk.neighbours[i];
-            this.neighbourDebugs[i].setPosition(neighbour.mapChunk.getPosition().x, neighbour.mapChunk.getPosition().y);
-        }
+        this.mapDebugController.update(this);
     }
 }
