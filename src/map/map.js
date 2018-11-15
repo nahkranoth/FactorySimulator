@@ -1,10 +1,10 @@
+import {_} from 'underscore';
 import {MapChunk} from '../map/mapChunk.js';
 import {TileData} from '../data/tileData.js'
 import {MapChunkNeighbour} from '../map/mapChunkNeighbour.js'
-import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
 import {MapGenerator} from '../map/mapGenerator.js'
-import {_} from 'underscore';
 import {MapDebugController} from "../map/mapDebugController.js";
+import {MapWorldEntityController} from "../map/mapWorldEntityController.js";
 
 export class Map extends Phaser.GameObjects.GameObject {
 
@@ -25,17 +25,16 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this._previousActiveChunk;
 
-        this.mapSpriteEntityFactory = new MapSpriteEntityFactory(this.scene);
-
         this.mapGenerator = new MapGenerator({scene:this.scene, map:this});
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
         this.rootChunk = this._createChunk(0, 0);
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
         this.activeChunk = this.rootChunk;
 
-        this._activeChunkChanged();
-        this._updateSpriteEntityFactory();
+        //--> this._updateSpriteEntityFactory();
+        this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
 
+        this._activeChunkChanged();
         this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, rootChunk:this.rootChunk});
     }
 
@@ -95,26 +94,11 @@ export class Map extends Phaser.GameObjects.GameObject {
         }
     }
 
-    _updateSpriteEntityFactory(){
-        for(var i=0;i<this.activeChunk.neighbours.length;i++){
-            this._updateChunkSpriteEntities(this.activeChunk.neighbours[i].mapChunk);
-        }
-        this._updateChunkSpriteEntities(this.activeChunk);
-    }
-
-    _updateChunkSpriteEntities(chunk){
-        let treeList= chunk.chunkGenerator.treeList;
-        for(var j=0;j<treeList.length;j++){
-            let currentTree = treeList[j];
-            this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y);
-        }
-    }
-
     _activeChunkChanged(){
         console.log("ACTIVE CHUNK CHANGED");
         this.neighbouringChunks = [];
         this._generateNeighbouringChunks();
-        this._updateSpriteEntityFactory();
+        this.mapWorldEntityController._updateSpriteEntityFactory(this.activeChunk);
     }
 
     _updateActiveChunk(){
