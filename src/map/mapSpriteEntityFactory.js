@@ -4,7 +4,7 @@ import {MapSpriteEntity} from "../map/mapSpriteEnitity";
 export class MapSpriteEntityFactory{
     constructor(scene){
         this.scene = scene;
-        this.poolMax = 50; //TileData.PROPERTIES.CHUNKWIDTH * TileData.PROPERTIES.CHUNKHEIGHT;
+        this.poolMax = 100; //This should be: 9 chunks * possible items
         this.spritePool = [];
         this.spritePoolIndex = 0;
     }
