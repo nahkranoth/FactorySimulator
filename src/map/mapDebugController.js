@@ -3,7 +3,8 @@ import {DebugRect} from "../utils/debug";
 export class MapDebugController{
     constructor(params){
         this.scene = params.scene;
-        this.rootChunk = params.rootChunk;
+        this.map = params.map;
+        this.rootChunk = this.map.mapChunkController.rootChunk;
         this.camera = this.scene.cameras.main;
         this.DEBUG = params.enabled;
         this.init();
@@ -21,12 +22,12 @@ export class MapDebugController{
         this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
     }
 
-    update(map){
+    update(){
         if(!this.DEBUG) return;
-        this.activeCameraDebugBounds.setPosition(map.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
-        this.activeChunkDebugBounds.setPosition(map.mapChunkController.getActiveChunk().getPosition().x, map.mapChunkController.getActiveChunk().getPosition().y);
+        this.activeCameraDebugBounds.setPosition(this.map.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
+        this.activeChunkDebugBounds.setPosition(this.map.mapChunkController.getActiveChunk().getPosition().x, this.map.mapChunkController.getActiveChunk().getPosition().y);
         for(var i=0;i<this.neighbourDebugs.length;i++){
-            let neighbour = map.activeChunk.neighbours[i];
+            let neighbour = this.map.mapChunkController.activeChunk.neighbours[i];
             this.neighbourDebugs[i].setPosition(neighbour.mapChunk.getPosition().x, neighbour.mapChunk.getPosition().y);
         }
     }
