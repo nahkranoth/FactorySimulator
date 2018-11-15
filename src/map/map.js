@@ -4,6 +4,7 @@ import {MapChunkNeighbour} from '../map/mapChunkNeighbour.js'
 import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
 import {MapGenerator} from '../map/mapGenerator.js'
 import {_} from 'underscore';
+import {DebugRect} from "../utils/debug";
 
 export class Map extends Phaser.GameObjects.GameObject {
 
@@ -35,9 +36,20 @@ export class Map extends Phaser.GameObjects.GameObject {
         this._activeChunkChanged();
         this._updateSpriteEntityFactory();
 
-        console.log(this.mapSpriteEntityFactory);
-        //this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
-        //this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
+        this.DEBUG = true;
+        this.initDebug();
+    }
+
+    initDebug(){
+        if(!this.DEBUG) return;
+        this.activeCameraDebugBounds = new DebugRect({scene:this.scene, size:200, color:0xff0000, lineColor:0xff0000, outlinesOnly:true});
+        this.activeChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0x0000ff, outlinesOnly:true});
+        this.neighbourDebugs = [];
+        for(var i=0;i<8;i++){
+            let liveNeighboursChunkDebugBounds = new DebugRect({scene:this.scene, camera:this.camera, size:this.rootChunk.getBounds().width, color:0x0000ff, lineColor:0xff00ff, outlinesOnly:true});
+            this.neighbourDebugs.push(liveNeighboursChunkDebugBounds);
+        }
+
     }
 
     resetChunkCollisionsFor(chunkList){
@@ -196,8 +208,14 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     update(){
         this._updateActiveChunk();
-        //update to fictional camera position
-        //this.activeCameraDebugBounds.setPosition(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
-        //this.activeChunkDebugBounds.setPosition(this._getActiveChunk().getPosition().x, this._getActiveChunk().getPosition().y);
+
+        //DEBUG PART -- DONT PLACE ANYTHING UNDERNEATH THIS!!!
+        if(!DEBUG) return;
+        this.activeCameraDebugBounds.setPosition(this.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
+
+        for(var i=0;i<this.neighbourDebugs.length;i++){
+            let neighbour = this.activeChunk.neighbours[i];
+            this.neighbourDebugs[i].setPosition(neighbour.mapChunk.getPosition().x, neighbour.mapChunk.getPosition().y);
+        }
     }
 }
