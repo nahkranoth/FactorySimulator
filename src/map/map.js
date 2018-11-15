@@ -94,12 +94,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         return false;
     }
 
-    _getWorldPositionFromPointerPosition(x, y){
-        let cameraX = this.scene.cameras.main.scrollX;
-        let cameraY = this.scene.cameras.main.scrollY;
-        return({x:x+cameraX, y:y+cameraY});
-    }
-
     _getTileAndChunkByCoord(x, y){
         let chunkCoords = {x:Math.floor(x/TileData.PROPERTIES.CHUNKWIDTH), y:Math.floor(y/TileData.PROPERTIES.CHUNKWIDTH)};
         let xTile = x % (TileData.PROPERTIES.CHUNKWIDTH);
@@ -108,26 +102,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         let tile = possibleChunk.chunk.getTileAt({x:xTile, y:yTile});
         return {chunk:possibleChunk.chunk, tile:tile};
     }
-
-    _getTileByWorldPosition(x, y){
-        let xOffset = x - (this.camera.width/2);
-        let yOffset = y - (this.camera.height/2);
-        let chunkCoords = this.mapChunkController._convertPosToChunkCoord(xOffset, yOffset);
-        let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tilePos = possibleChunk.chunk.tileMap.worldToTileXY(x, y);
-        let tile = possibleChunk.chunk.getTileAt({x:tilePos.x, y:tilePos.y});
-        return {tile: tile, chunk: possibleChunk.chunk};
-    }
-
-    _getTileWorldCoord(tile, chunk) {
-        let chunkWorldXPos = chunk.xCoord * TileData.PROPERTIES.CHUNKWIDTH;
-        let chunkWorldYPos = chunk.yCoord * TileData.PROPERTIES.CHUNKHEIGHT;
-        let xWorld = chunkWorldXPos + tile.x;
-        let yWorld = chunkWorldYPos + tile.y;
-        return {x: xWorld, y: yWorld};
-    }
-
-
 
     update(){
         this._updateActiveChunk();
