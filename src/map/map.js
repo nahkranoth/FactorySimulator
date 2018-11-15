@@ -13,7 +13,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.camera = params.scene.cameras.main;
 
         this.chunks = [];
-        this.neighbouringChunks = [];
 
         this.chunkWidth = TileData.PROPERTIES.CHUNKWIDTH;
         this.chunkHeight = TileData.PROPERTIES.CHUNKHEIGHT;
@@ -31,7 +30,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
         this.activeChunk = this.rootChunk;
 
-        //--> this._updateSpriteEntityFactory();
         this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
 
         this._activeChunkChanged();
@@ -96,7 +94,6 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     _activeChunkChanged(){
         console.log("ACTIVE CHUNK CHANGED");
-        this.neighbouringChunks = [];
         this._generateNeighbouringChunks();
         this.mapWorldEntityController._updateSpriteEntityFactory(this.activeChunk);
     }
@@ -164,17 +161,11 @@ export class Map extends Phaser.GameObjects.GameObject {
         let xChunkPos, yChunkPos;
         xChunkPos = Math.round((x * this.chunkPixelWidth))+(this.camera.width/2);
         yChunkPos = Math.round((y * this.chunkPixelHeight))+(this.camera.height/2);
-        return {x: xChunkPos, y:yChunkPos};
+        return {x: xChunkPos, y:yChunkPos};wd
     }
 
     _getChunkByCoord(x, y){
         let chunks = _.filter(this.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
-        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
-        return chunks[0];
-    }
-
-    _getNeighbouringChunkByCoord(x, y){
-        let chunks = _.filter(this.neighbouringChunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
         if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
         return chunks[0];
     }
