@@ -1,6 +1,6 @@
 import {MapConstructData} from "../data/mapConstructData.js"
 
-export class MapBuildController{
+export class MapBuildInteractionController{
     constructor(params){
         this.scene = params.scene;
         this.gui = params.gui;

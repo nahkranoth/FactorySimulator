@@ -1,6 +1,6 @@
 import {Player} from '../objects/player.js';
 import {Map} from '../map/map.js';
-import {MapBuildController} from '../map/mapBuildController';
+import {MapBuildInteractionController} from '../map/mapBuildInteractionController';
 import {MapSpriteEntity} from "../map/mapSpriteEnitity";
 
 export class Game extends Phaser.Scene {
@@ -26,7 +26,7 @@ export class Game extends Phaser.Scene {
         this.gui = this.scene.manager.getScene("gui");
         this.map = new Map({scene:this,opt:{}});
 
-        this.mapBuildController = new MapBuildController({scene:this, gui:this.gui, map:this.map});
+        this.mapBuildController = new MapBuildInteractionController({scene:this, gui:this.gui, map:this.map});
         //Depth Controller
     }
 
