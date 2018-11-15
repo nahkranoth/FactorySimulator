@@ -32,7 +32,7 @@ export class MapGenerator {
             for(var y=0;y<constructData[x].length;y++) {
                 if(constructData[x][y] == -1) continue;
                 let yOffset = rootTile.y + y + (chunk.chunkHeight * chunk.yCoord);
-                let source = this.map._getTileAndChunkByCoord(xOffset, yOffset);
+                let source = this.map.mapChunkController._getTileAndChunkByCoord(xOffset, yOffset);
                 source.chunk.setTile(source.tile, constructData[x][y]);
                 if(touchedChunks.indexOf(source.chunk) == -1){
                     touchedChunks.push(source.chunk);

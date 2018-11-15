@@ -13,7 +13,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         super(params.scene, params.opt);
         this.camera = params.scene.cameras.main;
 
-        this.mapChunkController = new MapChunkController({scene:this.scene});
+        this.mapChunkController = new MapChunkController({scene:this.scene, map:this});
         this.mapGenerator = new MapGenerator({scene:this.scene, map:this});
 
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
@@ -24,20 +24,10 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
 
-        this._activeChunkChanged();
+        this.mapChunkController._activeChunkChanged();
         this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, rootChunk:this.rootChunk});
     }
 
-    _getOrCreateChunkByCoord(x, y){
-        let fresh = false;
-        let possibleChunk = this.mapChunkController._getChunkByCoord(x, y);
-        if(typeof(possibleChunk) == "undefined") {//prevent from building one if already exists at that world cordinate
-            possibleChunk = this._createChunk(x, y);
-            this.mapGenerator.addConstruct(possibleChunk);
-            fresh = true;
-        }
-        return {chunk: possibleChunk, fresh: fresh};
-    }
 
     _createChunk(x, y){
         this.mapChunkController.generatedChunkIndex++;
@@ -62,49 +52,8 @@ export class Map extends Phaser.GameObjects.GameObject {
         return generatedChunk;
     }
 
-    _generateNeighbouringChunks(){
-        if(this.activeChunk.neighbours.length < 8){
-            for(var x=-1;x<=1;x++){
-                for(var y=-1;y<=1;y++){
-                    //prevent from making itself a neighbour
-                    if(x == 0 && y == 0) continue;
-                    let offsetXCoord = this.activeChunk.xCoord+x;
-                    let offsetYCoord = this.activeChunk.yCoord+y;
-                    let possibleChunk = this._getOrCreateChunkByCoord(offsetXCoord, offsetYCoord);
-                    this.activeChunk.addNeighbourChunkReference(new MapChunkNeighbour({mapChunk:possibleChunk.chunk, xDir:x, yDir:y}));
-                }
-            }
-        }
-    }
-
-    _activeChunkChanged(){
-        console.log("ACTIVE CHUNK CHANGED");
-        this._generateNeighbouringChunks();
-        this.mapWorldEntityController._updateSpriteEntityFactory(this.activeChunk);
-    }
-
-    _updateActiveChunk(){
-        let currentActiveChunk = this.mapChunkController.getActiveChunk();
-        if(this.mapChunkController._previousActiveChunk != currentActiveChunk) {
-            this.activeChunk = currentActiveChunk;
-            this._activeChunkChanged();
-            this.mapChunkController._previousActiveChunk = currentActiveChunk;
-            return true;
-        }
-        return false;
-    }
-
-    _getTileAndChunkByCoord(x, y){
-        let chunkCoords = {x:Math.floor(x/TileData.PROPERTIES.CHUNKWIDTH), y:Math.floor(y/TileData.PROPERTIES.CHUNKWIDTH)};
-        let xTile = x % (TileData.PROPERTIES.CHUNKWIDTH);
-        let yTile = y % (TileData.PROPERTIES.CHUNKHEIGHT);
-        let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tile = possibleChunk.chunk.getTileAt({x:xTile, y:yTile});
-        return {chunk:possibleChunk.chunk, tile:tile};
-    }
-
     update(){
-        this._updateActiveChunk();
+        this.mapChunkController._updateActiveChunk();
         this.mapDebugController.update(this);
     }
 }
