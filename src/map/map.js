@@ -14,13 +14,12 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.camera = params.scene.cameras.main;
 
         this.mapChunkController = new MapChunkController({scene:this.scene});
-
         this.mapGenerator = new MapGenerator({scene:this.scene, map:this});
 
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
         this.rootChunk = this._createChunk(0, 0);
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
-        
+
         this.activeChunk = this.rootChunk;
 
         this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
@@ -29,16 +28,9 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, rootChunk:this.rootChunk});
     }
 
-
-    resetChunkCollisionsFor(chunkList){
-        chunkList.forEach((c)=>{
-            c.resetCollision();
-        })
-    }
-
     _getOrCreateChunkByCoord(x, y){
         let fresh = false;
-        let possibleChunk = this._getChunkByCoord(x, y);
+        let possibleChunk = this.mapChunkController._getChunkByCoord(x, y);
         if(typeof(possibleChunk) == "undefined") {//prevent from building one if already exists at that world cordinate
             possibleChunk = this._createChunk(x, y);
             this.mapGenerator.addConstruct(possibleChunk);
@@ -50,7 +42,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     _createChunk(x, y){
         this.mapChunkController.generatedChunkIndex++;
 
-        let pos = this._convertCoordToPos(x, y);
+        let pos = this.mapChunkController._convertCoordToPos(x, y);
 
         let generatedChunk = new MapChunk({
             scene: this.scene,
@@ -92,7 +84,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     _updateActiveChunk(){
-        let currentActiveChunk = this.getActiveChunk();
+        let currentActiveChunk = this.mapChunkController.getActiveChunk();
         if(this.mapChunkController._previousActiveChunk != currentActiveChunk) {
             this.activeChunk = currentActiveChunk;
             this._activeChunkChanged();
@@ -120,7 +112,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     _getTileByWorldPosition(x, y){
         let xOffset = x - (this.camera.width/2);
         let yOffset = y - (this.camera.height/2);
-        let chunkCoords = this._convertPosToChunkCoord(xOffset, yOffset);
+        let chunkCoords = this.mapChunkController._convertPosToChunkCoord(xOffset, yOffset);
         let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
         let tilePos = possibleChunk.chunk.tileMap.worldToTileXY(x, y);
         let tile = possibleChunk.chunk.getTileAt({x:tilePos.x, y:tilePos.y});
@@ -135,33 +127,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         return {x: xWorld, y: yWorld};
     }
 
-    getActiveChunk(){
-        let x = this.camera.scrollX;
-        let y = this.camera.scrollY;
-        let coords = this._convertPosToChunkCoord(x, y);
-        let activeChunk = this._getChunkByCoord(coords.x, coords.y);
-        return activeChunk;
-    }
 
-    _convertPosToChunkCoord(x, y){
-        let xChunkCoord, yChunkCoord;
-        xChunkCoord = Math.round((x / TileData.getChunkDimensionsInPixels().x));
-        yChunkCoord = Math.round((y / TileData.getChunkDimensionsInPixels().x));
-        return {x: xChunkCoord, y:yChunkCoord};
-    }
-
-    _convertCoordToPos(x, y){
-        let xChunkPos, yChunkPos;
-        xChunkPos = Math.round((x * TileData.getChunkDimensionsInPixels().x))+(this.camera.width/2);
-        yChunkPos = Math.round((y * TileData.getChunkDimensionsInPixels().y))+(this.camera.height/2);
-        return {x: xChunkPos, y:yChunkPos};
-    }
-
-    _getChunkByCoord(x, y){
-        let chunks = _.filter(this.mapChunkController.chunks, (c) => { return (c.xCoord == x && c.yCoord == y);});
-        if(chunks.length > 1) console.error("Returned multiple chunks on same coordinate");
-        return chunks[0];
-    }
 
     update(){
         this._updateActiveChunk();

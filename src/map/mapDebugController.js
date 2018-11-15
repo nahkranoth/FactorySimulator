@@ -24,7 +24,7 @@ export class MapDebugController{
     update(map){
         if(!this.DEBUG) return;
         this.activeCameraDebugBounds.setPosition(map.camera.scrollX+this.camera.centerX, this.camera.scrollY+this.camera.centerY);
-        this.activeChunkDebugBounds.setPosition(map.getActiveChunk().getPosition().x, map.getActiveChunk().getPosition().y);
+        this.activeChunkDebugBounds.setPosition(map.mapChunkController.getActiveChunk().getPosition().x, map.mapChunkController.getActiveChunk().getPosition().y);
         for(var i=0;i<this.neighbourDebugs.length;i++){
             let neighbour = map.activeChunk.neighbours[i];
             this.neighbourDebugs[i].setPosition(neighbour.mapChunk.getPosition().x, neighbour.mapChunk.getPosition().y);

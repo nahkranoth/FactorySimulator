@@ -39,6 +39,6 @@ export class MapGenerator {
                 }
             }
         }
-        this.map.resetChunkCollisionsFor(touchedChunks);
+        this.map.mapChunkController.resetChunkCollisionsFor(touchedChunks);
     }
 }
