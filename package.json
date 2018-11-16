@@ -6,7 +6,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode development && webpack-dev-server --mode development"
+    "build": "webpack --mode development && webpack-dev-server --mode development",
+    "pack": "texturepacker --format phaser-json-hash --max-size 2048 --algorithm Basic --trim-sprite-names --trim-mode None --texture-format png --disable-auto-alias --extrude 0 --png-opt-level 0 --sheet ./build/assets/worldEntities.png --data ./build/assets/worldEntities.json ./assets/build/worldEntities"
   },
   "keywords": [],
   "author": "",

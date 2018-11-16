@@ -1,5 +1,6 @@
 import {RandomGenerator} from '../utils/randomGenerator'
 import {TileData} from '../data/tileData.js';
+import {_} from "underscore";
 
 export class ChunkGenerator {
     constructor(params){
@@ -19,6 +20,7 @@ export class ChunkGenerator {
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 9);//generate rocks
 
+        this.treeFrames = ["Tree1", "Tree2"];
         this.treeList = [];
         this.generateTrees();
 
@@ -38,7 +40,8 @@ export class ChunkGenerator {
         for(var i=0;i<treeAmount;i++){
             let posX = (Math.random()*chunkDimensions.x) + this.chunk.x - (chunkDimensions.x/2);
             let posY = (Math.random()*chunkDimensions.y) + this.chunk.y - (chunkDimensions.y/2);
-            this.treeList.push({x:posX, y:posY});
+            let frame = _.sample(this.treeFrames);
+            this.treeList.push({x:posX, y:posY,frame:frame});
         }
     }
 

@@ -1,10 +1,12 @@
 import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
+import {_} from 'underscore'
 
 export class MapWorldEntityController{
 
     constructor(params){
         this.scene = params.scene;
         this.mapSpriteEntityFactory = new MapSpriteEntityFactory(this.scene);
+
     }
 
     _updateSpriteEntityFactory(activeChunk){
@@ -18,7 +20,7 @@ export class MapWorldEntityController{
         let treeList= chunk.chunkGenerator.treeList;
         for(var j=0;j<treeList.length;j++){
             let currentTree = treeList[j];
-            this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y);
+            this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y, currentTree.frame);
         }
     }
 

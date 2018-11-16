@@ -16,6 +16,7 @@ export class MapSpriteEntityFactory{
         let sprite = new MapSpriteEntity({
             scene: this.scene,
             key: 'worldEntities',
+            frame:'Tree1',
             index:index,
             x:400,
             y:300 + (20 * index)
