@@ -20,7 +20,11 @@ export class ChunkGenerator {
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 9);//generate rocks
 
-        this.treeFrames = ["Tree1", "Tree2"];
+        this.treeTypes = [
+            {frame:"Tree1", excludePlacement:[2, 3, 4, 5]},
+            {frame:"Tree2", excludePlacement:[2, 3, 4, 5]}
+        ];
+
         this.treeList = [];
         this.generateTrees();
 
@@ -38,11 +42,27 @@ export class ChunkGenerator {
         let treeAmount = Math.round(Math.random()*10);
         let chunkDimensions = TileData.getChunkDimensionsInPixels();
         for(var i=0;i<treeAmount;i++){
-            let posX = (Math.random()*chunkDimensions.x) + this.chunk.x - (chunkDimensions.x/2);
-            let posY = (Math.random()*chunkDimensions.y) + this.chunk.y - (chunkDimensions.y/2);
-            let frame = _.sample(this.treeFrames);
-            this.treeList.push({x:posX, y:posY,frame:frame});
+            let treeType = _.sample(this.treeTypes);
+            let pos = this._findFittingTile(treeType, chunkDimensions);
+            let posXOffset = pos.x + this.chunk.x - (chunkDimensions.x/2);
+            let posYOffset = pos.y + this.chunk.y - (chunkDimensions.y/2);
+            this.treeList.push({x:posXOffset, y:posYOffset,frame:treeType.frame});
         }
+    }
+
+    _findFittingTile(treeType, chunkDimensions){
+        let posX, posY;
+        while(true){
+            posX = (Math.random()*chunkDimensions.x);
+            posY = (Math.random()*chunkDimensions.y);
+            let tile = this.tileMap.getTileAtWorldXY(posX, posY);
+            console.log("TILEINDEX: ",tile.index);
+            console.log(treeType.excludePlacement.indexOf(tile.index));
+            if(treeType.excludePlacement.indexOf(tile.index) === -1){
+                break;
+            }
+        }
+        return {x:posX, y:posY}
     }
 
     //Convert chunk position to axis.
