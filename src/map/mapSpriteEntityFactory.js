@@ -41,7 +41,7 @@ export class MapSpriteEntityFactory{
     setFreshSprite(x, y, frame){
         let sprite = this._getOrCreateSprite();
         if(frame) sprite.setFrame(frame);
-        sprite.setPosition(x, y);
+        sprite.setPosition(x, y-(sprite.height/2));
         sprite.setDepth(y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART);
     }
 }
