@@ -29,9 +29,8 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     afterInit(){
         this.mapChunkController.afterInit();
-        this.mapDebugController.afterInit(this.mapChunkController.activeChunk);
         //From here on out the map is initialized
-
+        this.mapDebugController.afterInit(this.mapChunkController.activeChunk);
         this.init = true;
     }
 
@@ -63,5 +62,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         if(!this.init)return;
         this.mapChunkController._updateActiveChunk();
         this.mapDebugController.update(this.mapChunkController.activeChunk);
+        this.mapWorldEntityController._updateSpriteEntityFactory(this.mapChunkController.activeChunk);
     }
 }
