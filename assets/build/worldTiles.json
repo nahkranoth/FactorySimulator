@@ -6,5 +6,7 @@
     {"index":3, "collision":true, "name":"worldTile_wood"},
     {"index":4, "collision":true, "name":"worldTile_stone"},
     {"index":5, "collision":false, "name":"worldTile_timber"}
+
+    //{"index":5, "collision":false, "flippedX:false, flippedY:false "name":"worldTile_timber_coordinate"}
   ]
 }
