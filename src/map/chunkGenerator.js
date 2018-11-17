@@ -22,7 +22,8 @@ export class ChunkGenerator {
 
         this.treeTypes = [
             {frame:"Tree1", excludePlacement:[2, 3, 4, 5]},
-            {frame:"Tree2", excludePlacement:[2, 3, 4, 5]}
+            {frame:"Tree2", excludePlacement:[2, 3, 4, 5]},
+            {frame:"Tree3", excludePlacement:[2, 3, 4, 5]}
         ];
 
         this.treeList = [];
@@ -56,8 +57,8 @@ export class ChunkGenerator {
             posX = (Math.random()*chunkDimensions.x);
             posY = (Math.random()*chunkDimensions.y);
             let tile = this.tileMap.getTileAtWorldXY(posX, posY);
-            console.log("TILEINDEX: ",tile.index);
-            console.log(treeType.excludePlacement.indexOf(tile.index));
+            //console.log("TILEINDEX: ",tile.index);
+            //console.log(treeType.excludePlacement.indexOf(tile.index));
             if(treeType.excludePlacement.indexOf(tile.index) === -1){
                 break;
             }
