@@ -28,6 +28,7 @@ export class MapDebugController{
         this.activeChunkDebugBounds.setPosition(this.map.mapChunkController.getActiveChunk().getPosition().x, this.map.mapChunkController.getActiveChunk().getPosition().y);
         for(var i=0;i<this.neighbourDebugs.length;i++){
             let neighbour = this.map.mapChunkController.activeChunk.neighbours[i];
+            if(!neighbour) return;
             this.neighbourDebugs[i].setPosition(neighbour.mapChunk.getPosition().x, neighbour.mapChunk.getPosition().y);
         }
     }

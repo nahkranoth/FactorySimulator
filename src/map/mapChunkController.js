@@ -17,6 +17,7 @@ export class MapChunkController{
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
 
         this.activeChunk = this.rootChunk;
+        this._previousActiveChunk = this.activeChunk;
     }
 
     resetChunkCollisionsFor(chunkList){
@@ -37,13 +38,13 @@ export class MapChunkController{
 
     _getOrCreateChunkByCoord(x, y){
         let fresh = false;
-        let possibleChunk = this._getChunkByCoord(x, y);
-        if(typeof(possibleChunk) == "undefined") {//prevent from building one if already exists at that world cordinate
-            possibleChunk = this._createChunk(x, y);
-            this.map.mapGenerator.addConstruct(possibleChunk);
+        let chunk = this._getChunkByCoord(x, y);
+        if(typeof(chunk) == "undefined") {//prevent from building one if already exists at that world cordinate
+            chunk = this._createChunk(x, y);
+            this.map.mapGenerator.addConstruct(chunk);
             fresh = true;
         }
-        return {chunk: possibleChunk, fresh: fresh};
+        return {chunk: chunk, fresh: fresh};
     }
 
     _convertCoordToPos(x, y){

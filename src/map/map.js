@@ -12,7 +12,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapChunkController = new MapChunkController({scene:this.scene, map:this});
         this.mapGenerator = new MapGenerator({scene:this.scene, map:this});
         this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
-        this.mapChunkController._activeChunkChanged();
 
         this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, map:this});
     }
