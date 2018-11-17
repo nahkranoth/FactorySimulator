@@ -11,21 +11,16 @@ export class MapWorldEntityController extends ControllerBaseClass{
         this.mapSpriteEntityFactory = new MapSpriteEntityFactory(this.scene);
     }
 
-    afterInit(){
-
-    }
-
     generateTrees(chunk){
         let treeAmount = Math.round(Math.random()*10);
-        let chunkDimensions = TileData.getChunkDimensionsInPixels();
         for(var i=0;i<treeAmount;i++){
             let treeType = chunk._getRandomTreeType();
-            let pos = this._findFittingTile(treeType, chunk, chunkDimensions);
+            let pos = this._findFittingTile(treeType, chunk);
             chunk.treeList.push({x:pos.x, y:pos.y,frame:treeType.frame});
         }
     }
 
-    _findFittingTile(treeType, chunk, chunkDimensions){
+    _findFittingTile(treeType, chunk){
         let posX, posY, tilePosX, tilePosY;
         while(true){
             posX = Math.floor(Math.random()*TileData.PROPERTIES.CHUNKWIDTH);
@@ -33,7 +28,6 @@ export class MapWorldEntityController extends ControllerBaseClass{
             let tile = chunk.layer.getTileAt(posX, posY);
             tilePosX = tile.getCenterX();
             tilePosY = tile.getCenterY();
-            //console.log(treeType.excludePlacement.indexOf(tile.index));
             if(treeType.excludePlacement.indexOf(tile.index) === -1){
                 break;
             }

@@ -31,10 +31,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapChunkController.afterInit();
         //From here on out the map is initialized
         this.mapDebugController.afterInit(this.mapChunkController.activeChunk);
-
-        console.log(this.mapChunkController.activeChunk.tileMap.getTileAtWorldXY(this.camera.width/2,this.camera.height/2));
-
-        this.mapWorldEntityController.afterInit();
         this.init = true;
     }
 
