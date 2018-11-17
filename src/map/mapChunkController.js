@@ -2,9 +2,11 @@ import {_} from "underscore";
 import {TileData} from "../data/tileData";
 import {MapChunkNeighbour} from "./mapChunkNeighbour";
 import {MapChunk} from "./mapChunk";
+import {ControllerBaseClass} from "../core/controllerBaseClass";
 
-export class MapChunkController{
+export class MapChunkController extends ControllerBaseClass{
     constructor(params){
+        super(params);
         this.scene = params.scene;
         this.map = params.map;
         this.camera = this.scene.cameras.main;
@@ -13,11 +15,11 @@ export class MapChunkController{
         this.generatedChunkIndex = 0;
 
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
-        this.rootChunk = this._createChunk(0, 0);
+        this.rootChunk = this._getOrCreateChunkByCoord(0, 0);
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
-
         this.activeChunk = this.rootChunk;
         this._previousActiveChunk = this.activeChunk;
+        this._generateNeighbouringChunks();
     }
 
     resetChunkCollisionsFor(chunkList){
@@ -37,14 +39,12 @@ export class MapChunkController{
     }
 
     _getOrCreateChunkByCoord(x, y){
-        let fresh = false;
         let chunk = this._getChunkByCoord(x, y);
         if(typeof(chunk) == "undefined") {//prevent from building one if already exists at that world cordinate
             chunk = this._createChunk(x, y);
-            this.map.mapGenerator.addConstruct(chunk);
-            fresh = true;
+            this.emit("chunkCreated", chunk);
         }
-        return {chunk: chunk, fresh: fresh};
+        return chunk;
     }
 
     _convertCoordToPos(x, y){
@@ -74,9 +74,9 @@ export class MapChunkController{
         let yOffset = y - (this.camera.height/2);
         let chunkCoords = this._convertPosToChunkCoord(xOffset, yOffset);
         let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tilePos = possibleChunk.chunk.tileMap.worldToTileXY(x, y);
-        let tile = possibleChunk.chunk.getTileAt({x:tilePos.x, y:tilePos.y});
-        return {tile: tile, chunk: possibleChunk.chunk};
+        let tilePos = possibleChunk.tileMap.worldToTileXY(x, y);
+        let tile = possibleChunk.getTileAt({x:tilePos.x, y:tilePos.y});
+        return {tile: tile, chunk: possibleChunk};
     }
 
     getActiveChunk(){
@@ -96,7 +96,7 @@ export class MapChunkController{
                     let offsetXCoord = this.activeChunk.xCoord+x;
                     let offsetYCoord = this.activeChunk.yCoord+y;
                     let possibleChunk = this._getOrCreateChunkByCoord(offsetXCoord, offsetYCoord);
-                    this.activeChunk.addNeighbourChunkReference(new MapChunkNeighbour({mapChunk:possibleChunk.chunk, xDir:x, yDir:y}));
+                    this.activeChunk.addNeighbourChunkReference(new MapChunkNeighbour({mapChunk:possibleChunk, xDir:x, yDir:y}));
                 }
             }
         }
@@ -128,7 +128,8 @@ export class MapChunkController{
     _activeChunkChanged(){
         console.log("ACTIVE CHUNK CHANGED");
         this._generateNeighbouringChunks();
-        this.map.mapWorldEntityController._updateSpriteEntityFactory(this.activeChunk);
+        this.emit("activeChunkChanged");
+        //this.map.mapWorldEntityController._updateSpriteEntityFactory(this.activeChunk); TODO Move
     }
 
     _updateActiveChunk(){
@@ -147,7 +148,7 @@ export class MapChunkController{
         let xTile = x % (TileData.PROPERTIES.CHUNKWIDTH);
         let yTile = y % (TileData.PROPERTIES.CHUNKHEIGHT);
         let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tile = possibleChunk.chunk.getTileAt({x:xTile, y:yTile});
-        return {chunk:possibleChunk.chunk, tile:tile};
+        let tile = possibleChunk.getTileAt({x:xTile, y:yTile});
+        return {chunk:possibleChunk, tile:tile};
     }
 }

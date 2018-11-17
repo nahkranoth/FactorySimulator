@@ -1,7 +1,9 @@
 import {MapConstructData} from '../data/mapConstructData.js'
+import {ControllerBaseClass} from "../core/controllerBaseClass";
 
-export class MapGenerator {
+export class MapGenerationController extends ControllerBaseClass{
     constructor(params){
+        super(params);
         this.scene = params.scene;
         this.map = params.map;
         MapConstructData.init(this.scene);
@@ -25,20 +27,15 @@ export class MapGenerator {
 
     createBuilding(chunk, constructData){
         let rootTile = chunk.getTileAt({x:1,y:1});
-        let touchedChunks = [];
-
+        this.emit("requestSetTilesStart");
         for(var x=0;x<constructData.length;x++){
             let xOffset = rootTile.x + x + (chunk.chunkWidth * chunk.xCoord);
             for(var y=0;y<constructData[x].length;y++) {
                 if(constructData[x][y] == -1) continue;
                 let yOffset = rootTile.y + y + (chunk.chunkHeight * chunk.yCoord);
-                let source = this.map.mapChunkController._getTileAndChunkByCoord(xOffset, yOffset);
-                source.chunk.setTile(source.tile, constructData[x][y]);
-                if(touchedChunks.indexOf(source.chunk) == -1){
-                    touchedChunks.push(source.chunk);
-                }
+                this.emit("requestSetTile", xOffset, yOffset, constructData[x][y]);
             }
         }
-        this.map.mapChunkController.resetChunkCollisionsFor(touchedChunks);
+        this.emit("requestSetTilesFinished");
     }
 }

@@ -1,9 +1,11 @@
 import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
+import {ControllerBaseClass} from "../core/controllerBaseClass";
 import {_} from 'underscore'
 
-export class MapWorldEntityController{
+export class MapWorldEntityController extends ControllerBaseClass{
 
     constructor(params){
+        super(params);
         this.scene = params.scene;
         this.mapSpriteEntityFactory = new MapSpriteEntityFactory(this.scene);
 
