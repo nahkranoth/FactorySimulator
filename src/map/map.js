@@ -14,6 +14,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapChunkController.on("chunkCreated", this.chunkCreated, this);
 
         this.mapGenerator = new MapGenerationController({scene:this.scene, map:this});
+        //Done in state mode because of optimization
         this.mapGenerator.on("requestSetTilesStart", this.requestSetTileStart, this);
         this.mapGenerator.on("requestSetTile", this.requestSetTile, this);
         this.mapGenerator.on("requestSetTilesFinished", this.requestSetTileFinished, this);
@@ -21,6 +22,17 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
 
         this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, map:this});
+
+        this.init = false;
+        this.afterInit();
+    }
+
+    afterInit(){
+        this.mapChunkController.afterInit();
+        this.mapDebugController.afterInit(this.mapChunkController.activeChunk);
+        //From here on out the map is initialized
+
+        this.init = true;
     }
 
     requestSetTileStart(){
@@ -48,7 +60,8 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     update(){
+        if(!this.init)return;
         this.mapChunkController._updateActiveChunk();
-        this.mapDebugController.update();
+        this.mapDebugController.update(this.mapChunkController.activeChunk);
     }
 }

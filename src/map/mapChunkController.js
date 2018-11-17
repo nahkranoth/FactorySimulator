@@ -13,7 +13,9 @@ export class MapChunkController extends ControllerBaseClass{
         this.chunks = [];
         this._previousActiveChunk;
         this.generatedChunkIndex = 0;
+    }
 
+    afterInit(){
         this.rootChunkCenterPosition = {width:this.camera.width/2, height:this.camera.height/2};
         this.rootChunk = this._getOrCreateChunkByCoord(0, 0);
         this.rootChunk.setPosition(this.rootChunkCenterPosition.width, this.rootChunkCenterPosition.height);
