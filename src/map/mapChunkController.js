@@ -131,7 +131,6 @@ export class MapChunkController extends ControllerBaseClass{
         console.log("ACTIVE CHUNK CHANGED");
         this._generateNeighbouringChunks();
         this.emit("activeChunkChanged");
-        //this.map.mapWorldEntityController._updateSpriteEntityFactory(this.activeChunk); TODO Move
     }
 
     _updateActiveChunk(){

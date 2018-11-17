@@ -1,4 +1,5 @@
 import {ChunkGenerator} from '../map/chunkGenerator.js'
+import {_} from "underscore";
 
 export class MapChunk extends Phaser.GameObjects.GameObject {
     constructor(params){
@@ -18,6 +19,14 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.perlinModifier = params.opt.perlinModifier;
 
         this.neighbours = [];
+
+        this.treeTypes = [
+            {frame:"Tree1", excludePlacement:[2, 3, 4, 5]},
+            {frame:"Tree2", excludePlacement:[2, 3, 4, 5]},
+            {frame:"Tree3", excludePlacement:[2, 3, 4, 5]}
+        ];
+
+        this.treeList = [];
 
         this.init();
     }
@@ -39,6 +48,14 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
             chunk:this
         });
         this.setPosition(this.x, this.y);
+    }
+
+    _getRandomTreeType(){
+        return _.sample(this.treeTypes);
+    }
+
+    addTree(){
+        this.treeList.push(this._getRandomTreeType());
     }
 
     setTile(tile, index){

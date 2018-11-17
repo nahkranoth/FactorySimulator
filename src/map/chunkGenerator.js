@@ -20,14 +20,7 @@ export class ChunkGenerator {
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 9);//generate rocks
 
-        this.treeTypes = [
-            {frame:"Tree1", excludePlacement:[2, 3, 4, 5]},
-            {frame:"Tree2", excludePlacement:[2, 3, 4, 5]},
-            {frame:"Tree3", excludePlacement:[2, 3, 4, 5]}
-        ];
-
-        this.treeList = [];
-        this.generateTrees();
+        //this.generateTrees();
 
         this.scene.physics.add.collider(this.scene.player, this.layer);
     }
@@ -39,6 +32,7 @@ export class ChunkGenerator {
         this.tileMap.setCollision(0, false);
     }
 
+    //TODO: REMOVE AFTER REFACTOR
     generateTrees(){
         let treeAmount = Math.round(Math.random()*10);
         let chunkDimensions = TileData.getChunkDimensionsInPixels();
