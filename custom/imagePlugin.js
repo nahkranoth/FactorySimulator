@@ -14,44 +14,53 @@ ImagePlugin.prototype.apply = function(compiler) {
             let tileTemplateImage = path.resolve(__dirname, '../assets/build/tilesetTemplate.png');
             let outPath = path.resolve(__dirname, '../build/assets');
 
-            let templateImage = sharp(tileTemplateImage);
-            templateImage.metadata().then((metadata) => {
-                return templateImage.png().toBuffer();
-            }).then((data)=>{
-                let fill = sharp(data).clone().extract({ left: 0, top: 0, width: 12, height: 12 });
-                let edge = sharp(data).clone().extract({ left: 0, top: 12, width: 12, height: 12 });
-                let outer = sharp(data).clone().extract({ left: 12, top: 0, width: 12, height: 12 });
-                let inner = sharp(data).clone().extract({ left: 12, top: 12, width: 12, height: 12 });
+            // let templateImage = sharp(tileTemplateImage);
+            // templateImage.metadata().then((metadata) => {
+            //     return templateImage.png().toBuffer();
+            // }).then((data)=>{
+            //     let fill = sharp(data).clone().extract({ left: 0, top: 0, width: 12, height: 12 });
+            //     let edge = sharp(data).clone().extract({ left: 0, top: 12, width: 12, height: 12 });
+            //     let outer = sharp(data).clone().extract({ left: 12, top: 0, width: 12, height: 12 });
+            //     let inner = sharp(data).clone().extract({ left: 12, top: 12, width: 12, height: 12 });
+            //
+            //     const width = 24;
+            //     const height = 24;
+            //     const channels = 4;
+            //     const rgbaPixel = 0x00000000;
+            //     const canvas = Buffer.alloc(width * height * channels, rgbaPixel);
+            //
+            //     let out = sharp(canvas,{ raw : { width, height, channels } }).png();
+            //
+            //     let outArr = {};
+            //
+            //     fill.png().toBuffer().then((fillBfr) => {
+            //         outArr["fill"] = fillBfr;
+            //         return fillBfr;
+            //     })
+            //         .then(edge.png().toBuffer().then(edgeBfr => { outArr["edge"] = edgeBfr; return edgeBfr } ) )
+            //         .then(outer.png().toBuffer().then(outerBfr => { outArr["outer"] = outerBfr; return outerBfr } ) )
+            //         .then(inner.png().toBuffer().then(innerBfr => { outArr["inner"] = innerBfr; return innerBfr } ) )
+            //         .then((img) => {
+            //             return out.overlayWith(outArr["fill"], {gravity: sharp.gravity.northwest}).toBuffer().then((data)=>{
+            //                 return sharp(data);
+            //             });
+            //         }).then((img) => {
+            //             return img.overlayWith(outArr["edge"], {gravity: sharp.gravity.northeast}).toBuffer().then((data)=>{
+            //                 return sharp(data);
+            //             })
+            //         }).then((img) => {
+            //             return img.overlayWith(outArr["outer"], {gravity: sharp.gravity.southeast}).toBuffer().then((data)=>{
+            //                 return sharp(data);
+            //             })
+            //         }).then((img) => {
+            //             return img.overlayWith(outArr["inner"], {gravity: sharp.gravity.southwest}).toBuffer().then((data)=>{
+            //                 return sharp(data);
+            //             })
+            //         })
+            //         .then((img) =>{
+            //             img.toFile(outPath+"/test1.png").catch((err)=>{console.log(err)});
+            //         });
 
-                const width = 24;
-                const height = 24;
-                const channels = 4;
-                const rgbaPixel = 0x00000000;
-                const canvas = Buffer.alloc(width * height * channels, rgbaPixel);
-
-                let out = sharp(canvas,{ raw : { width, height, channels } }).png();
-
-                fill.png().toBuffer().then((data) => {
-                   let bfr = out.overlayWith(data).toBuffer().then((data)=>{
-                       sharp(data).toFile(outPath+"/test1.png").catch((err)=>{console.log(err)});
-                   }).catch(err => {console.log(err)});
-                }).catch((err)=>{console.log(err)});
-
-                // fill.toFormat('png').overlayWith(edge.toBuffer(), {raw:{width:12, width:12, channels:4}}).toBuffer().then((data)=>{
-                //     sharp(data).toFile(outPath+"/test1.png");
-                // }).catch(err => { console.log("error:", err)});
-
-                //
-
-
-
-                // fill.overlayWith(edge, {gravity: sharp.gravity.northwest});
-                //.toBuffer()
-                    //.then(function(outputBuffer) {
-                        //console.log(outputBuffer);
-                        //let outPng = sharp(outputBuffer);
-                        //outPng.png().toFile(outPath+"/test.png");
-                    //});
 
             }).catch(err => {
                 console.log(err);
