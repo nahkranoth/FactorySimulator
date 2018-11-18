@@ -19,6 +19,7 @@ export class MapSpriteEntity extends Phaser.GameObjects.Sprite{
     }
 
     update(){
-        this.angle++;
+        //this.angle++;
+        //this.x += 0.1;
     }
 }

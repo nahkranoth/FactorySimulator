@@ -12,10 +12,10 @@ export class MapWorldEntityController extends ControllerBaseClass{
     }
 
     generateTrees(chunk){
-        let treeAmount = 1; //TODO: Math.round(Math.random()*10);
+        let treeAmount = Math.round(Math.random()*10);
         for(var i=0;i<treeAmount;i++){
             let treeType = chunk._getRandomTreeType();
-            let pos = {x:chunk.x, y:chunk.y}; //TODO:this._findFittingTile(treeType, chunk);
+            let pos = this._findFittingTile(treeType, chunk);
             this._addWorldEntity(chunk, pos.x, pos.y, treeType.frame);
         }
     }

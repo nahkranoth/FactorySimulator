@@ -6,7 +6,7 @@ export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
     constructor(params){
         super(params);
         this.scene = params.scene;
-        this.poolMax = 9; //This should be: 9 chunks * possible items
+        this.poolMax = 100; //This should be: 9 chunks * possible items
         this.spritePool = [];
         this.movableSpritePool = [];
         this.spritePoolIndex = 0;
@@ -42,14 +42,6 @@ export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
         sprite.assignedToWorldEntity = worldEntity;
         worldEntity.spriteEntity = sprite;
         return sprite;
-    }
-
-    getSpriteAt(worldEntity){
-        let arr = _.find(this.spritePool, (sprite) => {
-            let spritePosition = sprite.getPosition();
-            return (spritePosition.assignedToWorldEntity === worldEntity)
-        });
-        return arr;
     }
 
     setFreshWorldSprite(worldEntity){
