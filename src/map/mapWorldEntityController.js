@@ -17,25 +17,24 @@ export class MapWorldEntityController extends ControllerBaseClass{
     generateTrees(chunk){
         let treeAmount = Math.round(Math.random()*10);
         for(var i=0;i<treeAmount;i++){
-            let treeType = chunk._getRandomTreeType();
-            let pos = this._findFittingTile(treeType, chunk);
-            this._addWorldEntity(chunk, pos.x, pos.y, treeType.frame);
+            let tree = chunk._getRandomTreeType();
+            let pos = this._findFittingTile(tree, chunk);
+            this._addWorldEntity(chunk, pos.x, pos.y, tree);
         }
     }
 
     generateAnimals(chunk){
         let animalAmount = Math.round(Math.random()*10);
         for(var i=0;i<animalAmount;i++){
-            let animalType = chunk._getRandomAnimalType();
-            let pos = this._findFittingTile(animalType, chunk);
-            this._addWorldEntity(chunk, pos.x, pos.y, animalType.frame);
+            let animal = chunk._getRandomAnimalType();
+            let pos = this._findFittingTile(animal, chunk);
+            this._addWorldEntity(chunk, pos.x, pos.y, animal);
         }
     }
 
-    _addWorldEntity(chunk, x, y, frame){
-
-        let worldEntityType = DeerWorldEntity;
-        let worldEntity = new worldEntityType({x:x, y:y, frame:frame, chunk:chunk});
+    _addWorldEntity(chunk, x, y, source){
+        let worldEntityType = source.type;
+        let worldEntity = new worldEntityType({x:x, y:y, frame:source.frame, chunk:chunk});
         this.movableEntityPool.push(worldEntity);
         chunk.entityList.push(worldEntity);
     }
