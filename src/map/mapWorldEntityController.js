@@ -51,7 +51,10 @@ export class MapWorldEntityController extends ControllerBaseClass{
         for(var j=0;j<treeList.length;j++){
             let currentTree = treeList[j];
             let sprite = this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y, currentTree.frame, chunk);
-            this.emit("worldEntityReassigned", chunk, sprite.assignedToChunk);
+            let possibleSprite = this.mapSpriteEntityFactory.getSpriteAt(currentTree.x, currentTree.y, currentTree.frame, chunk);
+            if(possibleSprite){
+                this.emit("worldEntityReassigned", sprite, chunk, possibleSprite.assignedToChunk);
+            }
         }
     }
 

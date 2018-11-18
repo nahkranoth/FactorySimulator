@@ -39,7 +39,16 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     worldEntityReassigned(sprite, toChunk, fromChunk){
-        console.log("World Entity Reassigned");
+        //add reference to toChunk
+        toChunk.assignedWorldEntities.push(sprite);
+
+        if(typeof(fromChunk) === "undefined") return;
+        console.log("World Entity Reassigned: ",fromChunk);
+        //fromChunk.assignedWorldEntities.push(sprite);
+        //remove reference from fromChunk
+
+        //afterwards I can make sure that only unassigned worldEntities get a spawn action
+
     }
 
     requestSetTileStart(){

@@ -40,9 +40,9 @@ export class MapSpriteEntityFactory{
         return sprite;
     }
 
-    _spriteStillAlive(x, y, frame, chunk){
+    getSpriteAt(x, y, frame, chunk){
         let arr = _.find(this.spritePool, (sprite) => {
-            return (sprite.y == y-(sprite.height/2) && sprite.x == x && sprite.frame.name == frame && sprite.assignedChunk == chunk)
+            return (sprite.y == y-(sprite.height/2) && sprite.x == x && sprite.frame.name == frame && sprite.assignedToChunk == chunk)
         });
         return arr;
     }

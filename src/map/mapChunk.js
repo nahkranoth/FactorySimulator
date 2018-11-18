@@ -18,6 +18,8 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.perlin = params.opt.perlin;
         this.perlinModifier = params.opt.perlinModifier;
 
+        this.assignedWorldEntities = [];
+
         this.neighbours = [];
 
         this.treeTypes = [
