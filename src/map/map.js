@@ -22,6 +22,8 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapGenerator.on("requestSetTilesFinished", this.requestSetTileFinished, this);
 
         this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
+        this.mapWorldEntityController.on("worldEntityReassigned", this.worldEntityReassigned, this);
+
         this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, map:this});
 
         this.init = false;
@@ -34,6 +36,10 @@ export class Map extends Phaser.GameObjects.GameObject {
         if(this.debug) this.mapDebugController.afterInit(this.mapChunkController.activeChunk);
         this.mapWorldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
         this.init = true;
+    }
+
+    worldEntityReassigned(sprite, toChunk, fromChunk){
+        console.log("World Entity Reassigned");
     }
 
     requestSetTileStart(){
