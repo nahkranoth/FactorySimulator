@@ -47,14 +47,14 @@ export class MapWorldEntityController extends ControllerBaseClass{
     }
 
     _updateChunkSpriteEntities(chunk){
-        let treeList= chunk.treeList;
+        let treeList = chunk.treeList;
         for(var j=0;j<treeList.length;j++){
             let currentTree = treeList[j];
-            let sprite = this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y, currentTree.frame, chunk);
             let possibleSprite = this.mapSpriteEntityFactory.getSpriteAt(currentTree.x, currentTree.y, currentTree.frame, chunk);
-            if(possibleSprite){
-                this.emit("worldEntityReassigned", sprite, chunk, possibleSprite.assignedToChunk);
-            }
+            //it's clear to spawn new entity
+            if(typeof(possibleSprite) !== "undefined") return;
+            this.mapSpriteEntityFactory.setFreshWorldEntity(currentTree.x,currentTree.y, currentTree.frame, chunk);
+            //this.emit("worldEntityReassigned", worldEntity, chunk, possibleSprite.assignedToChunk);
         }
     }
 
