@@ -9,7 +9,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         super(params.scene, params.opt);
         this.camera = params.scene.cameras.main;
 
-        this.debug = true;
+        this.debug = false;
 
         this.mapChunkController = new MapChunkController({scene:this.scene, map:this});
         this.mapChunkController.on("activeChunkChanged", this.activeChunkChanged, this);

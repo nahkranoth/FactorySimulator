@@ -1,6 +1,6 @@
-import {MapWorldEntity} from "../map/mapWorldEntity";
+import {BaseWorldEntity} from "./baseWorldEntity";
 
-export class DeerWorldEntity extends MapWorldEntity{
+export class DeerWorldEntity extends BaseWorldEntity{
     constructor(params){
         super(params);
     }

@@ -1,7 +1,7 @@
 import {ChunkGenerator} from '../map/chunkGenerator.js'
 import {_} from "underscore";
-import {MapWorldEntity} from "./mapWorldEntity";
-import {DeerWorldEntity} from "../objects/deerWorldEntity";
+import {DeerWorldEntity} from "../worldEntities/deerWorldEntity";
+import {TreeWorldEntity} from "../worldEntities/treeWorldEntity";
 
 export class MapChunk extends Phaser.GameObjects.GameObject {
     constructor(params){
@@ -25,9 +25,9 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.neighbours = [];
 
         this.treeTypes = [
-            {frame:"Tree1", type:MapWorldEntity, excludePlacement:[2, 3, 4, 5]},
-            {frame:"Tree2", type:MapWorldEntity, excludePlacement:[2, 3, 4, 5]},
-            {frame:"Tree3", type:MapWorldEntity, excludePlacement:[2, 3, 4, 5]}
+            {frame:"Tree1", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
+            {frame:"Tree2", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
+            {frame:"Tree3", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]}
         ];
 
         this.animalTypes = [

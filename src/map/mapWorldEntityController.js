@@ -1,8 +1,8 @@
 import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
 import {ControllerBaseClass} from "../core/controllerBaseClass";
 import {TileData} from "../data/tileData";
-import {MapWorldEntity} from "./mapWorldEntity";
-import {DeerWorldEntity} from "../objects/deerWorldEntity";
+import {BaseWorldEntity} from "../worldEntities/baseWorldEntity";
+import {DeerWorldEntity} from "../worldEntities/deerWorldEntity";
 
 export class MapWorldEntityController extends ControllerBaseClass{
 

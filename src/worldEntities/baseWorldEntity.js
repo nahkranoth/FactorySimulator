@@ -1,4 +1,4 @@
-export class MapWorldEntity {
+export class BaseWorldEntity {
     constructor(params){
         this.x = params.x;
         this.y = params.y;
