@@ -52,21 +52,8 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
         this.setPosition(this.x, this.y);
     }
 
-    isWorldEntityStillAssigned(x, y, frame){
-         let ret = _.find(this.assignedWorldEntities, (entity) => {
-            return entity.y == y-(entity.height/2) && entity.x == x && entity.frame.name == frame
-        });
-
-        return (typeof(ret) !== "undefined")
-
-    }
-
     _getRandomTreeType(){
         return _.sample(this.treeTypes);
-    }
-
-    addTree(){
-        this.treeList.push(this._getRandomTreeType());
     }
 
     setTile(tile, index){

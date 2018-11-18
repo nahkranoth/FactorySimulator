@@ -42,7 +42,8 @@ export class MapSpriteEntityFactory{
 
     getSpriteAt(x, y, frame, chunk){
         let arr = _.find(this.spritePool, (sprite) => {
-            return (sprite.y == y-(sprite.height/2) && sprite.x == x && sprite.frame.name == frame && sprite.assignedToChunk == chunk)
+            let spritePosition = sprite.getPosition();
+            return (spritePosition.y == y && spritePosition.x == x && sprite.frame.name == frame && sprite.assignedToChunk == chunk)
         });
         return arr;
     }
@@ -50,8 +51,8 @@ export class MapSpriteEntityFactory{
     setFreshWorldEntity(x, y, frame, chunk){
         let sprite = this._getOrCreateSprite(chunk);
         if(frame) sprite.setFrame(frame);
-        sprite.setPosition(x, y-(sprite.height/2));
-        sprite.setDepth(y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART - (sprite.height/2));
+        sprite.setPosition(x, y);
+        sprite.setDepth(y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART);
         return sprite;
     }
 

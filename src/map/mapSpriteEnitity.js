@@ -8,6 +8,15 @@ export class MapSpriteEntity extends Phaser.GameObjects.Sprite{
         this.scene.add.existing(this);﻿
         this.depth = this.y; + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART - (this.height/2);
     }
+
+    setPosition(x, y){
+        super.setPosition(x, y - (this.height/2));
+    }
+
+    getPosition(){
+        return {x: this.x, y:this.y+(this.height/2)};
+    }
+
     update(){
         this.angle++;
     }
