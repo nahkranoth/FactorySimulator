@@ -9,6 +9,8 @@ export class MapWorldEntityController extends ControllerBaseClass{
         super(params);
         this.scene = params.scene;
         this.mapSpriteEntityFactory = new MapSpriteEntityFactory(params);
+        this.movableEntityPool = [];
+
     }
 
     generateTrees(chunk){
@@ -22,6 +24,7 @@ export class MapWorldEntityController extends ControllerBaseClass{
 
     _addWorldEntity(chunk, x, y, frame){
         let worldEntity = new MapWorldEntity({x:x, y:y, frame:frame, chunk:chunk});
+        this.movableEntityPool.push(worldEntity);
         chunk.entityList.push(worldEntity);
     }
 
@@ -48,7 +51,9 @@ export class MapWorldEntityController extends ControllerBaseClass{
     }
 
     update(){
-        this.mapSpriteEntityFactory.updateMovableEntities();
+        this.movableEntityPool.forEach((worldEntity) => {
+            worldEntity.update();
+        });
     }
 
     _updateChunkSpriteEntities(chunk){

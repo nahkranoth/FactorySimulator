@@ -9,9 +9,14 @@ export class MapSpriteEntity extends Phaser.GameObjects.Sprite{
         this.depth = this.y; + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART - (this.height/2);
     }
 
+    reAssign(worldEntity){
+        this.assignedToWorldEntity.slumber();
+        this.assignedToWorldEntity = worldEntity;
+    }
+
     setPosition(x, y){
         super.setPosition(x, y - (this.height/2));
-         this.displayOriginY = this.height;
+        this.displayOriginY = this.height;
     }
 
     getPosition(){

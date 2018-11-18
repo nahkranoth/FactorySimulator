@@ -6,9 +6,8 @@ export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
     constructor(params){
         super(params);
         this.scene = params.scene;
-        this.poolMax = 100; //This should be: 9 chunks * possible items
+        this.poolMax = 10; //This should be: 9 chunks * possible items
         this.spritePool = [];
-        this.movableSpritePool = [];
         this.spritePoolIndex = 0;
     }
 
@@ -24,8 +23,6 @@ export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
             assignedToWorldEntity:worldEntity
         });
         this.spritePool.push(sprite);
-        worldEntity.spriteEntity = sprite;
-        this.movableSpritePool.push(sprite);
         return sprite;
     }
 
@@ -38,23 +35,16 @@ export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
         this.spritePoolIndex %= (this.poolMax+1);
         this.spritePoolIndex++;
         let sprite = this.spritePool[this.spritePool.length - (this.spritePoolIndex)];
-        sprite.assignedToWorldEntity.spriteEntity = null;
-        sprite.assignedToWorldEntity = worldEntity;
-        worldEntity.spriteEntity = sprite;
+        sprite.reAssign(worldEntity);
         return sprite;
     }
 
     setFreshWorldSprite(worldEntity){
         let sprite = this._getOrCreateSprite(worldEntity);
-        if(worldEntity.frame) sprite.setFrame(worldEntity.frame);
+        worldEntity.reKindle(sprite);
+
         sprite.setPosition(worldEntity.x, worldEntity.y);
         sprite.setDepth(worldEntity.y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART);
         return sprite;
-    }
-
-    updateMovableEntities(){
-        for(var i=0;i<this.movableSpritePool.length;i++){
-            this.movableSpritePool[i].update();
-        }
     }
 }
