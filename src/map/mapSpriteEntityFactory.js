@@ -2,9 +2,10 @@ import {TileData} from "../data/tileData";
 import {MapSpriteEntity} from "../map/mapSpriteEnitity";
 import {_} from "underscore"
 
-export class MapSpriteEntityFactory{
-    constructor(scene){
-        this.scene = scene;
+export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
+    constructor(params){
+        super(params);
+        this.scene = params.scene;
         this.poolMax = 100; //This should be: 9 chunks * possible items
         this.spritePool = [];
         this.movableSpritePool = [];
