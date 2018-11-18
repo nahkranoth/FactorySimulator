@@ -4,5 +4,6 @@ export class MapWorldEntity {
         this.y = params.y;
         this.frame = params.frame;
         this.spriteEntity = null;
+        this.chunk = params.chunk;
     }
 }

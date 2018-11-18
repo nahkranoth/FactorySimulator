@@ -12,17 +12,16 @@ export class MapWorldEntityController extends ControllerBaseClass{
     }
 
     generateTrees(chunk){
-        let treeAmount = Math.round(Math.random()*10);
+        let treeAmount = 1; //TODO: Math.round(Math.random()*10);
         for(var i=0;i<treeAmount;i++){
             let treeType = chunk._getRandomTreeType();
-            let pos = this._findFittingTile(treeType, chunk);
-            chunk.entityList.push({x:pos.x, y:pos.y,frame:treeType.frame});
+            let pos = {x:chunk.x, y:chunk.y}; //TODO:this._findFittingTile(treeType, chunk);
             this._addWorldEntity(chunk, pos.x, pos.y, treeType.frame);
         }
     }
 
     _addWorldEntity(chunk, x, y, frame){
-        let worldEntity = new MapWorldEntity({x:x, y:y, frame:frame});
+        let worldEntity = new MapWorldEntity({x:x, y:y, frame:frame, chunk:chunk});
         chunk.entityList.push(worldEntity);
     }
 
@@ -56,12 +55,8 @@ export class MapWorldEntityController extends ControllerBaseClass{
         let entityList = chunk.entityList;
         for(var j=0;j<entityList.length;j++){
             let currentWorldEntity = entityList[j];
-            let possibleSprite = this.mapSpriteEntityFactory.getSpriteAt(currentWorldEntity.x, currentWorldEntity.y, currentWorldEntity.frame, chunk);
-            //it's clear to spawn new entity
-            if(typeof(possibleSprite) !== "undefined") return;
-            let spriteEntity = this.mapSpriteEntityFactory.setFreshWorldSprite(currentWorldEntity.x,currentWorldEntity.y, currentWorldEntity.frame, chunk);
-            currentWorldEntity.spriteEntity = spriteEntity;
-            //this.emit("worldEntityReassigned", worldEntity, chunk, possibleSprite.assignedToChunk);
+            if(currentWorldEntity.spriteEntity !== null) break;
+            this.mapSpriteEntityFactory.setFreshWorldSprite(currentWorldEntity);
         }
     }
 
