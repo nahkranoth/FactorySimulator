@@ -1,8 +1,8 @@
 import {TileData} from "../data/tileData";
-import {MapSpriteEntity} from "../map/mapSpriteEnitity";
+import {SpriteEntity} from "./spriteEntity";
 import {_} from "underscore"
 
-export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
+export class SpriteEntityFactory extends Phaser.Events.EventEmitter{
     constructor(params){
         super(params);
         this.scene = params.scene;
@@ -13,7 +13,7 @@ export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
 
     _createNewSprite(worldEntity){
         let index = this.spritePool.length;
-        let sprite = new MapSpriteEntity({
+        let sprite = new SpriteEntity({
             scene: this.scene,
             key: 'worldEntities',
             frame:'Tree1',

@@ -3,7 +3,7 @@ import {_} from "underscore";
 import {DeerWorldEntity} from "../worldEntities/deerWorldEntity";
 import {TreeWorldEntity} from "../worldEntities/treeWorldEntity";
 
-export class MapChunk extends Phaser.GameObjects.GameObject {
+export class Chunk extends Phaser.GameObjects.GameObject {
     constructor(params){
         super(params.scene, params.opt);
         this.scene = params.scene;

@@ -1,7 +1,7 @@
 import {Player} from '../objects/player.js';
 import {Map} from '../map/map.js';
 import {MapBuildInteractionController} from '../map/mapBuildInteractionController';
-import {MapSpriteEntity} from "../map/mapSpriteEnitity";
+import {SpriteEntity} from "../map/spriteEntity";
 
 export class Game extends Phaser.Scene {
     constructor(){

@@ -1,10 +1,10 @@
 import {_} from "underscore";
 import {TileData} from "../data/tileData";
-import {MapChunkNeighbour} from "./mapChunkNeighbour";
-import {MapChunk} from "./mapChunk";
+import {ChunkNeighbour} from "./chunkNeighbour";
+import {Chunk} from "./chunk";
 import {ControllerBaseClass} from "../core/controllerBaseClass";
 
-export class MapChunkController extends ControllerBaseClass{
+export class ChunkController extends ControllerBaseClass{
     constructor(params){
         super(params);
         this.scene = params.scene;
@@ -98,7 +98,7 @@ export class MapChunkController extends ControllerBaseClass{
                     let offsetXCoord = this.activeChunk.xCoord+x;
                     let offsetYCoord = this.activeChunk.yCoord+y;
                     let possibleChunk = this._getOrCreateChunkByCoord(offsetXCoord, offsetYCoord);
-                    this.activeChunk.addNeighbourChunkReference(new MapChunkNeighbour({mapChunk:possibleChunk, xDir:x, yDir:y}));
+                    this.activeChunk.addNeighbourChunkReference(new ChunkNeighbour({mapChunk:possibleChunk, xDir:x, yDir:y}));
                 }
             }
         }
@@ -109,7 +109,7 @@ export class MapChunkController extends ControllerBaseClass{
 
         let pos = this._convertCoordToPos(x, y);
 
-        let generatedChunk = new MapChunk({
+        let generatedChunk = new Chunk({
             scene: this.scene,
             opt: {
                 index: this.generatedChunkIndex,

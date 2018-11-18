@@ -1,7 +1,7 @@
 import {MapConstructData} from '../data/mapConstructData.js'
 import {ControllerBaseClass} from "../core/controllerBaseClass";
 
-export class MapGenerationController extends ControllerBaseClass{
+export class ConstructGenerator extends ControllerBaseClass{
     constructor(params){
         super(params);
         this.scene = params.scene;

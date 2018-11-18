@@ -1,7 +1,7 @@
-import {MapGenerationController} from './mapGenerationController.js'
+import {ConstructGenerator} from './constructGenerator.js'
 import {DebugController} from "./debugController.js";
 import {WorldEntityController} from "./worldEntityController.js";
-import {MapChunkController} from "./mapChunkController";
+import {ChunkController} from "./chunkController";
 
 export class Map extends Phaser.GameObjects.GameObject {
 
@@ -11,15 +11,15 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.debug = false;
 
-        this.mapChunkController = new MapChunkController({scene:this.scene, map:this});
-        this.mapChunkController.on("activeChunkChanged", this.activeChunkChanged, this);
-        this.mapChunkController.on("chunkCreated", this.chunkCreated, this);
+        this.chunkController = new ChunkController({scene:this.scene, map:this});
+        this.chunkController.on("activeChunkChanged", this.activeChunkChanged, this);
+        this.chunkController.on("chunkCreated", this.chunkCreated, this);
 
-        this.mapGenerator = new MapGenerationController({scene:this.scene, map:this});
+        this.constructGenerator = new ConstructGenerator({scene:this.scene, map:this});
         //Done in state mode because of optimization
-        this.mapGenerator.on("requestSetTilesStart", this.requestSetTileStart, this);
-        this.mapGenerator.on("requestSetTile", this.requestSetTile, this);
-        this.mapGenerator.on("requestSetTilesFinished", this.requestSetTileFinished, this);
+        this.constructGenerator.on("requestSetTilesStart", this.requestSetTileStart, this);
+        this.constructGenerator.on("requestSetTile", this.requestSetTile, this);
+        this.constructGenerator.on("requestSetTilesFinished", this.requestSetTileFinished, this);
 
         this.worldEntityController = new WorldEntityController({scene:this.scene});
 
@@ -30,10 +30,10 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     afterInit(){
-        this.mapChunkController.afterInit();
+        this.chunkController.afterInit();
         //From here on out the map is initialized
-        if(this.debug) this.debugController.afterInit(this.mapChunkController.activeChunk);
-        this.worldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
+        if(this.debug) this.debugController.afterInit(this.chunkController.activeChunk);
+        this.worldEntityController.resetSpriteEntityController(this.chunkController.activeChunk);
         this.init = true;
     }
 
@@ -42,7 +42,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     requestSetTile(x, y, index){
-        let source = this.mapChunkController._getTileAndChunkByCoord(x, y);
+        let source = this.chunkController._getTileAndChunkByCoord(x, y);
         source.chunk.setTile(source.tile, index);
         if(this.touchedChunks.indexOf(source.chunk) === -1){
             this.touchedChunks.push(source.chunk);
@@ -50,23 +50,23 @@ export class Map extends Phaser.GameObjects.GameObject {
     }
 
     requestSetTileFinished(){
-        this.mapChunkController.resetChunkCollisionsFor(this.touchedChunks);
+        this.chunkController.resetChunkCollisionsFor(this.touchedChunks);
     }
 
     chunkCreated(chunk){
-        this.mapGenerator.addConstruct(chunk);
+        this.constructGenerator.addConstruct(chunk);
         this.worldEntityController.generateTrees(chunk);
         this.worldEntityController.generateAnimals(chunk);
     }
 
     activeChunkChanged(){
-        this.worldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
+        this.worldEntityController.resetSpriteEntityController(this.chunkController.activeChunk);
     }
 
     update(){
         if(!this.init)return;
-        this.mapChunkController.updateActiveChunk();
-        if(this.debug) this.debugController.update(this.mapChunkController.activeChunk);
+        this.chunkController.updateActiveChunk();
+        if(this.debug) this.debugController.update(this.chunkController.activeChunk);
         this.worldEntityController.update();
     }
 }

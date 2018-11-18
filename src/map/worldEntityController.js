@@ -1,4 +1,4 @@
-import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
+import {SpriteEntityFactory} from './spriteEntityFactory.js'
 import {ControllerBaseClass} from "../core/controllerBaseClass";
 import {TileData} from "../data/tileData";
 
@@ -7,7 +7,7 @@ export class WorldEntityController extends ControllerBaseClass{
     constructor(params){
         super(params);
         this.scene = params.scene;
-        this.mapSpriteEntityFactory = new MapSpriteEntityFactory(params);
+        this.spriteEntityFactory = new SpriteEntityFactory(params);
         this.movableEntityPool = [];
     }
 
@@ -70,7 +70,7 @@ export class WorldEntityController extends ControllerBaseClass{
         for(var j=0;j<entityList.length;j++){
             let currentWorldEntity = entityList[j];
             if(currentWorldEntity.spriteEntity !== null) break;
-            this.mapSpriteEntityFactory.setFreshWorldSprite(currentWorldEntity);
+            this.spriteEntityFactory.setFreshWorldSprite(currentWorldEntity);
         }
     }
 
