@@ -1,17 +1,14 @@
 import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
 import {ControllerBaseClass} from "../core/controllerBaseClass";
 import {TileData} from "../data/tileData";
-import {BaseWorldEntity} from "../worldEntities/baseWorldEntity";
-import {DeerWorldEntity} from "../worldEntities/deerWorldEntity";
 
-export class MapWorldEntityController extends ControllerBaseClass{
+export class WorldEntityController extends ControllerBaseClass{
 
     constructor(params){
         super(params);
         this.scene = params.scene;
         this.mapSpriteEntityFactory = new MapSpriteEntityFactory(params);
         this.movableEntityPool = [];
-
     }
 
     generateTrees(chunk){
@@ -34,6 +31,7 @@ export class MapWorldEntityController extends ControllerBaseClass{
 
     _addWorldEntity(chunk, x, y, source){
         let worldEntityType = source.type;
+        //A variant of BaseWorldEntity
         let worldEntity = new worldEntityType({x:x, y:y, frame:source.frame, chunk:chunk});
         this.movableEntityPool.push(worldEntity);
         chunk.entityList.push(worldEntity);

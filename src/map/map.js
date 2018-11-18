@@ -1,6 +1,6 @@
 import {MapGenerationController} from './mapGenerationController.js'
-import {MapDebugController} from "./mapDebugController.js";
-import {MapWorldEntityController} from "./mapWorldEntityController.js";
+import {DebugController} from "./debugController.js";
+import {WorldEntityController} from "./worldEntityController.js";
 import {MapChunkController} from "./mapChunkController";
 
 export class Map extends Phaser.GameObjects.GameObject {
@@ -21,9 +21,9 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapGenerator.on("requestSetTile", this.requestSetTile, this);
         this.mapGenerator.on("requestSetTilesFinished", this.requestSetTileFinished, this);
 
-        this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
+        this.worldEntityController = new WorldEntityController({scene:this.scene});
 
-        this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, map:this});
+        this.debugController = new DebugController({enabled:true, scene:this.scene, map:this});
 
         this.init = false;
         this.afterInit();
@@ -32,8 +32,8 @@ export class Map extends Phaser.GameObjects.GameObject {
     afterInit(){
         this.mapChunkController.afterInit();
         //From here on out the map is initialized
-        if(this.debug) this.mapDebugController.afterInit(this.mapChunkController.activeChunk);
-        this.mapWorldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
+        if(this.debug) this.debugController.afterInit(this.mapChunkController.activeChunk);
+        this.worldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
         this.init = true;
     }
 
@@ -55,18 +55,18 @@ export class Map extends Phaser.GameObjects.GameObject {
 
     chunkCreated(chunk){
         this.mapGenerator.addConstruct(chunk);
-        this.mapWorldEntityController.generateTrees(chunk);
-        this.mapWorldEntityController.generateAnimals(chunk);
+        this.worldEntityController.generateTrees(chunk);
+        this.worldEntityController.generateAnimals(chunk);
     }
 
     activeChunkChanged(){
-        this.mapWorldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
+        this.worldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
     }
 
     update(){
         if(!this.init)return;
         this.mapChunkController.updateActiveChunk();
-        if(this.debug) this.mapDebugController.update(this.mapChunkController.activeChunk);
-        this.mapWorldEntityController.update();
+        if(this.debug) this.debugController.update(this.mapChunkController.activeChunk);
+        this.worldEntityController.update();
     }
 }

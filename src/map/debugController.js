@@ -1,6 +1,6 @@
 import {DebugRect} from "../utils/debug";
 
-export class MapDebugController{
+export class DebugController{
     constructor(params){
         this.scene = params.scene;
         this.map = params.map;
