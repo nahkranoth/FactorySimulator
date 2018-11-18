@@ -11,6 +11,7 @@ export class MapSpriteEntity extends Phaser.GameObjects.Sprite{
 
     setPosition(x, y){
         super.setPosition(x, y - (this.height/2));
+         this.displayOriginY = this.height;
     }
 
     getPosition(){

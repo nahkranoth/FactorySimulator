@@ -43,8 +43,8 @@ module.exports = {
         contentBase: path.join(__dirname, 'build'),
         open: true,
         watchOptions: {
-            poll: true,
-            ignored: ['build']
+            lazy: true,
+            ignored: ['build', 'node_modules', 'custom']
         }
     },
     optimization: {
