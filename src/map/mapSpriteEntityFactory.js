@@ -1,5 +1,6 @@
 import {TileData} from "../data/tileData";
 import {MapSpriteEntity} from "../map/mapSpriteEnitity";
+import {_} from "underscore"
 
 export class MapSpriteEntityFactory{
     constructor(scene){
@@ -8,6 +9,8 @@ export class MapSpriteEntityFactory{
         this.spritePool = [];
         this.movableSpritePool = [];
         this.spritePoolIndex = 0;
+
+        this._writableChunk = null;//TODO: Warning this might break if I add any more entrypoints
     }
 
     _createNewSprite(){
@@ -18,7 +21,8 @@ export class MapSpriteEntityFactory{
             frame:'Tree1',
             index:index,
             x:400,
-            y:300 + (20 * index)
+            y:300 + (20 * index),
+            assignedChunk:this._writableChunk
         });
         this.spritePool.push(sprite);
         this.movableSpritePool.push(sprite);
@@ -33,11 +37,22 @@ export class MapSpriteEntityFactory{
     _getFromSpritePool(){
         this.spritePoolIndex %= (this.poolMax+1);
         this.spritePoolIndex++;
-        //console.log("lenght ",this.spritePoolIndex-1);
-        return this.spritePool[this.spritePool.length - (this.spritePoolIndex)];
+
+        let sprite = this.spritePool[this.spritePool.length - (this.spritePoolIndex)];
+        return sprite;
     }
 
-    setFreshSprite(x, y, frame){
+    _spriteStillAlive(x, y, frame, chunk){
+        let arr = _.find(this.spritePool, (sprite) => {
+            return (sprite.y == y-(sprite.height/2) && sprite.x == x && sprite.frame.name == frame && sprite.assignedChunk == chunk)
+        });
+        return arr;
+    }
+
+    setFreshSprite(x, y, frame, chunk){
+        if(this._spriteStillAlive(x, y, frame, chunk)) return;
+        //check if not still alive
+        this._writableChunk = chunk;
         let sprite = this._getOrCreateSprite();
         if(frame) sprite.setFrame(frame);
         sprite.setPosition(x, y-(sprite.height/2));

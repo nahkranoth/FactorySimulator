@@ -50,7 +50,7 @@ export class MapWorldEntityController extends ControllerBaseClass{
         let treeList= chunk.treeList;
         for(var j=0;j<treeList.length;j++){
             let currentTree = treeList[j];
-            this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y, currentTree.frame);
+            this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y, currentTree.frame, chunk);
         }
     }
 
