@@ -16,15 +16,10 @@ export class MapSpriteEntity extends Phaser.GameObjects.Sprite{
 
     setPosition(x, y){
         super.setPosition(x, y - (this.height/2));
-        this.displayOriginY = this.height;
+        //TODO: REFACTOR USING THIS INSTEAD OF MINUS HEIGHT: this.displayOriginY = this.height;
     }
 
     getPosition(){
         return {x: this.x, y:this.y+(this.height/2)};
-    }
-
-    update(){
-        //this.angle++;
-        //this.x += 0.1;
     }
 }

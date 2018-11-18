@@ -56,6 +56,7 @@ export class Map extends Phaser.GameObjects.GameObject {
     chunkCreated(chunk){
         this.mapGenerator.addConstruct(chunk);
         this.mapWorldEntityController.generateTrees(chunk);
+        this.mapWorldEntityController.generateAnimals(chunk);
     }
 
     activeChunkChanged(){

@@ -2,6 +2,7 @@ import {MapSpriteEntityFactory} from '../map/mapSpriteEntityFactory.js'
 import {ControllerBaseClass} from "../core/controllerBaseClass";
 import {TileData} from "../data/tileData";
 import {MapWorldEntity} from "./mapWorldEntity";
+import {DeerWorldEntity} from "../objects/deerWorldEntity";
 
 export class MapWorldEntityController extends ControllerBaseClass{
 
@@ -22,8 +23,19 @@ export class MapWorldEntityController extends ControllerBaseClass{
         }
     }
 
+    generateAnimals(chunk){
+        let animalAmount = Math.round(Math.random()*10);
+        for(var i=0;i<animalAmount;i++){
+            let animalType = chunk._getRandomAnimalType();
+            let pos = this._findFittingTile(animalType, chunk);
+            this._addWorldEntity(chunk, pos.x, pos.y, animalType.frame);
+        }
+    }
+
     _addWorldEntity(chunk, x, y, frame){
-        let worldEntity = new MapWorldEntity({x:x, y:y, frame:frame, chunk:chunk});
+
+        let worldEntityType = DeerWorldEntity;
+        let worldEntity = new worldEntityType({x:x, y:y, frame:frame, chunk:chunk});
         this.movableEntityPool.push(worldEntity);
         chunk.entityList.push(worldEntity);
     }

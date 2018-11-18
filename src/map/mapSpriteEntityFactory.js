@@ -6,7 +6,7 @@ export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
     constructor(params){
         super(params);
         this.scene = params.scene;
-        this.poolMax = 10; //This should be: 9 chunks * possible items
+        this.poolMax = 100; //This should be: 9 chunks * possible items
         this.spritePool = [];
         this.spritePoolIndex = 0;
     }
@@ -42,9 +42,9 @@ export class MapSpriteEntityFactory extends Phaser.Events.EventEmitter{
     setFreshWorldSprite(worldEntity){
         let sprite = this._getOrCreateSprite(worldEntity);
         worldEntity.reKindle(sprite);
-
         sprite.setPosition(worldEntity.x, worldEntity.y);
-        sprite.setDepth(worldEntity.y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART);
+        let spritePos = sprite.getPosition();
+        sprite.setDepth(spritePos.y - TileData.PROPERTIES.CHUNKHEIGHT + TileData.PROPERTIES.DEPTHSTART);
         return sprite;
     }
 }

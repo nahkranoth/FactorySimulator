@@ -25,8 +25,7 @@ export class MapWorldEntity {
     }
 
     update(){
-        if(this.sleep) return;
-        //this.spriteEntity.x += 0.1;
+        //overwrite
     }
 
 }

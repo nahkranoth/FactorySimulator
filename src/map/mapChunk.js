@@ -28,6 +28,10 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
             {frame:"Tree3", excludePlacement:[2, 3, 4, 5]}
         ];
 
+        this.animalTypes = [
+            {frame:"Deer", excludePlacement:[2, 3, 4, 5]}
+        ];
+
         this.entityList = [];
 
         this.init();
@@ -54,6 +58,10 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
 
     _getRandomTreeType(){
         return _.sample(this.treeTypes);
+    }
+
+    _getRandomAnimalType(){
+        return _.sample(this.animalTypes);
     }
 
     setTile(tile, index){
