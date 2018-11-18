@@ -9,8 +9,10 @@ export class Map extends Phaser.GameObjects.GameObject {
         super(params.scene, params.opt);
         this.camera = params.scene.cameras.main;
 
+        this.debug = true;
+
         this.mapChunkController = new MapChunkController({scene:this.scene, map:this});
-        this.mapChunkController.on("activeChunkChanged", this.chunksCreated, this);
+        this.mapChunkController.on("activeChunkChanged", this.activeChunkChanged, this);
         this.mapChunkController.on("chunkCreated", this.chunkCreated, this);
 
         this.mapGenerator = new MapGenerationController({scene:this.scene, map:this});
@@ -20,7 +22,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapGenerator.on("requestSetTilesFinished", this.requestSetTileFinished, this);
 
         this.mapWorldEntityController = new MapWorldEntityController({scene:this.scene});
-
         this.mapDebugController = new MapDebugController({enabled:true, scene:this.scene, map:this});
 
         this.init = false;
@@ -30,7 +31,8 @@ export class Map extends Phaser.GameObjects.GameObject {
     afterInit(){
         this.mapChunkController.afterInit();
         //From here on out the map is initialized
-        this.mapDebugController.afterInit(this.mapChunkController.activeChunk);
+        if(this.debug) this.mapDebugController.afterInit(this.mapChunkController.activeChunk);
+        this.mapWorldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
         this.init = true;
     }
 
@@ -55,14 +57,14 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.mapWorldEntityController.generateTrees(chunk);
     }
 
-    chunksCreated(){
-        console.log("chunks created");
+    activeChunkChanged(){
+        this.mapWorldEntityController.resetSpriteEntityController(this.mapChunkController.activeChunk);
     }
 
     update(){
         if(!this.init)return;
-        this.mapChunkController._updateActiveChunk();
-        this.mapDebugController.update(this.mapChunkController.activeChunk);
-        this.mapWorldEntityController._updateSpriteEntityFactory(this.mapChunkController.activeChunk);
+        this.mapChunkController.updateActiveChunk();
+        if(this.debug) this.mapDebugController.update(this.mapChunkController.activeChunk);
+        this.mapWorldEntityController.update();
     }
 }

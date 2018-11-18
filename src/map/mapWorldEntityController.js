@@ -35,18 +35,21 @@ export class MapWorldEntityController extends ControllerBaseClass{
         return {x:tilePosX, y:tilePosY}
     }
 
-    _updateSpriteEntityFactory(activeChunk){
+    resetSpriteEntityController(activeChunk){
         for(var i=0;i<activeChunk.neighbours.length;i++){
             this._updateChunkSpriteEntities(activeChunk.neighbours[i].mapChunk);
         }
         this._updateChunkSpriteEntities(activeChunk);
     }
 
+    update(){
+        this.mapSpriteEntityFactory.updateMovableEntities();
+    }
+
     _updateChunkSpriteEntities(chunk){
         let treeList= chunk.treeList;
         for(var j=0;j<treeList.length;j++){
             let currentTree = treeList[j];
-
             this.mapSpriteEntityFactory.setFreshSprite(currentTree.x,currentTree.y, currentTree.frame);
         }
     }

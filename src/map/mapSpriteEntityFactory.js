@@ -6,10 +6,9 @@ export class MapSpriteEntityFactory{
         this.scene = scene;
         this.poolMax = 100; //This should be: 9 chunks * possible items
         this.spritePool = [];
+        this.movableSpritePool = [];
         this.spritePoolIndex = 0;
     }
-
-    //TODO: Refactor to seperate SpritePool Object to be re-used by NPC's etc
 
     _createNewSprite(){
         let index = this.spritePool.length;
@@ -22,7 +21,7 @@ export class MapSpriteEntityFactory{
             y:300 + (20 * index)
         });
         this.spritePool.push(sprite);
-        //console.log("Create new sprite");
+        this.movableSpritePool.push(sprite);
         return sprite;
     }
 
@@ -43,5 +42,11 @@ export class MapSpriteEntityFactory{
         if(frame) sprite.setFrame(frame);
         sprite.setPosition(x, y-(sprite.height/2));
         sprite.setDepth(y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART - (sprite.height/2));
+    }
+
+    updateMovableEntities(){
+        for(var i=0;i<this.movableSpritePool.length;i++){
+            this.movableSpritePool[i].update();
+        }
     }
 }

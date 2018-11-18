@@ -11,8 +11,8 @@ ImagePlugin.prototype.apply = function(compiler) {
     compiler.plugin("compilation", function(compilation) {
         compilation.plugin("optimize", function () {
 
-            let tileTemplateImage = path.resolve(__dirname, '../assets/build/tilesetTemplate.png');
-            let outPath = path.resolve(__dirname, '../build/assets');
+            // let tileTemplateImage = path.resolve(__dirname, '../assets/build/tilesetTemplate.png');
+            // let outPath = path.resolve(__dirname, '../build/assets');
 
             // let templateImage = sharp(tileTemplateImage);
             // templateImage.metadata().then((metadata) => {
@@ -60,11 +60,9 @@ ImagePlugin.prototype.apply = function(compiler) {
             //         .then((img) =>{
             //             img.toFile(outPath+"/test1.png").catch((err)=>{console.log(err)});
             //         });
-
-
-            }).catch(err => {
-                console.log(err);
-            });
+            // }).catch(err => {
+            //     console.log(err);
+            // });
 
 
             console.log("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-Assets are being optimized-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");

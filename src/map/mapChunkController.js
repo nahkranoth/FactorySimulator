@@ -133,7 +133,7 @@ export class MapChunkController extends ControllerBaseClass{
         this.emit("activeChunkChanged");
     }
 
-    _updateActiveChunk(){
+    updateActiveChunk(){
         let currentActiveChunk = this.getActiveChunk();
         if(this._previousActiveChunk != currentActiveChunk) {
             this.activeChunk = currentActiveChunk;
