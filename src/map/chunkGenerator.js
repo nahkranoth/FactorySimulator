@@ -19,9 +19,6 @@ export class ChunkGenerator {
         this.generatePerlinMap(1, 0.3);//generate trees
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 9);//generate rocks
-
-        //this.generateTrees();
-
         this.scene.physics.add.collider(this.scene.player, this.layer);
     }
 
@@ -30,34 +27,6 @@ export class ChunkGenerator {
             this.setTile(tile, 0);
         });
         this.tileMap.setCollision(0, false);
-    }
-
-    //TODO: REMOVE AFTER REFACTOR
-    generateTrees(){
-        let treeAmount = Math.round(Math.random()*10);
-        let chunkDimensions = TileData.getChunkDimensionsInPixels();
-        for(var i=0;i<treeAmount;i++){
-            let treeType = _.sample(this.treeTypes);
-            let pos = this._findFittingTile(treeType, chunkDimensions);
-            let posXOffset = pos.x + this.chunk.x - (chunkDimensions.x/2);
-            let posYOffset = pos.y + this.chunk.y - (chunkDimensions.y/2);
-            this.treeList.push({x:posXOffset, y:posYOffset,frame:treeType.frame});
-        }
-    }
-
-    _findFittingTile(treeType, chunkDimensions){
-        let posX, posY;
-        while(true){
-            posX = (Math.random()*chunkDimensions.x);
-            posY = (Math.random()*chunkDimensions.y);
-            let tile = this.tileMap.getTileAtWorldXY(posX, posY);
-            //console.log("TILEINDEX: ",tile.index);
-            //console.log(treeType.excludePlacement.indexOf(tile.index));
-            if(treeType.excludePlacement.indexOf(tile.index) === -1){
-                break;
-            }
-        }
-        return {x:posX, y:posY}
     }
 
     //Convert chunk position to axis.

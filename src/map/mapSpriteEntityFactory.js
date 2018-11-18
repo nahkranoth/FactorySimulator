@@ -48,7 +48,7 @@ export class MapSpriteEntityFactory{
         return arr;
     }
 
-    setFreshWorldEntity(x, y, frame, chunk){
+    setFreshWorldSprite(x, y, frame, chunk){
         let sprite = this._getOrCreateSprite(chunk);
         if(frame) sprite.setFrame(frame);
         sprite.setPosition(x, y);

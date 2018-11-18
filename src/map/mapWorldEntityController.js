@@ -16,7 +16,7 @@ export class MapWorldEntityController extends ControllerBaseClass{
         for(var i=0;i<treeAmount;i++){
             let treeType = chunk._getRandomTreeType();
             let pos = this._findFittingTile(treeType, chunk);
-            chunk.treeList.push({x:pos.x, y:pos.y,frame:treeType.frame});
+            chunk.entityList.push({x:pos.x, y:pos.y,frame:treeType.frame});
         }
     }
 
@@ -47,13 +47,13 @@ export class MapWorldEntityController extends ControllerBaseClass{
     }
 
     _updateChunkSpriteEntities(chunk){
-        let treeList = chunk.treeList;
-        for(var j=0;j<treeList.length;j++){
-            let currentTree = treeList[j];
+        let entityList = chunk.entityList;
+        for(var j=0;j<entityList.length;j++){
+            let currentTree = entityList[j];
             let possibleSprite = this.mapSpriteEntityFactory.getSpriteAt(currentTree.x, currentTree.y, currentTree.frame, chunk);
             //it's clear to spawn new entity
             if(typeof(possibleSprite) !== "undefined") return;
-            this.mapSpriteEntityFactory.setFreshWorldEntity(currentTree.x,currentTree.y, currentTree.frame, chunk);
+            this.mapSpriteEntityFactory.setFreshWorldSprite(currentTree.x,currentTree.y, currentTree.frame, chunk);
             //this.emit("worldEntityReassigned", worldEntity, chunk, possibleSprite.assignedToChunk);
         }
     }

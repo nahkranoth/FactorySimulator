@@ -28,7 +28,7 @@ export class MapChunk extends Phaser.GameObjects.GameObject {
             {frame:"Tree3", excludePlacement:[2, 3, 4, 5]}
         ];
 
-        this.treeList = [];
+        this.entityList = [];
 
         this.init();
     }
