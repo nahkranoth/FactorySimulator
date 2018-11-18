@@ -1,5 +1,6 @@
 import {TileData} from "../data/tileData";
 import {MapSpriteEntity} from "../map/mapSpriteEnitity";
+import {_} from "underscore"
 
 export class MapSpriteEntityFactory{
     constructor(scene){
@@ -37,6 +38,13 @@ export class MapSpriteEntityFactory{
         let sprite = this.spritePool[this.spritePool.length - (this.spritePoolIndex)];
         sprite.assignedToChunk = chunk;
         return sprite;
+    }
+
+    _spriteStillAlive(x, y, frame, chunk){
+        let arr = _.find(this.spritePool, (sprite) => {
+            return (sprite.y == y-(sprite.height/2) && sprite.x == x && sprite.frame.name == frame && sprite.assignedChunk == chunk)
+        });
+        return arr;
     }
 
     setFreshSprite(x, y, frame, chunk){
