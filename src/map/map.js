@@ -21,7 +21,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.constructGenerator.on("requestSetTile", this.requestSetTile, this);
         this.constructGenerator.on("requestSetTilesFinished", this.requestSetTileFinished, this);
 
-        this.worldEntityController = new WorldEntityController({scene:this.scene});
+        this.worldEntityController = new WorldEntityController({scene:this.scene, map:this});
 
         this.debugController = new DebugController({enabled:true, scene:this.scene, map:this});
 

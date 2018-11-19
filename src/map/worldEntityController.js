@@ -7,6 +7,7 @@ export class WorldEntityController extends ControllerBaseClass{
     constructor(params){
         super(params);
         this.scene = params.scene;
+        this.map = params.map;
         this.spriteEntityFactory = new SpriteEntityFactory(params);
         this.movableEntityPool = [];
     }
@@ -32,7 +33,7 @@ export class WorldEntityController extends ControllerBaseClass{
     _addWorldEntity(chunk, x, y, source){
         let worldEntityType = source.type;
         //A variant of BaseWorldEntity
-        let worldEntity = new worldEntityType({x:x, y:y, frame:source.frame, chunk:chunk});
+        let worldEntity = new worldEntityType({x:x, y:y, frame:source.frame, scene:this.scene, map:this.map, chunk:chunk});
         this.movableEntityPool.push(worldEntity);
         chunk.entityList.push(worldEntity);
     }

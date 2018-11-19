@@ -2,14 +2,16 @@ export class BaseWorldEntity {
     constructor(params){
         this.x = params.x;
         this.y = params.y;
+        this.scene = params.scene;
         this.frame = params.frame;
         this.spriteEntity = null;
+        this.map = params.map;
         this.chunk = params.chunk;
-        this.sleep = true;
+        this.asleep = true;
     }
 
     slumber(){
-        this.sleep = true;
+        this.asleep = true;
         this.x = this.spriteEntity.getPosition().x;
         this.y = this.spriteEntity.getPosition().y;
         this.frame = this.spriteEntity.frame.name;
@@ -18,14 +20,14 @@ export class BaseWorldEntity {
     }
 
     reKindle(spriteEntity){
-        this.sleep = false;
+        this.asleep = false;
         this.spriteEntity = spriteEntity;
         this.spriteEntity.setPosition(this.x, this.y);
         this.spriteEntity.setFrame(this.frame);
     }
 
     update(){
-        //overwrite
+        if(this.asleep) return;
     }
 
 }
