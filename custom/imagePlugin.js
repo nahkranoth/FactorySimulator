@@ -84,7 +84,7 @@ ImagePlugin.prototype.apply = function(compiler) {
                         let atlasJson = {"frames":{}};
                         for (var i = 0; i < tileAmount; i++) {
                             let tile = json.tiles[i];
-                            atlasJson["frames"][tile.name] = {"frame":{"x": tileSize*i, "y": tileSize*i, "w": tileSize, "h": tileSize}};
+                            atlasJson["frames"][tile.name] = {"frame":{"x": tileSize*i, "y": 0, "w": tileSize, "h": tileSize}};
                         }
 
                         jsonfile.writeFile(tilemapAtlasJSONPath, atlasJson, function (err) {
