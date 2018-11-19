@@ -38,17 +38,24 @@ export class WorldEntityController extends ControllerBaseClass{
         chunk.entityList.push(worldEntity);
     }
 
-    _findFittingTile(treeType, chunk){
+    _findFittingTile(entity, chunk){
         let posX, posY, tilePosX, tilePosY;
+
+        let maxTries = 5;
+        let tries = 0;
         while(true){
             posX = Math.floor(Math.random()*TileData.PROPERTIES.CHUNKWIDTH);
             posY = Math.floor(Math.random()*TileData.PROPERTIES.CHUNKHEIGHT);
             let tile = chunk.layer.getTileAt(posX, posY);
             tilePosX = tile.getCenterX();
             tilePosY = tile.getCenterY();
-            if(treeType.excludePlacement.indexOf(tile.index) === -1){
+            if(entity.excludePlacement.indexOf(tile.index) === -1){
                 break;
             }
+            if(tries >= maxTries){
+                break;
+            }
+            tries++;
         }
         return {x:tilePosX, y:tilePosY}
     }
