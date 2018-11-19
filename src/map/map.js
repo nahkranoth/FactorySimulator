@@ -2,6 +2,7 @@ import {ConstructGenerator} from './constructGenerator.js'
 import {DebugController} from "./debugController.js";
 import {WorldEntityController} from "./worldEntityController.js";
 import {ChunkController} from "./chunkController";
+import {PathFindingController} from "./pathFindingController";
 
 export class Map extends Phaser.GameObjects.GameObject {
 
@@ -9,7 +10,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         super(params.scene, params.opt);
         this.camera = params.scene.cameras.main;
 
-        this.debug = false;
+        this.debug = true;
 
         this.chunkController = new ChunkController({scene:this.scene, map:this});
         this.chunkController.on("activeChunkChanged", this.activeChunkChanged, this);
@@ -23,6 +24,8 @@ export class Map extends Phaser.GameObjects.GameObject {
 
         this.worldEntityController = new WorldEntityController({scene:this.scene, map:this});
 
+        this.pathFindingController = new PathFindingController({scene:this.scene, map:this});
+
         this.debugController = new DebugController({enabled:true, scene:this.scene, map:this});
 
         this.init = false;
@@ -34,6 +37,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         //From here on out the map is initialized
         if(this.debug) this.debugController.afterInit(this.chunkController.activeChunk);
         this.worldEntityController.resetSpriteEntityController(this.chunkController.activeChunk);
+        this.pathFindingController.afterInit(this.chunkController);
         this.init = true;
     }
 

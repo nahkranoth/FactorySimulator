@@ -30,6 +30,11 @@ export class ChunkController extends ControllerBaseClass{
         })
     }
 
+    getChunksInRange(startPosX, startPosY, endPosX, endPosY){
+        let startSource = this._getTileByWorldPosition(startPosX, startPosY);
+        let stopSource = this._getTileByWorldPosition(endPosX, endPosY);
+    }
+
     _getWorldPositionFromPointerPosition(x, y){
         return({x:x+this.camera.scrollX, y:y+this.camera.scrollY});
     }
@@ -69,6 +74,15 @@ export class ChunkController extends ControllerBaseClass{
         let xWorld = chunkWorldXPos + tile.x;
         let yWorld = chunkWorldYPos + tile.y;
         return {x: xWorld, y: yWorld};
+    }
+
+    _getTileAndChunkByCoord(x, y){
+        let chunkCoords = {x:Math.floor(x/TileData.PROPERTIES.CHUNKWIDTH), y:Math.floor(y/TileData.PROPERTIES.CHUNKWIDTH)};
+        let xTile = x % (TileData.PROPERTIES.CHUNKWIDTH);
+        let yTile = y % (TileData.PROPERTIES.CHUNKHEIGHT);
+        let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
+        let tile = possibleChunk.getTileAt({x:xTile, y:yTile});
+        return {chunk:possibleChunk, tile:tile};
     }
 
     _getTileByWorldPosition(x, y){
@@ -142,14 +156,5 @@ export class ChunkController extends ControllerBaseClass{
             return true;
         }
         return false;
-    }
-
-    _getTileAndChunkByCoord(x, y){
-        let chunkCoords = {x:Math.floor(x/TileData.PROPERTIES.CHUNKWIDTH), y:Math.floor(y/TileData.PROPERTIES.CHUNKWIDTH)};
-        let xTile = x % (TileData.PROPERTIES.CHUNKWIDTH);
-        let yTile = y % (TileData.PROPERTIES.CHUNKHEIGHT);
-        let possibleChunk = this._getOrCreateChunkByCoord(chunkCoords.x, chunkCoords.y);
-        let tile = possibleChunk.getTileAt({x:xTile, y:yTile});
-        return {chunk:possibleChunk, tile:tile};
     }
 }
