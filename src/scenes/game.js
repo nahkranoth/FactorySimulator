@@ -32,6 +32,11 @@ export class Game extends Phaser.Scene {
             y:this.cameras.main.height/2
         });
 
+
+        this.physics.add.overlap(this.fireBall, this.player, ()=>{
+            console.log("Burn Player");
+        });
+
         this.cameras.main.startFollow(this.player);
         this.gui = this.scene.manager.getScene("gui");
         this.map = new Map({scene:this,opt:{}});

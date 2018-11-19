@@ -16,13 +16,14 @@ export class SpriteEntityFactory extends Phaser.Events.EventEmitter{
         let sprite = new SpriteEntity({
             scene: this.scene,
             key: 'worldEntities',
-            frame:'Tree1',
+            frame:worldEntity.frame,
             index:index,
             x:400,
             y:300 + (20 * index),
             assignedToWorldEntity:worldEntity
         });
         this.spritePool.push(sprite);
+
         return sprite;
     }
 

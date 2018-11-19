@@ -14,7 +14,7 @@ export class BaseWorldEntity {
         this.asleep = true;
         this.x = this.spriteEntity.getPosition().x;
         this.y = this.spriteEntity.getPosition().y;
-        this.frame = this.spriteEntity.frame.name;
+        this.frame = this.spriteEntity.frame;
 
         this.spriteEntity = null;
     }
