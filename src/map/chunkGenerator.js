@@ -19,14 +19,19 @@ export class ChunkGenerator {
         this.generatePerlinMap(1, 0.3);//generate trees
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 9);//generate rocks
-        this.scene.physics.add.collider(this.scene.player, this.layer);
+
+        this.scene.physics.add.collider([this.scene.player, this.scene.fireBall], this.layer, this.onCollision);
+    }
+
+    onCollision(collision){
+        //console.log(collision);
     }
 
     clear(){
         this.layer.forEachTile((tile) => {
             this.setTile(tile, 0);
         });
-        this.tileMap.setCollision(0, false);
+        this.layer.setCollision(0, false);
     }
 
     //Convert chunk position to axis.
@@ -51,6 +56,16 @@ export class ChunkGenerator {
         tile.index = index;
         let data = TileData.getTileData(index);
         tile.properties.collision = data.collision;
+        if(data.collision){
+            tile.setCollisionCallback(
+                (collision) => {
+                    tile.index = 0;
+                    tile.properties.collision = false;
+                    tile.setCollisionCallback(null);
+                    this.resetCollision();
+                });
+        }
+
     }
 
     generatePerlinMap(index, modifier, octave){
@@ -65,8 +80,8 @@ export class ChunkGenerator {
     }
 
     resetCollision(){
-        this.tileMap.setCollisionByProperty({ collision: true });
-        this.tileMap.setCollisionByProperty({ collision: false }, false);
+        this.layer.setCollisionByProperty({ collision: true });
+        this.layer.setCollisionByProperty({ collision: false }, false);
     }
 
 }
