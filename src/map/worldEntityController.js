@@ -13,10 +13,11 @@ export class WorldEntityController extends ControllerBaseClass{
     }
 
     generateTrees(chunk){
-        let treeAmount = 0;//Math.round(Math.random()*10);
+        let treeAmount = Math.round(Math.random()*10);
         for(var i=0;i<treeAmount;i++){
             let tree = chunk._getRandomTreeType();
             let pos = this._findFittingTile(tree, chunk);
+            if(!pos) continue;
             this._addWorldEntity(chunk, pos.x, pos.y, tree);
         }
     }
@@ -26,6 +27,7 @@ export class WorldEntityController extends ControllerBaseClass{
         for(var i=0;i<animalAmount;i++){
             let animal = chunk._getRandomAnimalType();
             let pos = this._findFittingTile(animal, chunk);
+            if(!pos) continue;
             this._addWorldEntity(chunk, pos.x, pos.y, animal);
         }
     }
@@ -40,7 +42,6 @@ export class WorldEntityController extends ControllerBaseClass{
 
     _findFittingTile(entity, chunk){
         let posX, posY, tilePosX, tilePosY;
-
         let maxTries = 5;
         let tries = 0;
         while(true){
@@ -53,7 +54,7 @@ export class WorldEntityController extends ControllerBaseClass{
                 break;
             }
             if(tries >= maxTries){
-                break;
+                return false;
             }
             tries++;
         }
