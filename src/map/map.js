@@ -29,6 +29,9 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.debugController = new DebugController({enabled:true, scene:this.scene, map:this});
 
         this.init = false;
+
+        this.flaggedForCollisionChanges = [];
+
         this.afterInit();
     }
 
@@ -67,10 +70,22 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.worldEntityController.resetSpriteEntityController(this.chunkController.activeChunk);
     }
 
+    flagTileForCollisionChange(tile, generator){
+        this.flaggedForCollisionChanges.push({tile:tile, generator:generator});
+    }
+
     update(){
         if(!this.init)return;
-        this.chunkController.updateActiveChunk();
         if(this.debug) this.debugController.update(this.chunkController.activeChunk);
         this.worldEntityController.update();
+        if(this.flaggedForCollisionChanges.length > 0){
+
+            this.flaggedForCollisionChanges.forEach((source) => {
+                source.tile.index = 6;
+                source.tile.properties.collision = false;
+                source.tile.setCollisionCallback(null);
+                source.generator.resetCollision();
+            })
+        }
     }
 }

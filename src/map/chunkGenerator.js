@@ -59,13 +59,11 @@ export class ChunkGenerator {
         if(data.collision){
             tile.setCollisionCallback(
                 (collision) => {
-                    tile.index = 0;
-                    tile.properties.collision = false;
-                    tile.setCollisionCallback(null);
-                    this.resetCollision();
+                    if (collision === this.scene.player) return;
+                    this.scene.map.flagTileForCollisionChange(tile, this);
+
                 });
         }
-
     }
 
     generatePerlinMap(index, modifier, octave){

@@ -13,10 +13,22 @@ export class FireBall extends Phaser.Physics.Arcade.Sprite{
         this.body.setBounce(1).setCollideWorldBounds(true);
         this.body.setVelocityX((Math.random()*20) + 100);
         this.body.setVelocityY((Math.random()*20) + 100);
-
+        this.body.setCircle(30, 10, 10);
         this.body.onWall();
+
+        this.flipTimer = 0;
+        this.deltaTime = 0;
         //this.body.on("collide", () => {console.log("Collide")})
     }
+
+    // flipVelocity(){
+    //     this.deltaTime = Date.now() - this.flipTimer;
+    //     if(this.deltaTime >= 300){
+    //         //this.body.setVelocityX(-this.body.velocity.x);
+    //         this.body.setVelocityY(-this.body.velocity.y);
+    //         this.flipTimer = Date.now();
+    //     }
+    // }
 
     update(){
         this.angle+=2;

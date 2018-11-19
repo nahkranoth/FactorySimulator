@@ -147,7 +147,7 @@ export class ChunkController extends ControllerBaseClass{
         this.emit("activeChunkChanged");
     }
 
-    updateActiveChunk(){
+    update(){
         let currentActiveChunk = this.getActiveChunk();
         if(this._previousActiveChunk != currentActiveChunk) {
             this.activeChunk = currentActiveChunk;
