@@ -78,14 +78,15 @@ export class Map extends Phaser.GameObjects.GameObject {
         if(!this.init)return;
         if(this.debug) this.debugController.update(this.chunkController.activeChunk);
         this.worldEntityController.update();
+        this.chunkController.update();
         if(this.flaggedForCollisionChanges.length > 0){
-
             this.flaggedForCollisionChanges.forEach((source) => {
                 source.tile.index = 6;
                 source.tile.properties.collision = false;
                 source.tile.setCollisionCallback(null);
                 source.generator.resetCollision();
-            })
+            });
+            this.flaggedForCollisionChanges = [];
         }
     }
 }

@@ -61,7 +61,14 @@ export class ChunkGenerator {
                 (collision) => {
                     if (collision === this.scene.player) return;
                     this.scene.map.flagTileForCollisionChange(tile, this);
-
+                });
+        }else{
+            tile.setCollisionCallback(
+                (collision) => {
+                    if (collision === this.scene.player) return;
+                    tile.index = 6;
+                    tile.setCollisionCallback(null);
+                    this.scene.map.flagTileForCollisionChange(tile, this);
                 });
         }
     }
