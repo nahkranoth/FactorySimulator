@@ -1,4 +1,5 @@
 import {BaseWorldEntity} from "./baseWorldEntity";
+import {FireBall} from "../objects/fireball";
 
 export class DeerWorldEntity extends BaseWorldEntity{
     constructor(params) {
@@ -15,7 +16,12 @@ export class DeerWorldEntity extends BaseWorldEntity{
 
         this.currentBehaviourState = this.behaviourStates["idle"].object;
         this.currentBehaviourState.enter();
+        this.canCollide = true;
+    }
 
+    burn(){
+        console.log("Ooh Deer, it hurts");
+        this.switchBehaviourState("fleeing");
     }
 
     switchBehaviourState(state){

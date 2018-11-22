@@ -29,6 +29,9 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.debugController = new DebugController({enabled:true, scene:this.scene, map:this});
 
         this.init = false;
+
+        this.flaggedForCollisionChanges = [];
+
         this.afterInit();
     }
 
@@ -45,13 +48,14 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.touchedChunks = [];
     }
 
-    requestSetTile(x, y, index){
+    requestSetTile(x, y, index) {
         let source = this.chunkController._getTileAndChunkByCoord(x, y);
         source.chunk.setTile(source.tile, index);
-        if(this.touchedChunks.indexOf(source.chunk) === -1){
+        if (this.touchedChunks.indexOf(source.chunk) === -1) {
             this.touchedChunks.push(source.chunk);
         }
     }
+
 
     requestSetTileFinished(){
         this.chunkController.resetChunkCollisionsFor(this.touchedChunks);
@@ -67,10 +71,23 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.worldEntityController.resetSpriteEntityController(this.chunkController.activeChunk);
     }
 
+    flagTileForCollisionChange(tile, generator){
+        this.flaggedForCollisionChanges.push({tile:tile, generator:generator});
+    }
+
     update(){
         if(!this.init)return;
-        this.chunkController.updateActiveChunk();
         if(this.debug) this.debugController.update(this.chunkController.activeChunk);
         this.worldEntityController.update();
+        this.chunkController.update();
+        if(this.flaggedForCollisionChanges.length > 0){
+            this.flaggedForCollisionChanges.forEach((source) => {
+                source.tile.index = 6;
+                source.tile.properties.collision = false;
+                source.tile.setCollisionCallback(null);
+                source.generator.resetCollision();
+            });
+            this.flaggedForCollisionChanges = [];
+        }
     }
 }

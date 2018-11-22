@@ -1,4 +1,5 @@
 import {TileData} from "../data/tileData";
+import {FireBall} from "./fireball";
 
 export class Player extends Phaser.Physics.Arcade.Sprite{
 
@@ -34,6 +35,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }else if(this.cursors.down.isDown || this.keyS.isDown){
             this.depth = this.y + TileData.PROPERTIES.DEPTHSTART;
             this.body.setVelocityY(this.moveSpeed);
+        }
+    }
+
+    onCollision(collidingSprite){
+        if(collidingSprite instanceof FireBall){
+            console.log("Player Burn");
         }
     }
 }

@@ -13,7 +13,7 @@ export class TileData{
     static getChunkDimensionsInPixels(){
         return {
             x:TileData.PROPERTIES.TILESIZE * TileData.PROPERTIES.CHUNKWIDTH,
-            y:TileData.PROPERTIES.TILESIZE*TileData.PROPERTIES.CHUNKHEIGHT
+            y:TileData.PROPERTIES.TILESIZE * TileData.PROPERTIES.CHUNKHEIGHT
         };
     }
 }
@@ -22,7 +22,7 @@ TileData.worldTileData = [];
 
 TileData.PROPERTIES = {
     TILESIZE:24,
-    CHUNKWIDTH:8,
-    CHUNKHEIGHT:8,
+    CHUNKWIDTH:24,
+    CHUNKHEIGHT:24,
     DEPTHSTART:1000000
 };
