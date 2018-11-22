@@ -21,6 +21,10 @@ export class FireBall extends Phaser.Physics.Arcade.Sprite{
         //this.body.on("collide", () => {console.log("Collide")})
     }
 
+    onWorldSpriteCollision(sprite){
+        sprite.assignedToWorldEntity.burn();
+    }
+
     // flipVelocity(){
     //     this.deltaTime = Date.now() - this.flipTimer;
     //     if(this.deltaTime >= 300){

@@ -48,13 +48,14 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.touchedChunks = [];
     }
 
-    requestSetTile(x, y, index){
+    requestSetTile(x, y, index) {
         let source = this.chunkController._getTileAndChunkByCoord(x, y);
         source.chunk.setTile(source.tile, index);
-        if(this.touchedChunks.indexOf(source.chunk) === -1){
+        if (this.touchedChunks.indexOf(source.chunk) === -1) {
             this.touchedChunks.push(source.chunk);
         }
     }
+
 
     requestSetTileFinished(){
         this.chunkController.resetChunkCollisionsFor(this.touchedChunks);

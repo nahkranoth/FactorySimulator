@@ -2,7 +2,7 @@ import {Player} from '../objects/player.js';
 import {FireBall} from '../objects/fireball.js'
 import {Map} from '../map/map.js';
 import {BuildInteractionController} from '../map/buildInteractionController';
-import {SpriteEntity} from "../map/spriteEntity";
+import {CollisionController} from "../core/collisionController";
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -15,6 +15,9 @@ export class Game extends Phaser.Scene {
         this.tileMapContainer = this.add.container(0,0);
 
         this.tileMapContainer.setDepth(0);
+
+        this.collisionController = new CollisionController({scene:this});
+
         //ORDER MATTERS. NO REALLY!
         this.player = new Player({
             scene:this,
@@ -31,22 +34,18 @@ export class Game extends Phaser.Scene {
             x:this.cameras.main.width/2,
             y:this.cameras.main.height/2
         });
+        this.collisionController.setCollisionBetweenWorldSprites(this.fireBall, this.fireBall.onWorldSpriteCollision);
 
-
-        this.physics.add.overlap(this.fireBall, this.player, ()=>{
-            console.log("Burn Player");
-        });
+        this.collisionController.setCollisionBetween(this.fireBall, this.player, this.player.onCollision);
 
         this.cameras.main.startFollow(this.player);
         this.gui = this.scene.manager.getScene("gui");
         this.map = new Map({scene:this,opt:{}});
 
-
-
         new BuildInteractionController({scene:this, gui:this.gui, map:this.map});
         //Depth Controller
-    }
 
+    }
 
     update(){
         this.map.update();

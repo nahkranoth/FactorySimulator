@@ -10,9 +10,6 @@ export class SpriteEntity extends Phaser.Physics.Arcade.Sprite{
         this.scene.add.existing(this);﻿
         this.depth = this.y; + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART - (this.height/2);
 
-        this.scene.physics.add.overlap(this.scene.fireBall, this, (fireBall, spriteEntity)=>{
-            this.assignedToWorldEntity.onCollision(fireBall);
-        });
     }
 
     setFrame(name){

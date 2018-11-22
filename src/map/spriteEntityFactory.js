@@ -1,6 +1,7 @@
 import {TileData} from "../data/tileData";
 import {SpriteEntity} from "./spriteEntity";
 import {_} from "underscore"
+import {CollisionController} from "../core/collisionController";
 
 export class SpriteEntityFactory extends Phaser.Events.EventEmitter{
     constructor(params){
@@ -9,6 +10,10 @@ export class SpriteEntityFactory extends Phaser.Events.EventEmitter{
         this.poolMax = 500; //This should be: 9 chunks * possible items
         this.spritePool = [];
         this.spritePoolIndex = 0;
+
+        // this.scene.physics.add.overlap(this.scene.fireBall, this, (fireBall, spriteEntity)=>{
+        //     this.assignedToWorldEntity.onCollision(fireBall);
+        // });
     }
 
     _createNewSprite(worldEntity){
@@ -22,6 +27,8 @@ export class SpriteEntityFactory extends Phaser.Events.EventEmitter{
             y:300 + (20 * index),
             assignedToWorldEntity:worldEntity
         });
+        if(worldEntity.canCollide) CollisionController.registerAsWorldCollisionSprite(sprite, this.scene);
+
         this.spritePool.push(sprite);
 
         return sprite;
