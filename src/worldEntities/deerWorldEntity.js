@@ -18,6 +18,10 @@ export class DeerWorldEntity extends BaseWorldEntity{
 
     }
 
+    onCollision(collidingSprite){
+        console.log(collidingSprite);
+    }
+
     switchBehaviourState(state){
         this.currentBehaviourState.exit();
         this.currentBehaviourState = this.behaviourStates[state].object;
