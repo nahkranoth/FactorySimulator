@@ -8,7 +8,6 @@ export class TreeWorldEntity extends BaseWorldEntity{
     }
 
     burn(){
-        console.log("Burn Tree");
         this.spriteEntity.setFrame("Trees/Tree2");
     }
 

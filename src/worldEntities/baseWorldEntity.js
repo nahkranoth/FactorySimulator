@@ -22,10 +22,10 @@ export class BaseWorldEntity {
     }
 
     reKindle(spriteEntity){
-        this.asleep = false;
         this.spriteEntity = spriteEntity;
         this.spriteEntity.setPosition(this.x, this.y);
         this.spriteEntity.setFrame(this.frame);
+        this.asleep = false;
     }
 
     update(){

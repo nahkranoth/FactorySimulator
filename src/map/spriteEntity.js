@@ -19,7 +19,6 @@ export class SpriteEntity extends Phaser.Physics.Arcade.Sprite{
     reAssign(worldEntity){
         this.assignedToWorldEntity.slumber();
         this.assignedToWorldEntity = worldEntity;
-        this.setAnimation();
     }
 
     setPosition(x, y){

@@ -15,7 +15,6 @@ export class WorldEntityController extends ControllerBaseClass{
 
     generateAnimation(){
         var frameNames = this.scene.anims.generateFrameNames('worldEntities', { prefix: 'Deer/burn/', end: 3, zeroPad: 3});
-        console.log(frameNames);
         this.scene.anims.create({ key: 'deer_burn', frames: frameNames, frameRate: 10, repeat: -1 });
     }
 
@@ -30,7 +29,7 @@ export class WorldEntityController extends ControllerBaseClass{
     }
 
     generateAnimals(chunk){
-        let animalAmount = 1;//Math.round(Math.random()*10);
+        let animalAmount = 10;//Math.round(Math.random()*10);
         for(var i=0;i<animalAmount;i++){
             let animal = chunk._getRandomAnimalType();
             let pos = this._findFittingTile(animal, chunk);

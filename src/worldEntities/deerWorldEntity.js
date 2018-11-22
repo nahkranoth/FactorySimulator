@@ -1,6 +1,4 @@
 import {BaseWorldEntity} from "./baseWorldEntity";
-import {FireBall} from "../objects/fireball";
-import {TreeWorldEntity} from "./treeWorldEntity";
 
 export class DeerWorldEntity extends BaseWorldEntity{
     constructor(params) {
@@ -12,7 +10,8 @@ export class DeerWorldEntity extends BaseWorldEntity{
         this.behaviourStates = {
             "idle": {object: new IdleState(this)},
             "walking": {object: new WalkingState(this)},
-            "fleeing": {object: new FleeingState(this)}
+            "fleeing": {object: new FleeingState(this)},
+            "burning": {object: new BurningState(this)}
         };
 
         this.currentBehaviourState = this.behaviourStates["idle"].object;
@@ -22,9 +21,7 @@ export class DeerWorldEntity extends BaseWorldEntity{
     }
 
     burn(){
-        console.log("Ooh Deer, it hurts");
-        this.switchBehaviourState("fleeing");
-        this.spriteEntity.anims.play("deer_burn");
+        this.switchBehaviourState("burning");
     }
 
     switchBehaviourState(state){
@@ -36,12 +33,6 @@ export class DeerWorldEntity extends BaseWorldEntity{
     update(){
         super.update();
         this.currentBehaviourState.run();
-        let spritePos = this.spriteEntity.getPosition();
-
-        if(this.currentBehaviourState !== this.behaviourStates["fleeing"].object && Phaser.Math.Distance.Between(spritePos.x, spritePos.y, this.scene.player.x, this.scene.player.y) <= 100){
-            this.switchBehaviourState("fleeing");
-        }
-
     }
 
     static getTypes(){
@@ -49,7 +40,7 @@ export class DeerWorldEntity extends BaseWorldEntity{
     }
 }
 
-DeerWorldEntity.types = [
+    DeerWorldEntity.types = [
     {frame:"Deer/deer_idle", type:DeerWorldEntity, excludePlacement:[2, 3, 4, 5]}
 ];
 
@@ -67,7 +58,11 @@ class IdleState{
             return;
         }
 
-        this.me.hunger -= 0.4;
+        this.me.hunger -= 0.04;
+        let spritePos = this.me.spriteEntity.getPosition();
+        if(Phaser.Math.Distance.Between(spritePos.x, spritePos.y, this.me.scene.player.x, this.me.scene.player.y) <= 100){
+            this.me.switchBehaviourState("fleeing");
+        }
     }
 
     exit(){
@@ -81,7 +76,7 @@ class WalkingState{
     }
 
     enter(){
-
+        this.me.spriteEntity.anims.pause();
     }
 
     run(){
@@ -91,10 +86,40 @@ class WalkingState{
         if(this.me.hunger >= 100){
             this.me.switchBehaviourState("idle");
         }
+        let spritePos = this.me.spriteEntity.getPosition();
+        if(Phaser.Math.Distance.Between(spritePos.x, spritePos.y, this.me.scene.player.x, this.me.scene.player.y) <= 100){
+            this.me.switchBehaviourState("fleeing");
+        }
     }
 
     exit(){
 
+    }
+}
+
+class BurningState{
+    constructor(worldEntity){
+        this.me = worldEntity;
+    }
+
+    enter(){
+        let playerV = new Phaser.Math.Vector2(this.me.scene.player);
+        let entityV = new Phaser.Math.Vector2(this.me.spriteEntity.getPosition());
+        this.me.direction = new Phaser.Math.Vector2(playerV.x - entityV.x, playerV.y - entityV.y).normalize();
+        this.burnEnergy = 100;
+        this.me.spriteEntity.anims.play("deer_burn");
+    }
+
+    run(){
+        let pos = this.me.spriteEntity.getPosition();
+        this.me.spriteEntity.setPosition(pos.x -= 4 * this.me.direction.x, pos.y -= 4 * this.me.direction.y);
+        this.burnEnergy--;
+        if(this.burnEnergy <= 0) this.me.switchBehaviourState("idle");
+    }
+
+    exit(){
+        this.me.spriteEntity.anims.remove();
+        this.me.spriteEntity.setFrame("Deer/deer_idle");
     }
 }
 

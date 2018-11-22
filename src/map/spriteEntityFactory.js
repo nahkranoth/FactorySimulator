@@ -10,10 +10,6 @@ export class SpriteEntityFactory extends Phaser.Events.EventEmitter{
         this.poolMax = 500; //This should be: 9 chunks * possible items
         this.spritePool = [];
         this.spritePoolIndex = 0;
-
-        // this.scene.physics.add.overlap(this.scene.fireBall, this, (fireBall, spriteEntity)=>{
-        //     this.assignedToWorldEntity.onCollision(fireBall);
-        // });
     }
 
     _createNewSprite(worldEntity){
