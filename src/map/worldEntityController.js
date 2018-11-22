@@ -10,6 +10,13 @@ export class WorldEntityController extends ControllerBaseClass{
         this.map = params.map;
         this.spriteEntityFactory = new SpriteEntityFactory(params);
         this.movableEntityPool = [];
+        this.generateAnimation();
+    }
+
+    generateAnimation(){
+        var frameNames = this.scene.anims.generateFrameNames('worldEntities', { prefix: 'Deer/burn/', end: 3, zeroPad: 3});
+        console.log(frameNames);
+        this.scene.anims.create({ key: 'deer_burn', frames: frameNames, frameRate: 10, repeat: -1 });
     }
 
     generateTrees(chunk){

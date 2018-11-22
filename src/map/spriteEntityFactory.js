@@ -28,7 +28,6 @@ export class SpriteEntityFactory extends Phaser.Events.EventEmitter{
             assignedToWorldEntity:worldEntity
         });
         if(worldEntity.canCollide) CollisionController.registerAsWorldCollisionSprite(sprite, this.scene);
-
         this.spritePool.push(sprite);
 
         return sprite;

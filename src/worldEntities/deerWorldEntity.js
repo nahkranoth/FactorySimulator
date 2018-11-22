@@ -18,11 +18,13 @@ export class DeerWorldEntity extends BaseWorldEntity{
         this.currentBehaviourState = this.behaviourStates["idle"].object;
         this.currentBehaviourState.enter();
         this.canCollide = true;
+        this.animate = true;
     }
 
     burn(){
         console.log("Ooh Deer, it hurts");
         this.switchBehaviourState("fleeing");
+        this.spriteEntity.anims.play("deer_burn");
     }
 
     switchBehaviourState(state){
@@ -42,13 +44,13 @@ export class DeerWorldEntity extends BaseWorldEntity{
 
     }
 
-    getTypes(){
+    static getTypes(){
         return DeerWorldEntity.types;
     }
 }
 
 DeerWorldEntity.types = [
-    {frame:"Deer", type:DeerWorldEntity, excludePlacement:[2, 3, 4, 5]}
+    {frame:"Deer/deer_idle", type:DeerWorldEntity, excludePlacement:[2, 3, 4, 5]}
 ];
 
 class IdleState{

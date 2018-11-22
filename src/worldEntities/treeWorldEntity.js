@@ -4,11 +4,12 @@ export class TreeWorldEntity extends BaseWorldEntity{
     constructor(params){
         super(params);
         this.canCollide = true;
+        this.animate = false;
     }
 
     burn(){
         console.log("Burn Tree");
-        this.spriteEntity.setFrame("Tree2");
+        this.spriteEntity.setFrame("Trees/Tree2");
     }
 
     static getTypes(){
@@ -17,7 +18,7 @@ export class TreeWorldEntity extends BaseWorldEntity{
 }
 
 TreeWorldEntity.types = [
-    {frame:"Tree1", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
-    {frame:"Tree2", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
-    {frame:"Tree3", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]}
+    {frame:"Trees/Tree1", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
+    {frame:"Trees/Tree2", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
+    {frame:"Trees/Tree3", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]}
 ];

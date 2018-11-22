@@ -7,9 +7,9 @@ export class SpriteEntity extends Phaser.Physics.Arcade.Sprite{
         this.assignedToWorldEntity = params.assignedToWorldEntity;
         this.scene.physics.add.existing(this);
         this.body.setSize(this.frame.width, this.frame.height);
+
         this.scene.add.existing(this);﻿
         this.depth = this.y; + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART - (this.height/2);
-
     }
 
     setFrame(name){
@@ -19,6 +19,7 @@ export class SpriteEntity extends Phaser.Physics.Arcade.Sprite{
     reAssign(worldEntity){
         this.assignedToWorldEntity.slumber();
         this.assignedToWorldEntity = worldEntity;
+        this.setAnimation();
     }
 
     setPosition(x, y){
