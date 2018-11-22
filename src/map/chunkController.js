@@ -30,11 +30,6 @@ export class ChunkController extends ControllerBaseClass{
         })
     }
 
-    // getChunksInRange(startPosX, startPosY, endPosX, endPosY){
-    //     let startSource = this._getTileByWorldPosition(startPosX, startPosY);
-    //     let stopSource = this._getTileByWorldPosition(endPosX, endPosY);
-    // }
-
     _getWorldPositionFromPointerPosition(x, y){
         return({x:x+this.camera.scrollX, y:y+this.camera.scrollY});
     }
@@ -85,7 +80,7 @@ export class ChunkController extends ControllerBaseClass{
         return {chunk:possibleChunk, tile:tile};
     }
 
-    _getTileByWorldPosition(x, y){
+    getChunkAndTileByWorldPosition(x, y){
         let xOffset = x - (this.camera.width/2);
         let yOffset = y - (this.camera.height/2);
         let chunkCoords = this._convertPosToChunkCoord(xOffset, yOffset);

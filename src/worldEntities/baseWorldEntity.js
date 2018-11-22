@@ -8,6 +8,7 @@ export class BaseWorldEntity {
         this.map = params.map;
         this.chunk = params.chunk;
         this.asleep = true;
+        this.currentBehaviourState = null;
         this.canCollide = false;//is assigned to the global sprite collision checker (CollisionController)
         this.animate = false;
     }

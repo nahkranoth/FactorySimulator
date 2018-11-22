@@ -35,6 +35,7 @@ export class Map extends Phaser.GameObjects.GameObject {
         this.afterInit();
     }
 
+
     afterInit(){
         this.chunkController.afterInit();
         //From here on out the map is initialized

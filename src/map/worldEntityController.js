@@ -29,7 +29,7 @@ export class WorldEntityController extends ControllerBaseClass{
     }
 
     generateAnimals(chunk){
-        let animalAmount = 10;//Math.round(Math.random()*10);
+        let animalAmount = 1;//Math.round(Math.random()*10);
         for(var i=0;i<animalAmount;i++){
             let animal = chunk._getRandomAnimalType();
             let pos = this._findFittingTile(animal, chunk);

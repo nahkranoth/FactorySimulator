@@ -11,6 +11,10 @@ export class TreeWorldEntity extends BaseWorldEntity{
         this.spriteEntity.setFrame("Trees/Tree2");
     }
 
+    reKindle(spriteEntity){
+        super.reKindle(spriteEntity);
+    }
+
     static getTypes(){
         return TreeWorldEntity.types;
     }

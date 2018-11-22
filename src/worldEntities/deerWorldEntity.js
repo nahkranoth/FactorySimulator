@@ -9,13 +9,13 @@ export class DeerWorldEntity extends BaseWorldEntity{
 
         this.behaviourStates = {
             "idle": {object: new IdleState(this)},
+            "path": {object: new PathState(this)},
             "walking": {object: new WalkingState(this)},
             "fleeing": {object: new FleeingState(this)},
-            "burning": {object: new BurningState(this)}
+            "burning": {object: new BurningState(this)},
         };
 
-        this.currentBehaviourState = this.behaviourStates["idle"].object;
-        this.currentBehaviourState.enter();
+        this.currentBehaviourState = this.behaviourStates["path"].object;
         this.canCollide = true;
         this.animate = true;
     }
@@ -33,6 +33,11 @@ export class DeerWorldEntity extends BaseWorldEntity{
     update(){
         super.update();
         this.currentBehaviourState.run();
+    }
+
+    reKindle(spriteEntity){
+        super.reKindle(spriteEntity);
+        this.currentBehaviourState.enter();
     }
 
     static getTypes(){
@@ -63,6 +68,24 @@ class IdleState{
         if(Phaser.Math.Distance.Between(spritePos.x, spritePos.y, this.me.scene.player.x, this.me.scene.player.y) <= 100){
             this.me.switchBehaviourState("fleeing");
         }
+    }
+
+    exit(){
+
+    }
+}
+
+class PathState{
+    constructor(worldEntity){
+        this.me = worldEntity;
+    }
+
+    enter(){
+        console.log("Path State");
+        this.me.map.pathFindingController.findPath(this.me.spriteEntity.x, this.me.spriteEntity.y, 0 ,0);
+    }
+
+    run(){
     }
 
     exit(){

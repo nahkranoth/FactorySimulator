@@ -4,7 +4,7 @@ const ImagePlugin = require(path.resolve(__dirname, 'custom/imagePlugin'));
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var copyWebpackPlugin = new CopyWebpackPlugin([{
-    from: path.resolve(__dirname, 'assets/build', "**"),
+    from: path.resolve(__dirname, 'assets/build', "*"),
     to: path.resolve(__dirname, 'build/assets'),
     flatten:true
 }]);

@@ -37,7 +37,7 @@ export class BuildInteractionController{
     startTilePlace(event){
         this.draw = true;
         let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);
-        let source = this.map.chunkController._getTileByWorldPosition(pointerPos.x, pointerPos.y);
+        let source = this.map.chunkController.getChunkAndTileByWorldPosition(pointerPos.x, pointerPos.y);
         source.chunk.setTile(source.tile, this.gui.indexSelected);
         source.chunk.resetCollision();
     }
@@ -45,7 +45,7 @@ export class BuildInteractionController{
     moveTilePlace(event){
         if(!this.draw) return;
         let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);
-        let source = this.map.chunkController._getTileByWorldPosition(pointerPos.x, pointerPos.y);
+        let source = this.map.chunkController.getChunkAndTileByWorldPosition(pointerPos.x, pointerPos.y);
         source.chunk.setTile(source.tile, this.gui.indexSelected);
         source.chunk.resetCollision();
     }
@@ -57,7 +57,7 @@ export class BuildInteractionController{
     startTileSelect(event){
         this.draw = true;
         let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);
-        this.startSource = this.map.chunkController._getTileByWorldPosition(pointerPos.x, pointerPos.y);
+        this.startSource = this.map.chunkController.getChunkAndTileByWorldPosition(pointerPos.x, pointerPos.y);
         this.startPos = this.map.chunkController._getTileWorldCoord(this.startSource.tile, this.startSource.chunk);
     }
 
@@ -67,7 +67,7 @@ export class BuildInteractionController{
 
     stopTileSelect(event){
         let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);
-        let stopSource = this.map.chunkController._getTileByWorldPosition(pointerPos.x, pointerPos.y);
+        let stopSource = this.map.chunkController.getChunkAndTileByWorldPosition(pointerPos.x, pointerPos.y);
         let tileWorldPos = this.map.chunkController._getTileWorldCoord(stopSource.tile, stopSource.chunk);
         var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
         let outArr = [];
@@ -87,7 +87,7 @@ export class BuildInteractionController{
     startTileFill(event){
         this.draw = true;
         let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);
-        this.startSource = this.map.chunkController._getTileByWorldPosition(pointerPos.x, pointerPos.y);
+        this.startSource = this.map.chunkController.getChunkAndTileByWorldPosition(pointerPos.x, pointerPos.y);
         this.startPos = this.map.chunkController._getTileWorldCoord(this.startSource.tile, this.startSource.chunk);
     }
 
@@ -97,7 +97,7 @@ export class BuildInteractionController{
 
     stopTileFill(event){
         let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);
-        let stopSource = this.map.chunkController._getTileByWorldPosition(pointerPos.x, pointerPos.y);
+        let stopSource = this.map.chunkController.getChunkAndTileByWorldPosition(pointerPos.x, pointerPos.y);
         let tileWorldPos = this.map.chunkController._getTileWorldCoord(stopSource.tile, stopSource.chunk);
         var range = this._getTileSelectionRangeAndDirection(this.startPos, tileWorldPos);
         let outArr = [];
