@@ -1,5 +1,4 @@
 import {BaseWorldEntity} from "./baseWorldEntity";
-import {FireBall} from "../objects/fireball";
 
 export class TreeWorldEntity extends BaseWorldEntity{
     constructor(params){
@@ -11,4 +10,14 @@ export class TreeWorldEntity extends BaseWorldEntity{
         console.log("Burn Tree");
         this.spriteEntity.setFrame("Tree2");
     }
+
+    static getTypes(){
+        return TreeWorldEntity.types;
+    }
 }
+
+TreeWorldEntity.types = [
+    {frame:"Tree1", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
+    {frame:"Tree2", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
+    {frame:"Tree3", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]}
+];

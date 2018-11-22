@@ -24,16 +24,6 @@ export class Chunk extends Phaser.GameObjects.GameObject {
 
         this.neighbours = [];
 
-        this.treeTypes = [
-            {frame:"Tree1", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
-            {frame:"Tree2", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]},
-            {frame:"Tree3", type:TreeWorldEntity, excludePlacement:[2, 3, 4, 5]}
-        ];
-
-        this.animalTypes = [
-            {frame:"Deer", type:DeerWorldEntity, excludePlacement:[2, 3, 4, 5]}
-        ];
-
         this.entityList = [];
 
         this.init();
@@ -59,11 +49,11 @@ export class Chunk extends Phaser.GameObjects.GameObject {
     }
 
     _getRandomTreeType(){
-        return _.sample(this.treeTypes);
+        return _.sample(TreeWorldEntity.getTypes());
     }
 
     _getRandomAnimalType(){
-        return _.sample(this.animalTypes);
+        return _.sample(DeerWorldEntity.getTypes());
     }
 
     setTile(tile, index){

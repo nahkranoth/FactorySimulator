@@ -1,5 +1,6 @@
 import {BaseWorldEntity} from "./baseWorldEntity";
 import {FireBall} from "../objects/fireball";
+import {TreeWorldEntity} from "./treeWorldEntity";
 
 export class DeerWorldEntity extends BaseWorldEntity{
     constructor(params) {
@@ -40,7 +41,15 @@ export class DeerWorldEntity extends BaseWorldEntity{
         }
 
     }
+
+    getTypes(){
+        return DeerWorldEntity.types;
+    }
 }
+
+DeerWorldEntity.types = [
+    {frame:"Deer", type:DeerWorldEntity, excludePlacement:[2, 3, 4, 5]}
+];
 
 class IdleState{
     constructor(worldEntity){
