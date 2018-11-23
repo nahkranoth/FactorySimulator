@@ -81,8 +81,7 @@ class PathState{
     }
 
     enter(){
-        console.log("Path State");
-        this.me.map.pathFindingController.findPath(this.me.spriteEntity.x, this.me.spriteEntity.y, 0 ,0);
+        this.me.map.pathFindingController.findPath(this.me.spriteEntity.x, this.me.spriteEntity.y, 1000 ,1000);
     }
 
     run(){

@@ -29,11 +29,25 @@ export class PathFindingController extends ControllerBaseClass {
     }
 
     findPath(startX, startY, stopX, stopY){
-        let startChunk = this.map.chunkController.getChunkAndTileByWorldPosition(startX, startY);
-        let stopChunk = this.map.chunkController.getChunkAndTileByWorldPosition(stopX, stopY);
-        console.log(startChunk);
-        console.log(stopChunk);
+        let startSource = this.map.chunkController.getChunkAndTileByWorldPosition(startX, startY);
+        let stopSource = this.map.chunkController.getChunkAndTileByWorldPosition(stopX, stopY);
+        let xDiff = stopSource.chunk.xCoord - startSource.chunk.xCoord+1;
+        let yDiff = stopSource.chunk.yCoord - startSource.chunk.yCoord+1;
 
+        for(let x=startSource.chunk.xCoord;x<startSource.chunk.xCoord+xDiff;x++){
+            for(let y=startSource.chunk.yCoord;y<startSource.chunk.yCoord+yDiff;y++){
+                //TODO: I dont have to create them all - just in a range
+                let source = this.map.chunkController._getOrCreateChunkByCoord(x, y);
+            }
+        }
+
+        // console.log("Start X: ",startSource.chunk.xCoord);
+        // console.log("Stop X: ",stopSource.chunk.xCoord);
+        // console.log("X DIFF: ", xDiff);
+        //
+        // console.log("Start Y: ",startSource.chunk.yCoord);
+        // console.log("Stop Y: ",stopSource.chunk.yCoord);
+        // console.log("Y DIFF: ", yDiff);
     }
 
     pathFound(val, path){
