@@ -6,6 +6,14 @@
     {"index":3, "collision":true, "points":40, "name":"worldTile_wood"},
     {"index":4, "collision":true, "points":10, "name":"worldTile_stone"},
     {"index":5, "collision":false, "points":50,"name":"worldTile_timber"},
-    {"index":6, "collision":false, "name":"worldTile_scorched"}
+    {"index":6, "collision":false, "points":50, "name":"worldTile_scorched"},
+    {"index":7, "collision":false, "points":1500, "name":"worldTile_treasure_chest"},
+    {"index":8, "collision":false, "points":2500, "name":"worldTile_treasure_coins"},
+    {"index":9, "collision":false, "points":3500, "name":"worldTile_treasure_candle"},
+    {"index":10, "collision":false, "points":250, "name":"worldTile_wood_square"},
+    {"index":11, "collision":false, "points":250, "name":"worldTile_stone_square"},
+    {"index":12, "collision":false, "points":20, "name":"worldTile_path"},
+    {"index":13, "collision":false, "points":100, "name":"worldTile_crops"},
+    {"index":14, "collision":false, "points":-300, "name":"worldTile_well"}
   ]
 }
