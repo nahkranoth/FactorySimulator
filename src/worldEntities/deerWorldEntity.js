@@ -15,7 +15,7 @@ export class DeerWorldEntity extends BaseWorldEntity{
             "burning": {object: new BurningState(this)},
         };
 
-        this.currentBehaviourState = this.behaviourStates["path"].object;
+        this.currentBehaviourState = this.behaviourStates["idle"].object;
         this.canCollide = true;
         this.animate = true;
     }

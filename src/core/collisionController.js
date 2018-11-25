@@ -3,8 +3,12 @@ export class CollisionController{
         this.scene = params.scene;
     }
 
-    setCollisionBetween(sprite_one, sprite_two, callback){
+    setOverlapBetween(sprite_one, sprite_two, callback){
         this.scene.physics.add.overlap(sprite_one, sprite_two, callback);
+    }
+
+    setCollisionBetween(sprite_one, sprite_two, callback){
+        this.scene.physics.add.collider(sprite_one, sprite_two, callback);
     }
 
     setCollisionBetweenWorldSprites(sprite){

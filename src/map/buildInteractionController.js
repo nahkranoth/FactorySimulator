@@ -30,8 +30,12 @@ export class BuildInteractionController{
         this.scene.input.removeListener("pointerup");
 
         this.scene.input.on('pointerdown', this.callbackMode[mode].pointerdown, this);
-        this.scene.input.on('pointermove', this.callbackMode[mode].pointermove, this);
+        this.scene.input.on('pointermove', (event) => {this.pointerMove(event, mode)}, this);
         this.scene.input.on('pointerup', this.callbackMode[mode].pointerup, this);
+    }
+
+    pointerMove(event, mode){
+        this.callbackMode[mode].pointermove(event);
     }
 
     startTilePlace(event){

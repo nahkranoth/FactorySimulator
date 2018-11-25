@@ -3,6 +3,7 @@ import {FireBall} from '../objects/fireball.js'
 import {Map} from '../map/map.js';
 import {BuildInteractionController} from '../map/buildInteractionController';
 import {CollisionController} from "../core/collisionController";
+import {Paddle} from "../objects/paddle";
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -26,6 +27,8 @@ export class Game extends Phaser.Scene {
             y:this.cameras.main.height/2
         });
 
+        this.paddle = new Paddle({scene:this, key:"paddle", x: this.input.x, y:this.input.y});
+
         this.physics.world.setBounds(this.cameras.main.scrollX, this.cameras.main.scrollY, this.cameras.main.width, this.cameras.main.height);
 
         this.fireBall = new FireBall({
@@ -35,8 +38,8 @@ export class Game extends Phaser.Scene {
             y:this.cameras.main.height/2
         });
         this.collisionController.setCollisionBetweenWorldSprites(this.fireBall, this.fireBall.onWorldSpriteCollision);
-
-        this.collisionController.setCollisionBetween(this.fireBall, this.player, this.player.onCollision);
+        this.collisionController.setOverlapBetween(this.fireBall, this.paddle, _.bind(this.paddle.onCollision, this.paddle));
+        this.collisionController.setOverlapBetween(this.fireBall, this.player, this.player.onCollision);
 
         this.cameras.main.startFollow(this.player);
         this.gui = this.scene.manager.getScene("gui");
@@ -52,5 +55,6 @@ export class Game extends Phaser.Scene {
         this.player.update();
         this.physics.world.setBounds(this.cameras.main.scrollX, this.cameras.main.scrollY, this.cameras.main.width, this.cameras.main.height);
         this.fireBall.update();
+        this.paddle.update();
     }
 }

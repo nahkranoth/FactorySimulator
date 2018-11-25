@@ -20,11 +20,8 @@ export class ChunkGenerator {
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 0.9);//generate rocks
 
-        this.scene.physics.add.collider([this.scene.player, this.scene.fireBall], this.layer, this.onCollision);
-    }
-
-    onCollision(collision){
-        //console.log(collision);
+        this.scene.physics.add.collider([this.scene.player], this.layer);
+        this.scene.physics.add.overlap([this.scene.fireBall], this.layer);
     }
 
     clear(){
