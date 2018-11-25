@@ -38,6 +38,16 @@ export class WorldEntityController extends ControllerBaseClass{
         }
     }
 
+    generateItems(chunk){
+        let itemAmount = 1;//Math.round(Math.random()*10);
+        for(var i=0;i<itemAmount;i++){
+            let item = chunk._getRandomItemType();
+            let pos = this._findFittingTile(item, chunk);
+            if(!pos) continue;
+            this._addWorldEntity(chunk, pos.x, pos.y, item);
+        }
+    }
+
     _addWorldEntity(chunk, x, y, source){
         let worldEntityType = source.type;
         //A variant of BaseWorldEntity

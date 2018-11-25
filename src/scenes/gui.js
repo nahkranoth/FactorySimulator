@@ -1,5 +1,5 @@
 import {TileData} from "../data/tileData";
-import {PointsController} from "../core/pointsController";
+import {GameController} from "../core/gameController";
 
 export class GUI extends Phaser.Scene {
 
@@ -42,7 +42,7 @@ export class GUI extends Phaser.Scene {
     }
 
     setScoreText(points){
-        this.score.text = PointsController.score;
+        this.score.text = GameController.score;
         let sign = points > 0 ? "+" : "-";
         let color = points > 0 ? "#00ff00" : "#ff0000";
         this.points.text = sign+Math.abs(points);

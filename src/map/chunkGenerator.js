@@ -1,7 +1,7 @@
 import {RandomGenerator} from '../utils/randomGenerator'
 import {TileData} from '../data/tileData.js';
 import {_} from "underscore";
-import {PointsController} from "../core/pointsController";
+import {GameController} from "../core/gameController";
 
 export class ChunkGenerator {
     constructor(params){
@@ -63,14 +63,14 @@ export class ChunkGenerator {
             tile.setCollisionCallback(
                 (collision) => {
                     if (collision === this.scene.player) return;
-                    if (data.points) PointsController.addScore(data.points);
+                    if (data.points) GameController.addScore(data.points);
                     this.scene.map.flagTileForCollisionChange(tile, this);
                 });
         }else{
             tile.setCollisionCallback(
                 (collision) => {
                     if (collision === this.scene.player) return;
-                    if (data.points) PointsController.addScore(data.points);
+                    if (data.points) GameController.addScore(data.points);
                     tile.index = 6;
                     tile.setCollisionCallback(null);
                     this.scene.map.flagTileForCollisionChange(tile, this);

@@ -2,6 +2,7 @@ import {ChunkGenerator} from '../map/chunkGenerator.js'
 import {_} from "underscore";
 import {DeerWorldEntity} from "../worldEntities/deerWorldEntity";
 import {TreeWorldEntity} from "../worldEntities/treeWorldEntity";
+import {ItemWorldEntity} from "../worldEntities/itemWorldEntity";
 
 export class Chunk extends Phaser.GameObjects.GameObject {
     constructor(params){
@@ -53,6 +54,10 @@ export class Chunk extends Phaser.GameObjects.GameObject {
     }
 
     _getRandomAnimalType(){
+        return _.sample(ItemWorldEntity.getTypes());
+    }
+
+    _getRandomItemType(){
         return _.sample(DeerWorldEntity.getTypes());
     }
 

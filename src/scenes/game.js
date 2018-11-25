@@ -4,7 +4,7 @@ import {Map} from '../map/map.js';
 import {BuildInteractionController} from '../map/buildInteractionController';
 import {CollisionController} from "../core/collisionController";
 import {Paddle} from "../objects/paddle";
-import {PointsController} from "../core/pointsController";
+import {GameController} from "../core/gameController";
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -20,7 +20,7 @@ export class Game extends Phaser.Scene {
 
         this.collisionController = new CollisionController({scene:this});
 
-        this.pointsController = new PointsController({scene:this});
+        this.pointsController = new GameController({scene:this});
         this.pointsController.on("AddScore", this.setScore, this);
 
         //ORDER MATTERS. NO REALLY!

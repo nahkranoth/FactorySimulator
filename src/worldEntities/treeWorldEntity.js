@@ -1,5 +1,5 @@
 import {BaseWorldEntity} from "./baseWorldEntity";
-import {PointsController} from "../core/pointsController";
+import {GameController} from "../core/gameController";
 
 export class TreeWorldEntity extends BaseWorldEntity{
     constructor(params){
@@ -12,7 +12,7 @@ export class TreeWorldEntity extends BaseWorldEntity{
     burn(){
         if(this.burning) return;
         this.burning = true;
-        PointsController.addScore(100);
+        GameController.addScore(100);
         this.spriteEntity.setFrame("Trees/Tree2");
     }
 
