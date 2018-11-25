@@ -14,7 +14,8 @@ export class BuildInteractionController{
         this.callbackMode = {
             "place":{"pointerdown": this.startTilePlace, "pointermove":this.moveTilePlace, "pointerup":this.stopTilePlace},
             "select":{"pointerdown": this.startTileSelect, "pointermove":this.moveTileSelect, "pointerup":this.stopTileSelect},
-            "fill":{"pointerdown": this.startTileFill, "pointermove":this.moveTileFill, "pointerup":this.stopTileFill}
+            "fill":{"pointerdown": this.startTileFill, "pointermove":this.moveTileFill, "pointerup":this.stopTileFill},
+            "bucket":{"pointerdown": this.startBucketPlace, "pointermove":this.moveBucketPlace, "pointerup":this.stopBucketPlace}
         };
 
         this.setBuildMode("place");
@@ -22,6 +23,7 @@ export class BuildInteractionController{
         this.scene.input.keyboard.on('keydown_Z', () => this.setBuildMode("place"));
         this.scene.input.keyboard.on('keydown_X', () => this.setBuildMode("select"));
         this.scene.input.keyboard.on('keydown_C', () => this.setBuildMode("fill"));
+        this.scene.input.keyboard.on('keydown_V', () => this.setBuildMode("bucket"));
     }
 
     setBuildMode(mode){
@@ -36,6 +38,72 @@ export class BuildInteractionController{
 
     pointerMove(event, mode){
         this.callbackMode[mode].pointermove(event);
+    }
+
+    startBucketPlace(event){
+        this.draw = true;
+        let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);
+        let source = this.map.chunkController.getChunkAndTileByWorldPosition(pointerPos.x, pointerPos.y);
+        source.chunk.setTile(source.tile, 16);
+        let sources = [source];
+        let running = true;
+        while(running){
+            let neighbourSources = [];
+            for(let j = 0;j<sources.length;j++){
+                let sourceTile = sources[j];
+                let validNeighbours = this.checkNeighbours(this.map.chunkController._getTileWorldCoord(sourceTile.tile, sourceTile.chunk), 2);
+                if(validNeighbours.length === 0) continue;
+                for(let i=0;i<validNeighbours.length;i++){
+                    let neighbour = validNeighbours[i];
+                    neighbour.chunk.setTile(neighbour.tile, 16);
+                    neighbourSources.push(neighbour);
+                }
+            }
+            if(neighbourSources.length === 0) return false;
+            sources = neighbourSources;
+        }
+
+        source.chunk.resetCollision();
+    }
+
+    checkNeighbours(pos, index){
+        let n = {x:pos.x, y:pos.y-1};
+        let ne = {x:pos.x+1, y:pos.y-1};
+        let nw = {x:pos.x-1, y:pos.y-1};
+        let s = {x:pos.x, y:pos.y+1};
+        let sw = {x:pos.x-1, y:pos.y+1};
+        let se = {x:pos.x+1, y:pos.y+1};
+        let e = {x:pos.x+1, y:pos.y};
+        let w = {x:pos.x-1, y:pos.y};
+
+        let nTile = this.map.chunkController._getTileAndChunkByCoord(n.x, n.y);
+        let neTile = this.map.chunkController._getTileAndChunkByCoord(ne.x, ne.y);
+        let nwTile = this.map.chunkController._getTileAndChunkByCoord(nw.x, nw.y);
+        let sTile = this.map.chunkController._getTileAndChunkByCoord(s.x, s.y);
+        let seTile = this.map.chunkController._getTileAndChunkByCoord(se.x, se.y);
+        let swTile = this.map.chunkController._getTileAndChunkByCoord(sw.x, sw.y);
+        let eTile = this.map.chunkController._getTileAndChunkByCoord(e.x, e.y);
+        let wTile = this.map.chunkController._getTileAndChunkByCoord(w.x, w.y);
+
+        let matchingSources = [];
+        if(nTile.tile.index === index) matchingSources.push(nTile);
+        if(neTile.tile.index === index) matchingSources.push(neTile);
+        if(nwTile.tile.index === index) matchingSources.push(nwTile);
+        if(sTile.tile.index === index) matchingSources.push(sTile);
+        if(seTile.tile.index === index) matchingSources.push(seTile);
+        if(swTile.tile.index === index) matchingSources.push(swTile);
+        if(eTile.tile.index === index) matchingSources.push(eTile);
+        if(wTile.tile.index === index) matchingSources.push(wTile);
+
+        return matchingSources;
+    }
+
+    moveBucketPlace(event){
+
+    }
+
+    stopBucketPlace(){
+        this.draw = false;
     }
 
     startTilePlace(event){

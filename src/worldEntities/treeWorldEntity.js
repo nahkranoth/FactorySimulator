@@ -6,9 +6,12 @@ export class TreeWorldEntity extends BaseWorldEntity{
         super(params);
         this.canCollide = true;
         this.animate = false;
+        this.burning = false;
     }
 
     burn(){
+        if(this.burning) return;
+        this.burning = true;
         PointsController.addScore(100);
         this.spriteEntity.setFrame("Trees/Tree2");
     }

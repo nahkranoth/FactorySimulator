@@ -41,6 +41,7 @@ export class Game extends Phaser.Scene {
             x:this.cameras.main.width/2,
             y:this.cameras.main.height/2
         });
+
         this.collisionController.setCollisionBetweenWorldSprites(this.fireBall, this.fireBall.onWorldSpriteCollision);
         this.collisionController.setOverlapBetween(this.fireBall, this.paddle, _.bind(this.paddle.onCollision, this.paddle));
         this.collisionController.setOverlapBetween(this.fireBall, this.player, this.player.onCollision);
