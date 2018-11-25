@@ -1,6 +1,7 @@
 import {RandomGenerator} from '../utils/randomGenerator'
 import {TileData} from '../data/tileData.js';
 import {_} from "underscore";
+import {PointsController} from "../core/pointsController";
 
 export class ChunkGenerator {
     constructor(params){
@@ -21,7 +22,11 @@ export class ChunkGenerator {
         this.generatePerlinMap(4, 0.3, 0.9);//generate rocks
 
         this.scene.physics.add.collider([this.scene.player], this.layer);
-        this.scene.physics.add.overlap([this.scene.fireBall], this.layer);
+        this.scene.physics.add.overlap([this.scene.fireBall], this.layer, this.onCollision);
+    }
+
+    onCollision(collision){
+        //console.log(collision);
     }
 
     clear(){
@@ -53,16 +58,19 @@ export class ChunkGenerator {
         tile.index = index;
         let data = TileData.getTileData(index);
         tile.properties.collision = data.collision;
+        tile.properties.points = data.points;
         if(data.collision){
             tile.setCollisionCallback(
                 (collision) => {
                     if (collision === this.scene.player) return;
+                    if (data.points) PointsController.addScore(data.points);
                     this.scene.map.flagTileForCollisionChange(tile, this);
                 });
         }else{
             tile.setCollisionCallback(
                 (collision) => {
                     if (collision === this.scene.player) return;
+                    if (data.points) PointsController.addScore(data.points);
                     tile.index = 6;
                     tile.setCollisionCallback(null);
                     this.scene.map.flagTileForCollisionChange(tile, this);

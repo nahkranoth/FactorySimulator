@@ -1,5 +1,6 @@
 import {TileData} from "../data/tileData";
 import {FireBall} from "./fireball";
+import {PointsController} from "../core/pointsController";
 
 export class Player extends Phaser.Physics.Arcade.Sprite{
 
@@ -40,7 +41,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     onCollision(collidingSprite){
         if(collidingSprite instanceof FireBall){
-            console.log("Player Burn");
+            PointsController.addScore(-200);
         }
     }
 }

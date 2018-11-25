@@ -1,4 +1,5 @@
 import {TileData} from "../data/tileData";
+import {PointsController} from "../core/pointsController";
 
 export class GUI extends Phaser.Scene {
 
@@ -30,6 +31,22 @@ export class GUI extends Phaser.Scene {
         sprites = sprites.concat(this.tileButtons);
         let container = this.add.container(x, y, sprites);
         this.indexSelected = 0;
+
+        this.score = this.add.text(this.cameras.main.width/2, 52, '0000', { fontFamily: 'Arial', fontSize: 64, color: '#ffffff', align:"center"});
+        this.score.setStroke('#072535', 8);
+        this.score.setOrigin(0.5);
+
+        this.points = this.add.text(this.cameras.main.width/2, 104, '', { fontFamily: 'Arial', fontSize: 34, color: '#ffffff', align:"center"});
+        this.points.setOrigin(0.5);
+
+    }
+
+    setScoreText(points){
+        this.score.text = PointsController.score;
+        let sign = points > 0 ? "+" : "-";
+        let color = points > 0 ? "#00ff00" : "#ff0000";
+        this.points.text = sign+Math.abs(points);
+        this.points.setColor(color);
     }
 
     tileButtonResetTint(){

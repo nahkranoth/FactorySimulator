@@ -1,4 +1,5 @@
 import {BaseWorldEntity} from "./baseWorldEntity";
+import {PointsController} from "../core/pointsController";
 
 export class DeerWorldEntity extends BaseWorldEntity{
     constructor(params) {
@@ -129,6 +130,7 @@ class BurningState{
         let entityV = new Phaser.Math.Vector2(this.me.spriteEntity.getPosition());
         this.me.direction = new Phaser.Math.Vector2(playerV.x - entityV.x, playerV.y - entityV.y).normalize();
         this.burnEnergy = 100;
+        PointsController.addScore(200);
         this.me.spriteEntity.anims.play("deer_burn");
     }
 

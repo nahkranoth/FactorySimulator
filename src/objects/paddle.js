@@ -5,23 +5,34 @@ export class Paddle extends Phaser.Physics.Arcade.Sprite{
     constructor(params) {
         super(params.scene, params.x, params.y, params.key);
         this.scene.physics.add.existing(this);
-        this.scene.add.existing(this);
+        this.scene.add.existing(this).setInteractive();
         this.body.setMass(99999);
-
         this.depth = TileData.PROPERTIES.DEPTHSTART + 100000;
+        this.body.setEnable(false);
+        this.on('pointerdown', this.setCollidingOn, this);
+        this.on('pointerup', this.setCollidingOff, this);
     }
 
     onWorldSpriteCollision(sprite){
         sprite.assignedToWorldEntity.burn();
     }
 
+    setCollidingOn(){
+        this.body.setEnable(true);
+    }
+
+    setCollidingOff(){
+        this.body.setEnable(false);
+    }
+
     onCollision(sprite1){
         let direction = new Phaser.Math.Vector2(sprite1.x -this.x, sprite1.y-this.y).normalize();
-        sprite1.setVelocityX(direction.x * 200);
-        sprite1.setVelocityY(direction.y * 200);
+        sprite1.setVelocityX(direction.x * 160);
+        sprite1.setVelocityY(direction.y * 160);
     }
 
     update(){
+
         let size = 600;
         let centerX = this.scene.cameras.main.width/2;
         let centerY = this.scene.cameras.main.height/2;

@@ -4,6 +4,7 @@ import {Map} from '../map/map.js';
 import {BuildInteractionController} from '../map/buildInteractionController';
 import {CollisionController} from "../core/collisionController";
 import {Paddle} from "../objects/paddle";
+import {PointsController} from "../core/pointsController";
 
 export class Game extends Phaser.Scene {
     constructor(){
@@ -18,6 +19,9 @@ export class Game extends Phaser.Scene {
         this.tileMapContainer.setDepth(0);
 
         this.collisionController = new CollisionController({scene:this});
+
+        this.pointsController = new PointsController({scene:this});
+        this.pointsController.on("AddScore", this.setScore, this);
 
         //ORDER MATTERS. NO REALLY!
         this.player = new Player({
@@ -46,8 +50,11 @@ export class Game extends Phaser.Scene {
         this.map = new Map({scene:this,opt:{}});
 
         new BuildInteractionController({scene:this, gui:this.gui, map:this.map});
-        //Depth Controller
 
+    }
+
+    setScore(score){
+        this.gui.setScoreText(score);
     }
 
     update(){
