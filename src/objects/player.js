@@ -1,6 +1,7 @@
 import {TileData} from "../data/tileData";
 import {FireBall} from "./fireball";
 import {GameController} from "../core/gameController";
+import {ItemWorldEntity} from "../worldEntities/itemWorldEntity";
 
 export class Player extends Phaser.Physics.Arcade.Sprite{
 
@@ -36,6 +37,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }else if(this.cursors.down.isDown || this.keyS.isDown){
             this.depth = this.y + TileData.PROPERTIES.DEPTHSTART;
             this.body.setVelocityY(this.moveSpeed);
+        }
+    }
+
+    onWorldSpriteCollision(collidingSprite){
+        if(collidingSprite.assignedToWorldEntity instanceof ItemWorldEntity){
+            GameController.addMana(25);
+            collidingSprite.assignedToWorldEntity.pickup();
         }
     }
 

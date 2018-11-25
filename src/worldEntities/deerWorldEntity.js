@@ -65,6 +65,7 @@ class IdleState{
         }
 
         this.me.hunger -= 0.04;
+        if(this.me.spriteEntity === null) return;
         let spritePos = this.me.spriteEntity.getPosition();
         if(Phaser.Math.Distance.Between(spritePos.x, spritePos.y, this.me.scene.player.x, this.me.scene.player.y) <= 100){
             this.me.switchBehaviourState("fleeing");
@@ -103,6 +104,8 @@ class WalkingState{
     }
 
     run(){
+        if(this.me.spriteEntity === null) return;
+
         let pos = this.me.spriteEntity.getPosition();
         this.me.spriteEntity.setPosition(pos.x += 0.2 * this.me.direction, pos.y);
         this.me.hunger += 1;

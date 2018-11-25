@@ -12,7 +12,12 @@ export class ItemWorldEntity extends BaseWorldEntity{
     }
 
     burn(){
+    }
 
+    pickup(){
+        this.spriteEntity.x = 9999;
+        this.spriteEntity.y = 9999;
+        this.slumber();
     }
 
     reKindle(spriteEntity){

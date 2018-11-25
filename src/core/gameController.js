@@ -7,8 +7,6 @@ export class GameController extends Phaser.Events.EventEmitter{
         }else{
             console.warn("Instance allready exists");
         }
-
-
     }
 
     static addScore(points){
@@ -18,6 +16,8 @@ export class GameController extends Phaser.Events.EventEmitter{
 
     static addMana(mana){
         GameController.mana += mana;
+        GameController.mana = Phaser.Math.Clamp(GameController.mana, 0, 100);
+        GameController.instance.emit("AddMana", mana);
     }
 }
 

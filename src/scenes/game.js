@@ -22,6 +22,7 @@ export class Game extends Phaser.Scene {
 
         this.pointsController = new GameController({scene:this});
         this.pointsController.on("AddScore", this.setScore, this);
+        this.pointsController.on("AddMana", this.setMana, this);
 
         //ORDER MATTERS. NO REALLY!
         this.player = new Player({
@@ -43,6 +44,9 @@ export class Game extends Phaser.Scene {
         });
 
         this.collisionController.setCollisionBetweenWorldSprites(this.fireBall, this.fireBall.onWorldSpriteCollision);
+
+        this.collisionController.setCollisionBetweenWorldSprites(this.player, this.player.onCollisionWorldEntity);
+
         this.collisionController.setOverlapBetween(this.fireBall, this.paddle, _.bind(this.paddle.onCollision, this.paddle));
         this.collisionController.setOverlapBetween(this.fireBall, this.player, this.player.onCollision);
 
@@ -56,6 +60,10 @@ export class Game extends Phaser.Scene {
 
     setScore(score){
         this.gui.setScoreText(score);
+    }
+
+    setMana(mana){
+        this.gui.setManaText(mana);
     }
 
     update(){

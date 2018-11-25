@@ -54,11 +54,11 @@ export class Chunk extends Phaser.GameObjects.GameObject {
     }
 
     _getRandomAnimalType(){
-        return _.sample(ItemWorldEntity.getTypes());
+        return _.sample(DeerWorldEntity.getTypes());
     }
 
     _getRandomItemType(){
-        return _.sample(DeerWorldEntity.getTypes());
+        return _.sample(ItemWorldEntity.getTypes());
     }
 
     setTile(tile, index){

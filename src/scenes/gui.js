@@ -39,6 +39,9 @@ export class GUI extends Phaser.Scene {
         this.points = this.add.text(this.cameras.main.width/2, 104, '', { fontFamily: 'Arial', fontSize: 34, color: '#ffffff', align:"center"});
         this.points.setOrigin(0.5);
 
+        this.mana = this.add.text(52, 52, '100', { fontFamily: 'Arial', fontSize: 64, color: '#0000ff', align:"left"});
+        this.mana.setOrigin(0, 0.5);
+
     }
 
     setScoreText(points){
@@ -47,6 +50,10 @@ export class GUI extends Phaser.Scene {
         let color = points > 0 ? "#00ff00" : "#ff0000";
         this.points.text = sign+Math.abs(points);
         this.points.setColor(color);
+    }
+
+    setManaText(){
+        this.mana.text = GameController.mana;
     }
 
     tileButtonResetTint(){
