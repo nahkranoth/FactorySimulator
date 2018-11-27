@@ -1,6 +1,4 @@
-import {tumult} from "tumult"
-
-
+import tumult from 'tumult'
 export class RandomGenerator {
 
     static generatePerlin3(x, y, z) {

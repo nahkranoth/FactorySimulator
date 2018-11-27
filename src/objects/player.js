@@ -1,7 +1,7 @@
 import {TileData} from "../data/tileData"
 import {FireBall} from "../objects/fireball"
 import {GameController} from "../core/gameController"
-import {ItemWorldEntities} from "../worldEntities/itemWorldEntity"
+import {ItemWorldEntity} from "../worldEntities/itemWorldEntity"
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
 
@@ -39,7 +39,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     onWorldSpriteCollision(collidingSprite) {
-        if (collidingSprite.assignedToWorldEntity instanceof ItemWorldEntities) {
+        if (collidingSprite.assignedToWorldEntity instanceof ItemWorldEntity) {
             GameController.addMana(25);
             collidingSprite.assignedToWorldEntity.pickup();
         }

@@ -50,7 +50,6 @@ export class Map extends Phaser.GameObjects.GameObject {
         //From here on out the map is initialized
         if (this.debug) this.debugController.afterInit(this.chunkController.activeChunk);
         this.worldEntityController.resetSpriteEntityController(this.chunkController.activeChunk);
-        this.pathFindingController.afterInit(this.chunkController);
         this.init = true;
     }
 

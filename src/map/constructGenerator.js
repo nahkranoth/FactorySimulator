@@ -6,12 +6,12 @@ export class ConstructGenerator extends ControllerBaseClass {
         super(params);
         this.scene = params.scene;
         this.map = params.map;
-        MapContructData.init(this.scene);
+        MapConstructData.init(this.scene);
     }
 
     addConstruct(chunk) {
-        for (var i = 0; i < MapContructData.getAmountOfBuildings(); i++) {
-            let constructData = MapContructData.getBuilding(i);
+        for (var i = 0; i < MapConstructData.getAmountOfBuildings(); i++) {
+            let constructData = MapConstructData.getBuilding(i);
             if (this.diceRollBuildAllowed(constructData.properties.probability)) {
                 this.createBuilding(chunk, constructData.map);
                 break;//TODO: this makes the probability broken - sort buildings on probability first

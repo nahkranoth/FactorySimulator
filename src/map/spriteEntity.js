@@ -9,7 +9,7 @@ export class SpriteEntity extends Phaser.Physics.Arcade.Sprite {
         this.body.setSize(this.frame.width, this.frame.height);
 
         this.scene.add.existing(this);﻿
-        this.depth = this.y + TileData.PROPERTIES.TILESIZE + _TileData.PROPERTIES.DEPTHSTART - (this.height / 2);
+        this.depth = this.y + TileData.PROPERTIES.TILESIZE + TileData.PROPERTIES.DEPTHSTART - (this.height / 2);
     }
 
     setFrame(name) {
