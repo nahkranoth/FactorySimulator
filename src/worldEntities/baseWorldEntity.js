@@ -1,5 +1,5 @@
 export class BaseWorldEntity {
-    constructor(params){
+    constructor(params) {
         this.x = params.x;
         this.y = params.y;
         this.scene = params.scene;
@@ -13,8 +13,9 @@ export class BaseWorldEntity {
         this.animate = false;
     }
 
-    slumber(){
+    slumber() {
         this.asleep = true;
+        if (this.spriteEntity === null) return;
         this.x = this.spriteEntity.getPosition().x;
         this.y = this.spriteEntity.getPosition().y;
         this.frame = this.spriteEntity.frame;
@@ -22,15 +23,16 @@ export class BaseWorldEntity {
         this.spriteEntity = null;
     }
 
-    reKindle(spriteEntity){
+    reKindle(spriteEntity) {
         this.spriteEntity = spriteEntity;
         this.spriteEntity.setPosition(this.x, this.y);
         this.spriteEntity.setFrame(this.frame);
         this.asleep = false;
     }
 
-    update(){
-        if(this.asleep) return;
+    update() {
+        if (this.asleep) return;
+        if (this.spriteEntity === null) return;
     }
 
 }

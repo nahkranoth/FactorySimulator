@@ -1,4 +1,5 @@
-import { Perlin3 } from 'tumult'
+import {tumult} from "tumult"
+
 
 export class RandomGenerator {
 
@@ -11,5 +12,6 @@ export class RandomGenerator {
     }
 
 }
-RandomGenerator.perlin = new Perlin3();
+
+RandomGenerator.perlin = new tumult.Perlin3();
 RandomGenerator.perlin.seed();

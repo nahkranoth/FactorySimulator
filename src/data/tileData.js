@@ -1,19 +1,20 @@
-import { _ } from 'underscore'
+import {_} from "underscore"
 
-
-export class TileData{
-    static create(tileData){
+export class TileData {
+    static create(tileData) {
         TileData.worldTileData = tileData;
     }
 
-    static getTileData(index){
-        return _.find(TileData.worldTileData.tiles, (tileData) => { return tileData.index == index });
+    static getTileData(index) {
+        return _.find(TileData.worldTileData.tiles, (tileData) => {
+            return tileData.index == index
+        });
     }
 
-    static getChunkDimensionsInPixels(){
+    static getChunkDimensionsInPixels() {
         return {
-            x:TileData.PROPERTIES.TILESIZE * TileData.PROPERTIES.CHUNKWIDTH,
-            y:TileData.PROPERTIES.TILESIZE * TileData.PROPERTIES.CHUNKHEIGHT
+            x: TileData.PROPERTIES.TILESIZE * TileData.PROPERTIES.CHUNKWIDTH,
+            y: TileData.PROPERTIES.TILESIZE * TileData.PROPERTIES.CHUNKHEIGHT
         };
     }
 }
@@ -21,8 +22,8 @@ export class TileData{
 TileData.worldTileData = [];
 
 TileData.PROPERTIES = {
-    TILESIZE:24,
-    CHUNKWIDTH:8,
-    CHUNKHEIGHT:8,
-    DEPTHSTART:1000000
+    TILESIZE: 24,
+    CHUNKWIDTH: 24,
+    CHUNKHEIGHT: 24,
+    DEPTHSTART: 1000000
 };

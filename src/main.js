@@ -2,9 +2,9 @@ import './styling/main.css';
 
 import 'phaser';
 
-import { Game } from './scenes/game';
-import { Preloader } from './scenes/preloader';
-import { GUI } from './scenes/gui';
+import { Game } from "scenes/game";
+import { Preloader } from 'scenes/preloader';
+import { GUI } from 'scenes/gui';
 
 const gameConfig = {
     type: Phaser.AUTO,

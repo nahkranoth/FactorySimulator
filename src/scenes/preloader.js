@@ -1,23 +1,25 @@
-import {TileData} from "../data/tileData";
+import {TileData} from "../data/tileData"
 
 export class Preloader extends Phaser.Scene {
 
-    constructor(){
+    constructor() {
         super({key: "boot"});
     }
 
-    preload(){
+    preload() {
         this.load.json('worldTileData', 'assets/worldTiles.json');
         //for when I need to wait on a file first
-        this.load.once('filecomplete', ()=>{
+        this.load.once('filecomplete', () => {
             this.load.json('mapConstructData', 'assets/constructionMaps.json');
-                this.load.once('filecomplete', ()=>{
-                    this.load.image("plaey", "assets/plaey.png");
-                    this.load.image("fireball", "assets/fireball.png");
-                    this.load.image("worldTilesImg", "assets/worldTiles.png");
-                    this.load.atlas('worldEntities', "assets/worldEntities.png", "assets/worldEntities.json");
-                    this.load.atlas('worldTilesAtlas', 'assets/worldTiles.png', 'assets/worldTiles_atlas.json');
-                });
+            this.load.once('filecomplete', () => {
+                this.load.image("plaey", "assets/plaey.png");
+                this.load.image("fireball", "assets/fireball.png");
+                this.load.image("mouse", "assets/mouse.png");
+                this.load.image("ice", "assets/ice.png");
+                this.load.image("worldTilesImg", "assets/worldTiles.png");
+                this.load.atlas('worldEntities', "assets/worldEntities.png", "assets/worldEntities.json");
+                this.load.atlas('worldTilesAtlas', 'assets/worldTiles.png', 'assets/worldTiles_atlas.json');
+            });
         });
     }
 
