@@ -30,6 +30,5 @@ export class ItemWorldEntity extends BaseWorldEntity{
 }
 
 ItemWorldEntity.types = [
-    //TODO!!: REVERT WHEN MUSHROOMS BASK!!
-    {frame: "Deer/deer_idle", type: ItemWorldEntity, excludePlacement: [2, 3, 4, 5]}
+    {frame: "Items/potion", type: ItemWorldEntity, excludePlacement: [2, 3, 4, 5]}
 ];
