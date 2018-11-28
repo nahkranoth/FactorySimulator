@@ -60,9 +60,9 @@ export class BuildInteractionController {
     }
 
     startBucketPlace(event) {
+        this.scene.sound.playAudioSprite('sfx', "ice");
 
         this.draw = true;
-        console.log(GameController.mana);
         if (GameController.mana <= 0) return;
 
         let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);

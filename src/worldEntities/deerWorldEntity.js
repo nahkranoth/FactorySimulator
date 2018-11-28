@@ -19,10 +19,23 @@ export class DeerWorldEntity extends BaseWorldEntity {
         this.currentBehaviourState = this.behaviourStates["idle"].object;
         this.canCollide = true;
         this.animate = true;
+
+        this.hitResetTimer = 0;
+        this.hit = false;
     }
 
     burn() {
-        this.switchBehaviourState("burning");
+        if(!this.hit){
+            this.switchBehaviourState("burning");
+            this.scene.sound.playAudioSprite('sfx', "burn");
+            this.hit = true;
+        }else{
+            this.hitResetTimer++;
+            if(this.hitResetTimer >= 10){
+                this.hit = false;
+                this.hitResetTimer = 0;
+            }
+        }
     }
 
     switchBehaviourState(state) {

@@ -16,6 +16,10 @@ export class Preloader extends Phaser.Scene {
                 this.load.image("fireball", "assets/fireball.png");
                 this.load.image("mouse", "assets/mouse.png");
                 this.load.image("ice", "assets/ice.png");
+                this.load.image("ice", "assets/ice.png");
+                this.load.audioSprite('sfx', 'assets/audio/audio_fx_sprite.json', [ 'assets/audio/audio_fx_sprite.ogg', 'assets/audio/audio_fx_sprite.mp3' ]);
+                this.load.audio('music_game', ['assets/music_game.mp3', "assets/music_game.ogg"]);
+
                 this.load.image("worldTilesImg", "assets/worldTiles.png");
                 this.load.atlas('worldEntities', "assets/worldEntities.png", "assets/worldEntities.json");
                 this.load.atlas('worldTilesAtlas', 'assets/worldTiles.png', 'assets/worldTiles_atlas.json');

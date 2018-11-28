@@ -10,7 +10,7 @@ export class FireBall extends Phaser.Physics.Arcade.Sprite {
         this.rotation = 0.08;
         this.moveSpeed = 200;
         this.depth = TileData.PROPERTIES.DEPTHSTART + 99999;
-        this.body.setCircle(30, 10, 10).setAllowDrag(true).setBounce(1).setCollideWorldBounds(true);
+        this.body.setCircle(50, 0, 0).setAllowDrag(true).setBounce(1).setCollideWorldBounds(true);
         this.body.onWall();
         this.followCounter = 0;
         this.follow = true;

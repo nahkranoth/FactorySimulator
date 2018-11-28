@@ -45,12 +45,12 @@ export class Game extends Phaser.Scene {
         });
 
 
-        this.collisionController.setCollisionBetweenWorldSprites(this.fireBall, this.fireBall.onWorldSpriteCollision);
+        this.collisionController.setCollisionBetweenWorldSprites(this.fireBall, _.bind(this.fireBall.onWorldSpriteCollision, this.fireBall));
 
         this.collisionController.setCollisionBetweenWorldSprites(this.player, this.player.onCollisionWorldEntity);
 
         this.collisionController.setOverlapBetween(this.fireBall, this.paddle, _.bind(this.paddle.onCollision, this.paddle));
-        this.collisionController.setOverlapBetween(this.fireBall, this.player, this.player.onCollision);
+        this.collisionController.setOverlapBetween(this.fireBall, this.player, _.bind(this.player.onCollision, this.player));
 
         this.cameras.main.startFollow(this.player);
         this.gui = this.scene.manager.getScene("gui");
@@ -58,6 +58,8 @@ export class Game extends Phaser.Scene {
 
         new BuildInteractionController({scene:this, gui:this.gui, map:this.map});
 
+        this.music = this.sound.add('music_game', { loop: true });
+        this.music.play();
     }
 
     setScore(score){

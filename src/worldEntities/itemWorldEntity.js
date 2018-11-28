@@ -15,6 +15,7 @@ export class ItemWorldEntity extends BaseWorldEntity{
     }
 
     pickup() {
+        this.scene.sound.playAudioSprite('sfx', "pickup");
         this.spriteEntity.x = 9999;
         this.spriteEntity.y = 9999;
         this.slumber();

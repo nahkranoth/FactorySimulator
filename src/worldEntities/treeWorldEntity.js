@@ -7,11 +7,14 @@ export class TreeWorldEntity extends BaseWorldEntity{
         this.canCollide = true;
         this.animate = false;
         this.burning = false;
+        this.hitResetTimer = 0;
+        this.hit = false;
     }
 
     burn() {
         if (this.burning) return;
         this.burning = true;
+        this.scene.sound.playAudioSprite('sfx', "burn");
         GameController.addScore(100);
         this.spriteEntity.setFrame("Trees/Tree2");
     }

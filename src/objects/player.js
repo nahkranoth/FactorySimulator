@@ -17,6 +17,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.keyA = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keyS = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.keyD = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
+        this.hitResetTimer = 0;
+        this.hit = false;
     }
 
     update() {
@@ -47,7 +50,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     onCollision(collidingSprite) {
         if (collidingSprite instanceof FireBall) {
-            GameController.addHealth(-1);
+
+            if(!this.hit){
+                GameController.addHealth(-1);
+                this.scene.sound.playAudioSprite('sfx', "player_hurt");
+                this.hit = true;
+            }else{
+                this.hitResetTimer++;
+                if(this.hitResetTimer >= 10){
+                    this.hit = false;
+                    this.hitResetTimer = 0;
+                }
+            }
+
         }
     }
 }
