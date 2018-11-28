@@ -1,11 +1,21 @@
 {
   "tiles":[
     {"index":0, "collision":false, "name":"worldTile_grass"},
-    {"index":1, "collision":false, "name":"worldTile_trees"},
+    {"index":1, "collision":false, "points":10, "name":"worldTile_trees"},
     {"index":2, "collision":true, "name":"worldTile_water"},
-    {"index":3, "collision":true, "name":"worldTile_wood"},
-    {"index":4, "collision":true, "name":"worldTile_stone"},
-    {"index":5, "collision":false, "name":"worldTile_timber"},
-    {"index":6, "collision":false, "name":"worldTile_scorched"}
+    {"index":3, "collision":true, "points":100, "name":"worldTile_wood"},
+    {"index":4, "collision":true, "points":200, "name":"worldTile_stone"},
+    {"index":5, "collision":false, "points":250, "name":"worldTile_timber"},
+    {"index":6, "collision":false, "name":"worldTile_scorched"},
+    {"index":7, "collision":false, "points":2500, "name":"worldTile_treasure_chest"},
+    {"index":8, "collision":false, "points":3500, "name":"worldTile_treasure_coins"},
+    {"index":9, "collision":false, "points":4500, "name":"worldTile_treasure_candle"},
+    {"index":10, "collision":false, "points":2500, "name":"worldTile_treasure_chair"},
+    {"index":11, "collision":true, "points":500, "name":"worldTile_wood_block"},
+    {"index":12, "collision":true, "points":650, "name":"worldTile_stone_block"},
+    {"index":13, "collision":false, "points":10, "name":"worldTile_path"},
+    {"index":14, "collision":false, "points":200, "name":"worldTile_crops"},
+    {"index":15, "collision":true, "points":3000, "name":"worldTile_well"},
+    {"index":16, "collision":false, "name":"worldTile_ice"}
   ]
 }

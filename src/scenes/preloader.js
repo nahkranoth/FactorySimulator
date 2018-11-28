@@ -24,6 +24,7 @@ export class Preloader extends Phaser.Scene {
     }
 
     create() {
+        console.log("CREATEA");
         TileData.create(this.cache.json.get('worldTileData'));//init static tiledata
         this.scene.start("game");
         this.scene.start("gui");
