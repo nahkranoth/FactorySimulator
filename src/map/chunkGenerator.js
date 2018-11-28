@@ -2,6 +2,7 @@ import {RandomGenerator} from "../utils/randomGenerator"
 import {TileData} from "../data/tileData"
 import {_} from "underscore"
 import {GameController} from "../core/gameController"
+import {FireBall} from "../objects/fireball";
 
 
 export class ChunkGenerator {
@@ -22,14 +23,14 @@ export class ChunkGenerator {
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 0.9);//generate rocks
 
-        this.scene.physics.add.collider([this.scene.player, this.scene.fireBall], this.layer);
-        //this.scene.physics.add.overlap([this.scene.fireBall], this.layer, this.onCollision);
+        this.scene.physics.add.collider([this.scene.player, this.scene.fireBall], this.layer, _.bind(this.onCollision, this));
     }
 
-    //
-    // onCollision(collision){
-    //     //console.log(collision);
-    // }
+    onCollision(collider){
+        if(collider instanceof FireBall){
+            this.scene.sound.playAudioSprite('sfx', "bounce");
+        }
+    }
 
     clear() {
         this.layer.forEachTile((tile) => {
