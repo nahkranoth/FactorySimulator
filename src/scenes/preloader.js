@@ -1,4 +1,5 @@
 import {TileData} from "../data/tileData"
+import {Slider} from "../ui/slider";
 
 export class Preloader extends Phaser.Scene {
 
@@ -29,6 +30,8 @@ export class Preloader extends Phaser.Scene {
                 this.load.image("bunny", "assets/bunny.png");
                 this.load.image("title", "assets/title.png");
                 this.load.image("titleSub", "assets/titleSub.png");
+                this.load.image("closeBtn", "assets/closeBtn.png");
+                this.load.image("slider", "assets/slider.png");
 
                 this.load.image("optionsBG", "assets/titleScreen_OptionsBG.png");
 
@@ -73,17 +76,45 @@ export class Preloader extends Phaser.Scene {
         this.optionsGroup = this.add.group();
         this.optionsBG = this.add.image(this.cameras.main.width/2, 630, 'optionsBG');
         this.optionsGroup.add(this.optionsBG);
+        this.closeBtn = this.add.image(this.cameras.main.width/2-250, 590, 'closeBtn').setInteractive();
+        this.closeBtn.on('pointerdown', this.closeOptions, this);
+        this.optionsGroup.add(this.closeBtn);
+
+        this.fxVolume = 100;
+        this.fxVolStr = "Fx Volume: ";
+
+        this.fxVolumeTxt = this.add.text(this.cameras.main.width/2, 570, this.fxVolStr+this.fxVolume, {fontFamily: 'AtlantisRegular', fontSize: 42, fill: '#fff', align:'center'});
+        this.fxVolumeTxt.setOrigin(0.5);
+        this.optionsGroup.add(this.fxVolumeTxt);
+
+        this.fxVolumeSlider = new Slider({
+            scene:this,
+            key:"slider",
+            x:this.cameras.main.width/2,
+            y:630,
+            group:this.optionsGroup,
+            callback: _.bind(this.FxVolumeSliderUpdated, this),
+            ratio:this.fxVolume/100
+        });
         this.optionsGroup.toggleVisible();
 
+    }
+
+    FxVolumeSliderUpdated(ratio){
+        this.fxVolume = ratio*100;
+        this.fxVolumeTxt.text = this.fxVolStr+Math.round(this.fxVolume * ratio);
     }
 
     openOptions(){
         this.startGroup.toggleVisible();
         this.optionsGroup.toggleVisible();
+        this.fxVolumeSlider.show(this.fxVolume/100);
     }
 
     closeOptions(){
         this.startGroup.toggleVisible();
+        this.optionsGroup.toggleVisible();
+        this.fxVolumeSlider.hide();
     }
 
     startGame(){
