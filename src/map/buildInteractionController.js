@@ -1,4 +1,4 @@
-import {MapConstructData} from "../data/mapConstructData"
+import {MapConstructData as MapContructData, MapConstructData} from "../data/mapConstructData"
 import {GameController} from "../core/gameController"
 
 export class BuildInteractionController {
