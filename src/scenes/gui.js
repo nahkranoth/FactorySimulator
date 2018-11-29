@@ -71,6 +71,16 @@ export class GUI extends Phaser.Scene {
             text:"Mana"
         });
 
+        this.healthSlider = new Slider({
+            scene:this,
+            key:"slider",
+            x:150,
+            y:90,
+            ratio:1,
+            color:0xff0000,
+            text:"Health"
+        });
+
     }
 
     setScoreText(points) {
