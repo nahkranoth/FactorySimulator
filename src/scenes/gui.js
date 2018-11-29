@@ -1,5 +1,6 @@
 import {TileData} from "../data/tileData"
 import {GameController} from "../core/gameController"
+import {Slider} from "../ui/slider";
 
 export class GUI extends Phaser.Scene {
 
@@ -59,6 +60,16 @@ export class GUI extends Phaser.Scene {
             align: "left"
         });
         this.health.setOrigin(0, 0.5);
+
+        this.manaSlider = new Slider({
+            scene:this,
+            key:"slider",
+            x:150,
+            y:30,
+            ratio:1,
+            color:0x0000ff,
+            text:"Mana"
+        });
 
     }
 
