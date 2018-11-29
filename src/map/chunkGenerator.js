@@ -3,6 +3,7 @@ import {TileData} from "../data/tileData"
 import {_} from "underscore"
 import {GameController} from "../core/gameController"
 import {FireBall} from "../objects/fireball";
+import {StepCounter} from "../utils/stepcounter";
 
 
 export class ChunkGenerator {
@@ -15,6 +16,8 @@ export class ChunkGenerator {
         this.tileMap = params.tileMap;
         this.layer = params.layer;
         this.chunk = params.chunk;
+        this.playerHurtStepCounter = new StepCounter({step:50, callback:this.playerHurt, scope:this});
+
         this.init();
     }
 
@@ -57,6 +60,12 @@ export class ChunkGenerator {
         return Math.abs(Math.round(RandomGenerator.generatePerlin3(xOffset * modifier, yOffset * modifier, axis)));
     }
 
+    playerHurt(){
+        GameController.addHealth(-1);
+        this.scene.cameras.main.shake(150, 0.01);
+        this.scene.sound.playAudioSprite('sfx', "player_hurt", {volume: (this.scene.fxVolumeLevel/100)});
+    }
+
     setTile(tile, index) {
         tile.index = index;
         let data = TileData.getTileData(index);
@@ -71,12 +80,16 @@ export class ChunkGenerator {
                 });
         } else {
             tile.setCollisionCallback(
-                (collision) => {
+                (collision, me) => {
+                    if (collision === this.scene.player && me.index === 6){
+                        this.playerHurtStepCounter.tick();
+                    }
+
                     if (collision === this.scene.player) return;
                     if (data.points) GameController.addScore(data.points);
                     tile.index = 6;
-                    tile.setCollisionCallback(null);
-                    this.scene.map.flagTileForCollisionChange(tile, this);
+                    //tile.setCollisionCallback(null);
+                    //this.scene.map.flagTileForCollisionChange(tile, this);
                 });
         }
     }

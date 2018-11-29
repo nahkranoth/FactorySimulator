@@ -21,6 +21,7 @@ export class Preloader extends Phaser.Scene {
                 this.load.image("ice", "assets/ice.png");
                 this.load.audioSprite('sfx', 'assets/audio/audio_fx_sprite.json', [ 'assets/audio/audio_fx_sprite.ogg', 'assets/audio/audio_fx_sprite.mp3' ]);
                 this.load.audio('music_game', ['assets/music_game.mp3', "assets/music_game.ogg"]);
+                this.load.audio('music_start', ['assets/music_start.mp3', "assets/music_start.ogg"]);
 
                 this.load.image("worldTilesImg", "assets/worldTiles.png");
                 this.load.atlas('worldEntities', "assets/worldEntities.png", "assets/worldEntities.json");
@@ -41,7 +42,7 @@ export class Preloader extends Phaser.Scene {
 
     create() {
         this.startGroup = this.add.group();
-
+        this.fxAudioCounter = 0;
 
         WebFont.load({
             custom: {
@@ -116,14 +117,24 @@ export class Preloader extends Phaser.Scene {
 
         this.optionsGroup.toggleVisible();
 
+        this.music = this.sound.add('music_start', { loop: true, volume: (this.musicVolume/100)});
+        this.music.play();
+
     }
 
     musicVolumeSliderUpdated(ratio){
         this.musicVolume = ratio*100;
+        this.music.setVolume(ratio);
         this.musicVolumeTxt.text = this.musicVolStr+Math.round(this.musicVolume * ratio);
     }
 
     FxVolumeSliderUpdated(ratio){
+        if(this.fxAudioCounter >= 10){
+            this.sound.playAudioSprite('sfx', "pickup", {volume: ratio});
+            this.fxAudioCounter = 0;
+        }
+        this.fxAudioCounter++;
+
         this.fxVolume = ratio*100;
         this.fxVolumeTxt.text = this.fxVolStr+Math.round(this.fxVolume * ratio);
     }
@@ -143,6 +154,7 @@ export class Preloader extends Phaser.Scene {
     }
 
     startGame(){
+        this.music.stop();
         this.scene.start("game", {fxVolumeLevel:this.fxVolume, musicVolumeLevel:this.musicVolume});
         this.scene.start("gui");
     }

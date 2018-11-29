@@ -44,6 +44,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     onWorldSpriteCollision(collidingSprite) {
         if (collidingSprite.assignedToWorldEntity instanceof ItemWorldEntity) {
             GameController.addMana(25);
+            GameController.addHealth(5);
             collidingSprite.assignedToWorldEntity.pickup();
         }
     }

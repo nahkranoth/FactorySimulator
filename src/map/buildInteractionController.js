@@ -37,10 +37,10 @@ export class BuildInteractionController {
 
         this.setBuildMode("bucket");
 
-        //this.scene.input.keyboard.on('keydown_Z', () => this.setBuildMode("place"));
-        //this.scene.input.keyboard.on('keydown_X', () => this.setBuildMode("select"));
-        //this.scene.input.keyboard.on('keydown_C', () => this.setBuildMode("fill"));
-        //this.scene.input.keyboard.on('keydown_V', () => this.setBuildMode("bucket"));
+        this.scene.input.keyboard.on('keydown_Z', () => this.setBuildMode("place"));
+        this.scene.input.keyboard.on('keydown_X', () => this.setBuildMode("select"));
+        this.scene.input.keyboard.on('keydown_C', () => this.setBuildMode("fill"));
+        this.scene.input.keyboard.on('keydown_V', () => this.setBuildMode("bucket"));
     }
 
     setBuildMode(mode) {
