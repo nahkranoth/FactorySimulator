@@ -4,8 +4,8 @@ const ImagePlugin = require(path.resolve(__dirname, 'custom/imagePlugin'));
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var copyWebpackPlugin = new CopyWebpackPlugin([{
-    from: path.resolve(__dirname, 'assets/build', "*"),
-    to: path.resolve(__dirname, 'build/assets'),
+    from: path.resolve(__dirname, '/assets/build', "*"),
+    to: path.resolve(__dirname, '/build/assets'),
     flatten:true
 }]);
 
@@ -23,7 +23,7 @@ module.exports = {
         app:"./src/main.js"
     },
     output: {
-        path: path.resolve(__dirname + "../build"),
+        path: path.resolve(__dirname + "/build"),
         filename: "bundle.js"
     },
     module: {
@@ -40,7 +40,7 @@ module.exports = {
         })
     ],
     devServer: {
-        contentBase: path.join(__dirname, 'build'),
+        contentBase: path.join(__dirname, '/build'),
         open: true,
         watchOptions: {
             ignored: ['build', 'node_modules', 'custom']
