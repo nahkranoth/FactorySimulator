@@ -80,7 +80,7 @@ export class Preloader extends Phaser.Scene {
         this.closeBtn.on('pointerdown', this.closeOptions, this);
         this.optionsGroup.add(this.closeBtn);
 
-        this.fxVolume = 100;
+        this.fxVolume = 50;
         this.fxVolStr = "Fx Volume: ";
 
         this.fxVolumeTxt = this.add.text(this.cameras.main.width/2, 560, this.fxVolStr+this.fxVolume, {fontFamily: 'AtlantisRegular', fontSize: 42, fill: '#fff', align:'center'});
@@ -97,7 +97,7 @@ export class Preloader extends Phaser.Scene {
             ratio:this.fxVolume/100
         });
 
-        this.musicVolume = 100;
+        this.musicVolume = 50;
         this.musicVolStr = "Music Volume: ";
 
         this.musicVolumeTxt = this.add.text(this.cameras.main.width/2, 670, this.musicVolStr+this.musicVolume, {fontFamily: 'AtlantisRegular', fontSize: 42, fill: '#fff', align:'center'});
@@ -125,7 +125,6 @@ export class Preloader extends Phaser.Scene {
 
     FxVolumeSliderUpdated(ratio){
         this.fxVolume = ratio*100;
-        console.log(this.fxVolume);
         this.fxVolumeTxt.text = this.fxVolStr+Math.round(this.fxVolume * ratio);
     }
 

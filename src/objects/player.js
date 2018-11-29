@@ -52,7 +52,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         if (collidingSprite instanceof FireBall) {
 
             if(!this.hit){
-                GameController.addHealth(-1);
+                GameController.addHealth(-5);
                 this.scene.sound.playAudioSprite('sfx', "player_hurt", {volume: (this.scene.fxVolumeLevel/100)});
                 this.scene.cameras.main.shake(150, 0.01);
                 this.hit = true;
