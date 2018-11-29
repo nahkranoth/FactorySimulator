@@ -60,7 +60,7 @@ export class BuildInteractionController {
     }
 
     startBucketPlace(event) {
-        this.scene.sound.playAudioSprite('sfx', "ice");
+        this.scene.sound.playAudioSprite('sfx', "ice", {volume: (this.scene.fxVolumeLevel/100)});
 
         this.draw = true;
         if (GameController.mana <= 0) return;

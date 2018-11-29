@@ -14,7 +14,7 @@ export class TreeWorldEntity extends BaseWorldEntity{
     burn() {
         if (this.burning) return;
         this.burning = true;
-        this.scene.sound.playAudioSprite('sfx', "burn");
+        this.scene.sound.playAudioSprite('sfx', "burn", {volume: (this.scene.fxVolumeLevel/100)});
         GameController.addScore(100);
         this.spriteEntity.setFrame("Trees/Tree2");
     }

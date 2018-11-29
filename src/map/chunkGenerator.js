@@ -28,7 +28,7 @@ export class ChunkGenerator {
 
     onCollision(collider){
         if(collider instanceof FireBall){
-            this.scene.sound.playAudioSprite('sfx', "bounce");
+            this.scene.sound.playAudioSprite('sfx', "bounce",{volume: (this.scene.fxVolumeLevel/100)});
         }
     }
 

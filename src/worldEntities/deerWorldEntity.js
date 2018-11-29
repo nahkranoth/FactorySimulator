@@ -27,7 +27,7 @@ export class DeerWorldEntity extends BaseWorldEntity {
     burn() {
         if(!this.hit){
             this.switchBehaviourState("burning");
-            this.scene.sound.playAudioSprite('sfx', "burn");
+            this.scene.sound.playAudioSprite('sfx', "burn", {volume: (this.scene.fxVolumeLevel/100)});
             this.hit = true;
         }else{
             this.hitResetTimer++;

@@ -11,6 +11,11 @@ export class Game extends Phaser.Scene {
         super({key: "game"});
     }
 
+    init(data){
+        this.fxVolumeLevel = 20*Math.log10(data.fxVolumeLevel);
+        this.musicVolumeLevel = 20*Math.log10(data.musicVolumeLevel);
+    }
+
     create() {
         this.cameras.main.roundPixels = true;
 
@@ -44,7 +49,6 @@ export class Game extends Phaser.Scene {
             y:100
         });
 
-
         this.collisionController.setCollisionBetweenWorldSprites(this.fireBall, _.bind(this.fireBall.onWorldSpriteCollision, this.fireBall));
 
         this.collisionController.setCollisionBetweenWorldSprites(this.player, this.player.onCollisionWorldEntity);
@@ -58,8 +62,9 @@ export class Game extends Phaser.Scene {
 
         new BuildInteractionController({scene:this, gui:this.gui, map:this.map});
 
-        this.music = this.sound.add('music_game', { loop: true });
+        this.music = this.sound.add('music_game', { loop: false, volume: (this.musicVolumeLevel/100)});
         this.music.play();
+
     }
 
     setScore(score){
