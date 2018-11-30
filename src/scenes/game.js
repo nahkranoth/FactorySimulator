@@ -75,20 +75,17 @@ export class Game extends Phaser.Scene {
             {time:25, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.4}},
             {time:30, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.5}},
             {time:40, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.6}},
-            {time:50, activated:false, callback: _.bind(this.createFireBall, this) },
-            {time:50, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.3}},
-            {time:60, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.4}},
-            {time:70, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.5}},
-            {time:80, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.6}},
-            {time:90, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.7}},
+            {time:80, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.7}},
             {time:100, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.8}},
-            {time:120, activated:false, callback: _.bind(this.createFireBall, this) },
-            {time:120, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.6}},
-            {time:130, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.7}},
-            {time:150, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.8}},
-            {time:160, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.9}},
-            {time:170, activated:false, callback: _.bind(this.createFireBall, this) },
-            {time:200, activated:false, callback: _.bind(this.createFireBall, this) }
+            {time:120, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.9}},
+            {time:130, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:1}},
+            {time:250, activated:false, callback: _.bind(this.createFireBall, this) },
+            {time:250, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.6}},
+            {time:300, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.7}},
+            {time:310, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.8}},
+            {time:320, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:0.9}},
+            {time:320, activated:false, callback:_.bind(this.setFireBallSpeed, this), params:{speed:1}},
+            {time:400, activated:false, callback: _.bind(this.createFireBall, this) }
         ]
     }
 
@@ -132,6 +129,7 @@ export class Game extends Phaser.Scene {
             this.scene.setVisible(false);
             this.scene.setVisible(false, "gui");
             this.scene.start("endscreen");
+            this.music.stop();
         }
     }
 

@@ -37,10 +37,15 @@ export class BuildInteractionController {
 
         this.setBuildMode("bucket");
 
-        this.scene.input.keyboard.on('keydown_Z', () => this.setBuildMode("place"));
-        this.scene.input.keyboard.on('keydown_X', () => this.setBuildMode("select"));
-        this.scene.input.keyboard.on('keydown_C', () => this.setBuildMode("fill"));
-        this.scene.input.keyboard.on('keydown_V', () => this.setBuildMode("bucket"));
+        // this.scene.input.keyboard.on('keydown_Z', () => this.setBuildMode("place"));
+        // this.scene.input.keyboard.on('keydown_X', () => this.setBuildMode("select"));
+        // this.scene.input.keyboard.on('keydown_C', () => this.setBuildMode("fill"));
+        // this.scene.input.keyboard.on('keydown_V', () => this.setBuildMode("bucket"));
+
+        this.iceGroup = this.scene.add.group({
+            defaultKey: 'ice',
+            maxSize: 4
+        });
     }
 
     setBuildMode(mode) {
@@ -60,10 +65,12 @@ export class BuildInteractionController {
     }
 
     startBucketPlace(event) {
-        this.scene.sound.playAudioSprite('sfx', "ice", {volume: (this.scene.fxVolumeLevel/100)});
-
         this.draw = true;
         if (GameController.mana <= 0) return;
+
+        this.scene.sound.playAudioSprite('sfx', "ice", {volume: (this.scene.fxVolumeLevel/100)});
+        let iceSprite = this.iceGroup.getLast(false, true, event.worldX, event.worldY);
+        this.iceGroup.kill(iceSprite);
 
         let pointerPos = this.map.chunkController._getWorldPositionFromPointerPosition(event.x, event.y);
         let source = this.map.chunkController.getChunkAndTileByWorldPosition(pointerPos.x, pointerPos.y);
