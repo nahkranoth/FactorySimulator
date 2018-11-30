@@ -8,7 +8,7 @@ export class FireBall extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.rotation = 0.08;
-        this.moveSpeed = 200;
+        this.moveSpeed = 0.1;
         this.depth = TileData.PROPERTIES.DEPTHSTART + 99999;
         this.body.setCircle(50, 0, 0).setAllowDrag(true).setBounce(1).setCollideWorldBounds(true);
         this.body.onWall();
@@ -20,6 +20,10 @@ export class FireBall extends Phaser.Physics.Arcade.Sprite {
         sprite.assignedToWorldEntity.burn();
     }
 
+    setSpeed(speed){
+        this.moveSpeed = speed;
+    }
+
     pauseFollow() {
         this.follow = false;
     }
@@ -27,7 +31,7 @@ export class FireBall extends Phaser.Physics.Arcade.Sprite {
     update() {
         if (this.follow) {
             let distance = Phaser.Math.Distance.Between(this.x, this.y, this.scene.player.x, this.scene.player.y);
-            this.scene.physics.accelerateTo(this, this.scene.player.x, this.scene.player.y, distance * 10, 300, 300);
+            this.scene.physics.accelerateTo(this, this.scene.player.x, this.scene.player.y, distance * 10 * this.moveSpeed, 600 * this.moveSpeed, 600 * this.moveSpeed);
         } else {
             this.followCounter++;
             if (this.followCounter >= 100) {

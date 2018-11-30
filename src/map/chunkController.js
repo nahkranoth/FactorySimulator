@@ -30,6 +30,13 @@ export class ChunkController extends ControllerBaseClass {
         })
     }
 
+    resetChunkCollisionsForAll() {
+        this.chunks.forEach((c) => {
+            c.resetCollision();
+            c.chunkGenerator.setTileCollisions();
+        })
+    }
+
     _getWorldPositionFromPointerPosition(x, y) {
         return ({x: x + this.camera.scrollX, y: y + this.camera.scrollY});
     }

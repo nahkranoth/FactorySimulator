@@ -25,8 +25,13 @@ export class ChunkGenerator {
         this.generatePerlinMap(1, 0.3);//generate trees
         this.generatePerlinMap(2, 0.08);//generate lakes
         this.generatePerlinMap(4, 0.3, 0.9);//generate rocks
+        this.setTileCollisions();
+    }
 
-        this.scene.physics.add.collider([this.scene.player, this.scene.fireBall], this.layer, _.bind(this.onCollision, this));
+    setTileCollisions(){
+        let list = this.scene.fireBalls.slice();
+        list.push(this.scene.player);
+        this.scene.physics.add.collider(list, this.layer, _.bind(this.onCollision, this));
     }
 
     onCollision(collider){

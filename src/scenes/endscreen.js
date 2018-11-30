@@ -34,7 +34,6 @@ export class EndScreen extends Phaser.Scene {
     }
 
     restart(){
-        console.log("restart");
         this.scene.sleep();
         this.scene.setVisible(false);
         GameController.reset();

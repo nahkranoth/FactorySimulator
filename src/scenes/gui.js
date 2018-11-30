@@ -101,7 +101,6 @@ export class GUI extends Phaser.Scene {
             let x = TileData.PROPERTIES.TILESIZE * i;
             let sprite = this.add.sprite(x, 0, "worldTilesAtlas", data.name).setInteractive();
 
-            console.log(data.name);
             sprite.selectionIndex = data.index;
             sprite.on("pointerdown", () => {
                 this.tileButtonResetTint();
