@@ -9,6 +9,12 @@ export class GameController extends Phaser.Events.EventEmitter {
         }
     }
 
+    static reset() {
+        GameController.score = 0;
+        GameController.mana = 100;
+        GameController.health = 100;
+    }
+
     static addScore(points) {
         GameController.score += points;
         GameController.instance.emit("AddScore", points);

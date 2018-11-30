@@ -26,9 +26,9 @@ export class Game extends Phaser.Scene {
         this.collisionController = new CollisionController({scene:this});
 
         this.pointsController = new GameController({scene:this});
-        this.pointsController.on("AddScore", this.setScore, this);
-        this.pointsController.on("AddMana", this.setMana, this);
-        this.pointsController.on("AddHealth", this.setHealth, this);
+        this.pointsController.on("AddScore", _.bind(this.setScore, this));
+        this.pointsController.on("AddMana", _.bind(this.setMana, this));
+        this.pointsController.on("AddHealth", _.bind(this.setHealth, this));
 
         //ORDER MATTERS. NO REALLY!
         this.player = new Player({
@@ -77,6 +77,15 @@ export class Game extends Phaser.Scene {
 
     setHealth(health){
         this.gui.setHealthText(health);
+        if(GameController.health < 1){
+            this.scene.sleep();
+            this.scene.sleep("gui");
+            this.scene.setVisible(false);
+            this.scene.setVisible(false, "gui");
+            GameController.reset();
+            this.scene.get("gui").scene.restart();
+            this.scene.restart();
+        }
     }
 
     update(){

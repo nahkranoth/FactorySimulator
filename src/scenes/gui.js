@@ -50,17 +50,6 @@ export class GUI extends Phaser.Scene {
         });
         this.points.setOrigin(0.5);
 
-        this.mana = this.add.text(52, 52, '100', {fontFamily: 'Arial', fontSize: 64, color: '#0000ff', align: "left"});
-        this.mana.setOrigin(0, 0.5);
-
-        this.health = this.add.text(52, 104, '100', {
-            fontFamily: 'Arial',
-            fontSize: 64,
-            color: '#ff0000',
-            align: "left"
-        });
-        this.health.setOrigin(0, 0.5);
-
         this.manaSlider = new Slider({
             scene:this,
             key:"slider",
@@ -92,11 +81,11 @@ export class GUI extends Phaser.Scene {
     }
 
     setHealthText() {
-        this.health.text = GameController.health;
+        this.healthSlider.makeFillerGraphic(GameController.health/100)
     }
 
     setManaText() {
-        this.mana.text = GameController.mana;
+        this.manaSlider.makeFillerGraphic(GameController.mana/100)
     }
 
     tileButtonResetTint() {
