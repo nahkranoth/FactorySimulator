@@ -82,9 +82,7 @@ export class Game extends Phaser.Scene {
             this.scene.sleep("gui");
             this.scene.setVisible(false);
             this.scene.setVisible(false, "gui");
-            GameController.reset();
-            this.scene.get("gui").scene.restart();
-            this.scene.restart();
+            this.scene.start("endscreen");
         }
     }
 

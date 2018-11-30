@@ -34,7 +34,7 @@ export class GUI extends Phaser.Scene {
         this.indexSelected = 0;
 
         this.score = this.add.text(this.cameras.main.width / 2, 52, '0000', {
-            fontFamily: 'Arial',
+            fontFamily: 'AtlantisRegular',
             fontSize: 64,
             color: '#ffffff',
             align: "center"
@@ -43,7 +43,7 @@ export class GUI extends Phaser.Scene {
         this.score.setOrigin(0.5);
 
         this.points = this.add.text(this.cameras.main.width / 2, 104, '', {
-            fontFamily: 'Arial',
+            fontFamily: 'AtlantisRegular',
             fontSize: 34,
             color: '#ffffff',
             align: "center"

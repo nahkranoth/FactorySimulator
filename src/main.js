@@ -5,12 +5,13 @@ import 'phaser';
 import { Game } from "./scenes/game";
 import { Preloader } from './scenes/preloader';
 import { GUI } from './scenes/gui';
+import { EndScreen } from './scenes/endscreen';
 
 const gameConfig = {
     type: Phaser.AUTO,
     width: 1024,
     height: 768,
-    scene: [Preloader, Game, GUI],
+    scene: [Preloader, Game, GUI, EndScreen],
     pixelArt: true,
     physics: {
         default: 'arcade',

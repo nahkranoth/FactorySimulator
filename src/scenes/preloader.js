@@ -34,6 +34,8 @@ export class Preloader extends Phaser.Scene {
                 this.load.image("closeBtn", "assets/closeBtn.png");
                 this.load.image("slider", "assets/slider.png");
 
+                this.load.image("endScreenBG", "assets/endScreenBG.png");
+
                 this.load.image("optionsBG", "assets/titleScreen_OptionsBG.png");
 
             });
